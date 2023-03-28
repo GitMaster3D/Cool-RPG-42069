@@ -2,56 +2,73 @@ import * as Engine from "/Engine.js";
 import GameObject from './Engine.js';
 
 
-let player;
-
-// Use the following for objects that don't get initialized by the engine
-
-//window.addEventListener('DOMContentLoaded', () => {
-//    Init();
-//});
-
 export function Init()
 {
-    class Player extends GameObject {
-        constructor(pos, spritesheetPos) {
-        
-            //Default GameObject Constructor
-          super(pos, spritesheetPos);
-
-          console.log("Spawned Player!");
-      
-        }
-    }
-      
-    player = new Player(new Engine.Vector2(4, 4), new Engine.Vector2(22, 16));
-    Engine.SpawnGO(player, "Player");
+    console.log("Initiated Input manager"); 
 }
+
+
+const upInputEvent = new Event("UpInput");
+const downInputEvent = new Event("DownInput");
+const rightInputEvent = new Event("RightInput");
+const leftInputEvent = new Event("LeftInput");
+const spaceInputEvent = new Event("SpaceInput");
+
+const upReleaseEvent = new Event("UpRelease");
+const downReleaseEvent = new Event("DownRelease");
+const rightReleaseEvent = new Event("RightRelease");
+const leftReleaseEvent = new Event("LeftRelease");
+const spaceReleaseEvent = new Event("SpaceRelease");
 
 export function KeyPress(key)
 {
-    console.log("Pressed " + key);
-
     switch (key)
     {
         case "KeyA":
-            player.MoveX(-1);
+            window.dispatchEvent(leftInputEvent);
         break;
 
         case "KeyD":
-            player.MoveX(1);
+            window.dispatchEvent(rightInputEvent);
         break;
 
         case "KeyW":
-            player.MoveY(-1);
+            window.dispatchEvent(upInputEvent);
         break;
 
         case "KeyS":
-            player.MoveY(1);
+            window.dispatchEvent(downInputEvent);
+        break;
+
+        case "Space":
+            window.dispatchEvent(spaceInputEvent);
         break;
     }   
 }
 
+
 export function KeyRelease(key)
 {
-    console.log("Released " + key);
+    switch (key)
+    {
+        case "KeyA":
+            window.dispatchEvent(leftReleaseEvent);
+        break;
+
+        case "KeyD":
+            window.dispatchEvent(rightReleaseEvent);
+        break;
+
+        case "KeyW":
+            window.dispatchEvent(upReleaseEvent);
+        break;
+
+        case "KeyS":
+            window.dispatchEvent(downReleaseEvent);
+        break;
+
+        case "Space":
+            window.dispatchEvent(spaceReleaseEvent);
+        break;
+    }   
 }

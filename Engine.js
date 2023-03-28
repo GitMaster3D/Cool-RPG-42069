@@ -29,13 +29,13 @@ export default class GameObject
 
     MoveY(amount)
     {
-        this.pos.y += amount;
+        this.pos.y -= amount;
     }
 
     Move(amount_Vec)
     {
         this.pox.x += amount_Vec.x;
-        this.pos.y += amount_Vec.y;
+        this.pos.y -= amount_Vec.y;
     }
 
     OnDraw()
