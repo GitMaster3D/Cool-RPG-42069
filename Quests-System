@@ -1,0 +1,14 @@
+
+var GetQuests=0;
+
+var SideQuests= 0;
+
+var MainQuests=1
+
+var EventQuests=2;
+
+//If all MainQuests done, Get a Key to Endboss
+//if All Quests done Get the Best Item in Game
+//Quests give EXP
+
+//  Event Quests giv you special EventItems
