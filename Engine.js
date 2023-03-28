@@ -8,8 +8,8 @@ sprites.src = "images/Tileset.png";
 var spriteWidth = 32;
 var spriteHeight = 32;
 
-var backgroundWidth = 100;
-var backgroundHeight = 30;
+var backgroundWidth = 20;
+var backgroundHeight = 15;
 
 // Extend this to create objects that are visible easily
 // The Constructor of the base class must be called with super() when extending in order to make this work
@@ -185,5 +185,5 @@ function drawBG(mapSprites)
 //Clears sprites
 export function clear()
 {
-    context.clearRect(0,0,25000,25000);
+    context.clearRect(0,0,2500,2500);
 }
