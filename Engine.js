@@ -206,6 +206,8 @@ async function OnUpdate()
 {
     clear();
 
+
+
     var now = Date.now();
     var dt = (now - lastUpdate) / 1000;
     lastUpdate = now;
@@ -221,7 +223,7 @@ async function OnUpdate()
 
     //Draw background
     drawBG(background);
-    
+
     //Draw Game objects
     for (const [key, value] of Object.entries(gameObjects))
     {
@@ -277,6 +279,7 @@ function Init()
 sprites.onload = function() {
     Init();
 };
+
 
 //Draws sprite at Position
 export function draw(spritesheetPos, spritePos, alpha = 1)
