@@ -1,0 +1,20 @@
+var money=0,level=1,xp=0;
+
+function updatecounters(){
+    if (xp > 400) {
+        level+=Math.floor(xp/400);// if xp is 1000, two levels up
+        xp=xp%400;// what is left when increasing levels
+     }
+    document.getElementById("money").innerHTML = 'Money: ' + money;
+    document.geElementById("xp").innerHTML = 'XP: ' + xp;
+    document.getElementById("level").innerHTML = 'Current level: ' + level;
+  }
+
+
+ function giveExp(number){
+     money +=  50;
+     xp +=  100;
+     updatecounters();//update
+ }
+
+   window.onload=updatecounters;//onload init counters
