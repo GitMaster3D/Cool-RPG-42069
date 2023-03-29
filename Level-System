@@ -1,14 +1,21 @@
 
-var PlayerEXP=0;
-var LevelPlayer=0;
-// Wenn gegner besiegt bekommt man ein bestimmten Anteil von EXP, Schwache Gegner wenig und Starke viel.
+var money=0,level=1,xp=0;
 
-while(LevelPlayer<100)
-{
-    //if Gegner Besiegt von LVL 1 bis BossLVL. gibt entsorechende EXP den Spieler
-    //Ab EXP 10 lvl ein und dann immer doppelt so viel vür nächstes lvl
-    //Freischalten von bestimmen Items bei lvl
-    // Jede 10. Lvl also 10,20,30,40,50,60,70,80,90,100 gibt es starke Items
-    // Quests geben Items und EXP
+function updatecounters(){
+    if (xp > 400) {
+        level+=Math.floor(xp/400);// if xp is 1000, two levels up
+        xp=xp%400;// what is left when increasing levels
+     }
+    document.getElementById("money").innerHTML = 'Money: ' + money;
+    document.geElementById("xp").innerHTML = 'XP: ' + xp;
+    document.getElementById("level").innerHTML = 'Current level: ' + level;
+  }
 
-}
+
+ function giveExp(number){
+     money +=  50;
+     xp +=  100;
+     updatecounters();//update
+ }
+
+   window.onload=updatecounters;//onload init counters
