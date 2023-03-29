@@ -1,2 +1,2 @@
-start http://localhost:8080
+Start-Process http://localhost:8080
 http-server
