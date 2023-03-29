@@ -1,22 +1,40 @@
-import * as InputManager from "/InputManager.js";
+
+// Mit import können alle variablen und Funktionen die 
+// in einer Anderen .js datei stehen und mit dem Schlüsselwort 
+// "export" sichtbar gemacht wurden "importiert" werden, d.h. dass
+// man zugriff auf all diese Funktionen, methoden, klassen etc. hat (ähnlich wie public in klassen bei c#)
+//
+// der * steht hier dafür, dass alles übernommen werden soll,
+// "as Engine" steht dafür, dass die funktionen, klassen, variablen, aus 
+// Engine.js in der variable Engine gespeichert werden, (ähnlich wie eine instanz einer c# klasse)
 import * as Engine from "/Engine.js";
+
+// Hier wird "Gameobject" aus Engine.js importiet
+// Hierbei wird Gameobject so behandelt als würde es auch
+// in dieser Datei geschrieben stehen
+//
+// Achtung: Da Importierte klassen nicht sofort mit der .js datei
+// geladen werden, müssen Klassen die Gameobject erweitern innerhalb von funktionen deklariert werden
 import GameObject from './Engine.js';
 
-// This event will be called as soon as this script gets loaded by the html file
+// Wird ausgeführe sobals diese Datei in HTML geladen wurde
 window.addEventListener('DOMContentLoaded', () => {
     Init();
 });
 
 
-// Gets executed when the script first gets loaded
-// Declare classes that inherit form GameObject here:
+// Wird als Pseudo void main verwendet
 function Init()
 {
-    //Player class that logs "Spawned Player!" when it spawns
+    // Klassen die mit "extends Gameobject" enden, also eine Erweiterung von Gameobject sind
+    // können von der Engine automatisch Gerendert werden und enthalten
+    // nützliche Funktionen wie z.b. MoveX, moveY, Destroy und SetPos
     class Player extends GameObject {
         constructor(pos, spritesheetPos) {
         
-            //Default GameObject Constructor
+          // Super ruft den Konstruktor der klasse auf, die
+          // erweitert wird, hier Gameobject.
+          // Dies wird hier benötigt, damit es richtig funktioniert
           super(pos, spritesheetPos);
 
           console.log("Spawned Player!");
@@ -24,49 +42,62 @@ function Init()
         }
     }
     
-    // Spawn classes that get extended by GameObjects
-    // first ener Position, second enter the tile of the sprite sheet
+
+
+
+    // Jedes Gameobject benötigt einen Vector2 (Punkt auf einem Koordinatensystem) mit 
+    // Einer x und einer Y koordinate als Position, und einen 2. der angiebt, welcher
+    // Sprite aus dem Spritesheet gerendert werden soll
+    //
+    // Um eine Klasse die Gameobject erweitert oder ein Gameobject loszuwerden
+    // kann man .Destroy() verwenden. hier also player.Destroy();
     var player = new Player(new Engine.Vector2(4, 4), new Engine.Vector2(22, 16));
+
+    // mit .alpha kann die Transparenz verändert Werden
+    player.alpha = 0.8;
+
     
-    // the player Needs to be spawned here so that the engine keeps track of the player
-    Engine.SpawnGO(player, "Player"); 
     
-    
-    // Spawn primitive Gameobject.
-    // InstanciateGO creates and spawns it at the same time, but it dosn't work with custom Gameobject variants
-    // This tile will be rendered above the Player since it was spawned later
-    var randomTile = Engine.InstanciateGO(new Engine.Vector2(5, 4), new Engine.Vector2(20, 17));
+    // Hier wird ein weiteres Gameobject erzeugt.
+    // Da dieses nach dem Spieler erzeugt wurde, wird es vor dem Spieler Angezeigt.
+    var randomTile = new GameObject(new Engine.Vector2(5, 4), new Engine.Vector2(20, 17));
 
 
-    // Listen for "UpInput" (gets called whenever W is pressed)
-    // code inside gets executed as soon as it is pressed down
+    
+    
+    // mit addeventlistener kann man nach events lauschen. 
+    // Sobald ein Event mit dem "Namen" UpInput auf dem Fenster versendet
+    // wird, wird der code in den geschweiften klammern ausgeführt.
+    // Die Input Events sind im Input Manager einlesbar.
+    // Eventlistener sollten möglichst früh hinzugefügt werden, um
+    // unerwartetem verhalten vorzubeugen (hier schlechtes Beispiel)
+    //
+    // außerdem giebt es momentan noch "OnUpdate", was jeden frame ausgeführt wird, sowie 
+    // 'DOMContentLoaded' von javascript, welches ausgeführt wird sobald die .js datei
+    // Geladen wurde
     window.addEventListener("UpInput", () =>
     {
-        player.MoveY(1);
+        player.MoveY(1); //Bewege den Spieler um 1 nach oben
     });
-
-    window.addEventListener("RightInput", () =>
-    {
-        player.MoveX(1);
-    });
-
-    window.addEventListener("DownInput", () =>
-    {
-        player.MoveY(-1);
-    });
-
-    window.addEventListener("LeftInput", () =>
-    {
-        player.MoveX(-1);
-    });
-
-    // Space Release is called whenever the spacebar gets released 
-    // (Release functions are available for wasd too)
+    
+    
+    
+    // Hier wird nach dem Eventr SpaceRelease gelauscht, was vom
+    // input manager versendet wird, sobald die leertaste losgelassen wurde
     window.addEventListener("SpaceRelease", () =>
     {
-        // Play sound located in the "Audio" folder 
-        // With the given name
+        // Mit engine.Playsound können audio dateien aus 
+        // dem "Audio" ordner abgespielt werden
+        // übergeben wird der name der Datei inklusive Dateiformat
         Engine.PlaySound("heheheha_.mp3");
     });
+
+
+    // Events sind Methoden, die auf einem objekt aufgerufen werden. Jedes event hat einen String als "namen".
+    myEvent = new Event("MyEvent");
+
+    // Mit dispatch Event kann eine Event versendet werden, 
+    // Hier wird ein Event auf dem Fenster gesendet
+    window.dispatchEvent(myEvent);
 }
 
