@@ -45,10 +45,28 @@ function Init()
         player.MoveY(1);
     });
 
-    // RightRelease will be triggered whenever the D key is released
-    window.addEventListener("RightRelease", () =>
+    window.addEventListener("RightInput", () =>
     {
         player.MoveX(1);
+    });
+
+    window.addEventListener("DownInput", () =>
+    {
+        player.MoveY(-1);
+    });
+
+    window.addEventListener("LeftInput", () =>
+    {
+        player.MoveX(-1);
+    });
+
+    // Space Release is called whenever the spacebar gets released 
+    // (Release functions are available for wasd too)
+    window.addEventListener("SpaceRelease", () =>
+    {
+        // Play sound located in the "Audio" folder 
+        // With the given name
+        Engine.PlaySound("heheheha_.mp3");
     });
 }
 

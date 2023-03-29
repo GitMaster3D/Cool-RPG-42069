@@ -50,6 +50,18 @@ export default class GameObject
     {
         this.alive = false;
     }
+
+    SetPos(potition)
+    {
+        this.pos = potition;
+    }
+}
+
+// Plays sound witht the given name inside the "Audio" Folder
+export function PlaySound(name)
+{
+    var sound = new Audio("/Audio/" + name);
+    sound.play();
 }
 
 // Used as Position Data
