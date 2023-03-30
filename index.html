@@ -13,19 +13,25 @@
     
 </head>
 <body>
-
+    
     <button type="button" onclick="ParticleTest()">Click Me</button>
-
+    
     <div class="Map">
         <canvas width="1920" height="1000" id="canvas"></canvas>
     </div>
-
+    
     
     <script type="module" src="Engine.js"></script>
     <script type="module" src="InputManager.js"></script>
     <script type="module" src="Demo.js"></script>
     <script type="module" src="ParticleSystem.js"></script>
-
+    
+    
+    <!-- Particle Systems -->
+    <!-- Müssen hier hinzugefügt werden, damit sie beim neuladen der seite neu geladen werden -->
+    <!-- Sonst müsste der Cashe vom Browser bei jeder Änderung zurückgesetzt werden -->
+    <script type="module" src="./Particles/DefaultParticles.js"></script>
+    <script type="module" src="./Particles/TestParticles.js"></script>
 
 </body>
 </html>

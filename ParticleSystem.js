@@ -6,6 +6,24 @@ window.addEventListener('DOMContentLoaded', () => {
     Init();
 });
 
+export default class ParticleSystemData
+{
+    constructor(amount, pos, spriteSheetPos, lifetime, startSpeedMultiplier, endSpeedMultiplier, dropoffMultiplier, minSpread, maxSpread, fadeoutStart)
+    {
+        this.amount = amount;
+        this.pos = pos;
+        this.spriteSheetPos = spriteSheetPos;
+        this.lifetime = lifetime;
+        this.startSpeedMultiplier = startSpeedMultiplier;
+        this.endSpeedMultiplier = endSpeedMultiplier;
+        this.dropoffMultiplier = dropoffMultiplier;
+        this.minSpread = minSpread;
+        this.maxSpread = maxSpread;
+        this.fadeoutStart = fadeoutStart;
+    }
+}
+
+
 var currentParticles = {};
 var autoName = 0;
 
@@ -22,24 +40,22 @@ function Init()
     window.ParticleTest = ParticleTest;
 }
 
-export function ParticleTest()
+
+export async function GetParticleData(name)
 {
-    SpawnParticles(
-        10,  //Amount
-        new Vector2(RandomRange(1, 20), RandomRange(1, 15)), //Spawn Pos
-        new Vector2(20, 17), //Sprite
-         3, // Lifetime
-         50, // Start Speed Multiplier
-         0, // End Speed Multiplier
-         30, // Dropoff Multiplier
-         1, // min Spread
-         0.1, // max Spread
-         0.5 // fadeout start
-         );
+    var data = import(name).then(system =>
+    {
+        var particleData = system.SendParticleSystemData();
+        return particleData;
+    });
+
+    return data;
 }
 
 export function SpawnParticles(amount, pos, spriteSheetPos, lifetime, startSpeedMultiplier, endSpeedMultiplier, dropoffMultiplier, minSpread, maxSpread, fadeoutStart)
 {
+
+
     class Particle extends GameObject
     {
         constructor(pos, spritesheetPos, lifetime, name) {
@@ -106,9 +122,35 @@ export function SpawnParticles(amount, pos, spriteSheetPos, lifetime, startSpeed
 }
 
 
-function RandomRange(min, max)
+export function RandomRange(min, max)
 {
     return Math.random() * (max - min) + min;
 }
 
+export async function PlayParticles(name)
+{
+    var path = "/Particles/" + name;
+    var data = await GetParticleData(path);
+
+    console.log(data);
+
+    SpawnParticles(
+        data.amount, 
+        data.pos, 
+        data.spriteSheetPos, 
+        data.lifetime,
+        data.startSpeedMultiplier,
+        data.endSpeedMultiplier,
+        data.dropoffMultiplier,
+        data.minSpread,
+        data.maxSpread,
+        data.fadeoutStart 
+        )
+}
+
+
+export async function ParticleTest()
+{
+    PlayParticles("DefaultParticles.js");
+}
 

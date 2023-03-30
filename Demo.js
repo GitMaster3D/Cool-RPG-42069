@@ -12,39 +12,35 @@ import * as Engine from "/Engine.js";
 // Hier wird "Gameobject" aus Engine.js importiet
 // Hierbei wird Gameobject so behandelt als würde es auch
 // in dieser Datei geschrieben stehen
-//
-// Achtung: Da Importierte klassen nicht sofort mit der .js datei
-// geladen werden, müssen Klassen die Gameobject erweitern innerhalb von funktionen deklariert werden
 import GameObject from './Engine.js';
+
+// Hier wird die Methode "PlayParticles();" aus ParticleSystem.js importier
+import { PlayParticles } from "./ParticleSystem.js";
 
 // Wird ausgeführe sobals diese Datei in HTML geladen wurde
 window.addEventListener('DOMContentLoaded', () => {
     Init();
 });
 
+// Klassen die mit "extends Gameobject" enden, also eine Erweiterung von Gameobject sind
+// können von der Engine automatisch Gerendert werden und enthalten
+// nützliche Funktionen wie z.b. MoveX, moveY, Destroy und SetPos
+class Player extends GameObject {
+    constructor(pos, spritesheetPos) {
+    
+      // Super ruft den Konstruktor der klasse auf, die
+      // erweitert wird, hier Gameobject.
+      // Dies wird hier benötigt, damit es richtig funktioniert
+      super(pos, spritesheetPos);
+
+      console.log("Spawned Player!");
+  
+    }
+}
 
 // Wird als Pseudo void main verwendet
 function Init()
 {
-    // Klassen die mit "extends Gameobject" enden, also eine Erweiterung von Gameobject sind
-    // können von der Engine automatisch Gerendert werden und enthalten
-    // nützliche Funktionen wie z.b. MoveX, moveY, Destroy und SetPos
-    class Player extends GameObject {
-        constructor(pos, spritesheetPos) {
-        
-          // Super ruft den Konstruktor der klasse auf, die
-          // erweitert wird, hier Gameobject.
-          // Dies wird hier benötigt, damit es richtig funktioniert
-          super(pos, spritesheetPos);
-
-          console.log("Spawned Player!");
-      
-        }
-    }
-    
-
-
-
     // Jedes Gameobject benötigt einen Vector2 (Punkt auf einem Koordinatensystem) mit 
     // Einer x und einer Y koordinate als Position, und einen 2. der angiebt, welcher
     // Sprite aus dem Spritesheet gerendert werden soll
@@ -94,10 +90,21 @@ function Init()
 
 
     // Events sind Methoden, die auf einem objekt aufgerufen werden. Jedes event hat einen String als "namen".
-    myEvent = new Event("MyEvent");
+    var myEvent = new Event("MyEvent");
 
     // Mit dispatch Event kann eine Event versendet werden, 
     // Hier wird ein Event auf dem Fenster gesendet
     window.dispatchEvent(myEvent);
+
+    // Hier wird mit dem Particle system ein Partikeleffekt abgespielt.
+    // Hierzu muss:
+    //  -Die Particles.js datei im "Particles" ordner liegen, in dieser datei befinden
+    //  sich auch die Einstellungen für den Partikeleffekt
+    //
+    // -Der name Der Particles.js datei übergeben werden 
+    //
+    // -Die Particles.js datei in der html datei (wie DefaultParticles.js) eingebunden sein
+    // (dies ist zwar nich unbedingt notwendig, allerdings muss sonst bei jeder Änderung der Browser cashe gelöscht werden)
+    PlayParticles("TestParticles.js");
 }
 
