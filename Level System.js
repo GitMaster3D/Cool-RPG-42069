@@ -1,12 +1,31 @@
 
-var money=0,level=1,xp=0,levelxp=5;
+var money=0,level=1,xp=0,levelxp=5,questsxp=0;
 
 function updatecounters()
 {
+    
+    if (quests1=true) //if quests done give XP to player
+    {
+        questsxp+5;
+    }
+    
+    if(quests2=true)
+    {
+        questsxp+(5*2);
+    }
+    
+    if (quests3=true)
+    {
+        questsxp+((5*2)*2);
+    }
+    
+    xp=questsxp;
+    questsxp=0;
+    
     if (xp > levelxp) 
     {
         
-        level+=Math.floor(xp/400);// if xp is 1000, two levels up
+        level+Math.floor(xp/levelxp);
         levelxp=(levelxp*2)/1,25;// je höher der Level desto mehr xp muss man leveln
         xp=0;//nach jeden levelup wird die exp anzahl auf 0 gesetzt
 
