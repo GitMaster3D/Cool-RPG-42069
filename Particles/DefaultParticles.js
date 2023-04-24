@@ -1,6 +1,6 @@
 import * as Engine from "../Engine.js";
 import ParticleSystemData from "../ParticleSystem.js";
-import { RandomRange } from "../ParticleSystem.js";
+import { RandomRange } from "../Mathmatics.js";
 
 export function SendParticleSystemData()
 {
