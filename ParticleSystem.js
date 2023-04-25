@@ -1,5 +1,7 @@
 import * as Engine from "/Engine.js";
-import GameObject, { Lerp, LerpUnclamped, Vector2 } from './Engine.js';
+import * as Mathmatics from "./Mathmatics.js";
+import { Lerp, LerpUnclamped, RandomRange } from "./Mathmatics.js";
+import GameObject, { Vector2 } from './Engine.js';
 
 // This event will be called as soon as this script gets loaded by the html file
 window.addEventListener('DOMContentLoaded', () => {
@@ -52,87 +54,78 @@ export async function GetParticleData(name)
     return data;
 }
 
-export function SpawnParticles(amount, pos, spriteSheetPos, lifetime, startSpeedMultiplier, endSpeedMultiplier, dropoffMultiplier, minSpread, maxSpread, fadeoutStart)
+class Particle extends GameObject
 {
-
-
-    class Particle extends GameObject
+    constructor(pos, spritesheetPos, lifetime, name, startSpeedMultiplier, endSpeedMultiplier, dropoffMultiplier, minSpread, maxSpread, fadeoutStart) 
     {
-        constructor(pos, spritesheetPos, lifetime, name) {
-            super(pos, spritesheetPos);
-            
-            this.lifetime = lifetime;
-
-            this.velocity = new Vector2(RandomRange(-1, 1), RandomRange(-1, 1));
-
-            this.spread = RandomRange(minSpread, maxSpread);
-
-            this.name = name;
-
-            this.startLifetime = lifetime;
-            this.lifetimeScale = this.startLifetime;
-
-            this.startSpeedMultiplier = startSpeedMultiplier;
-            this.endSpeedMultiplier = endSpeedMultiplier;
-            this.fadeoutStart = fadeoutStart;
-            this.fadeoutScale = 1;
-        }
+        super(pos, spritesheetPos);
         
-        UpdateParticle()
-        {
-            //Handle lifetime scale
-            this.lifetime -= Engine.deltaTime;
-            this.lifetimeScale = (1 - this.lifetime / this.startLifetime) * dropoffMultiplier;
+        this.lifetime = lifetime;
 
-            // Slow particles down over time
-            this.velocity = (Engine.NormalizeVector(this.velocity));
-            this.velocity.Multiply(Engine.Lerp(this.startSpeedMultiplier * this.spread, this.endSpeedMultiplier * this.spread, this.lifetimeScale));
+        this.velocity = new Vector2(RandomRange(-1, 1), RandomRange(-1, 1));
 
-            // Fade effect at the end
-            if (this.lifetime <= this.fadeoutStart)
-            {
-                this.fadeoutScale = this.lifetime / this.fadeoutStart;
+        this.spread = RandomRange(minSpread, maxSpread);
 
-                this.alpha = LerpUnclamped(1, 0, 1 - this.fadeoutScale);
-            }
+        this.name = name;
 
-            // Remove particles when they are end of life
-            if (this.lifetime <= 0)
-            {
-                this.Destroy();
-                
-                delete currentParticles[this.name];
-            }
+        this.startLifetime = lifetime;
+        this.lifetimeScale = this.startLifetime;
 
-
-            // Apply particle movement
-            var moveDelta = new Vector2((this.velocity.x * Engine.deltaTime) || 0, (this.velocity.y * Engine.deltaTime) || 0);
-            this.pos.Add(moveDelta);
-        }
+        this.startSpeedMultiplier = startSpeedMultiplier;
+        this.endSpeedMultiplier = endSpeedMultiplier;
+        this.fadeoutStart = fadeoutStart;
+        this.fadeoutScale = 1;
+        this.dropoffMultiplier = dropoffMultiplier;
     }
+
+    UpdateParticle()
+    {
+        //Handle lifetime scale
+        this.lifetime -= Engine.deltaTime;
+        this.lifetimeScale = (1 - this.lifetime / this.startLifetime) * this.dropoffMultiplier;
     
+        // Slow particles down over time
+        this.velocity = (Mathmatics.NormalizeVector(this.velocity));
+        this.velocity.Multiply(Mathmatics.Lerp(this.startSpeedMultiplier * this.spread, this.endSpeedMultiplier * this.spread, this.lifetimeScale));
+    
+        // Fade effect at the end
+        if (this.lifetime <= this.fadeoutStart)
+        {
+            this.fadeoutScale = this.lifetime / this.fadeoutStart;
+    
+            this.alpha = LerpUnclamped(1, 0, 1 - this.fadeoutScale);
+        }
+    
+        // Remove particles when they are end of life
+        if (this.lifetime <= 0)
+        {
+            this.Destroy();
+            
+            delete currentParticles[this.name];
+        }
+    
+    
+        // Apply particle movement
+        var moveDelta = new Vector2((this.velocity.x * Engine.deltaTime) || 0, (this.velocity.y * Engine.deltaTime) || 0);
+        this.pos.Add(moveDelta);
+    }
+}
+
+export function SpawnParticles(amount, pos, spriteSheetPos, lifetime, startSpeedMultiplier, endSpeedMultiplier, dropoffMultiplier, minSpread, maxSpread, fadeoutStart)
+{        
     for (let i = 0; i < amount; i++)
     {
-        var particle = new Particle(new Vector2(pos.x, pos.y), spriteSheetPos, lifetime, autoName);
+        var particle = new Particle(new Vector2(pos.x, pos.y), spriteSheetPos, lifetime, autoName, startSpeedMultiplier, endSpeedMultiplier, dropoffMultiplier, minSpread, maxSpread, fadeoutStart);
 
         currentParticles[autoName++] = particle;
-
-       // Engine.SpawnGO(particle);
     }
 }
 
-
-export function RandomRange(min, max)
-{
-    return Math.random() * (max - min) + min;
-}
 
 export async function PlayParticles(name)
 {
     var path = "/Particles/" + name;
     var data = await GetParticleData(path);
-
-    console.log(data);
 
     SpawnParticles(
         data.amount, 

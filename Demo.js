@@ -12,10 +12,12 @@ import * as Engine from "/Engine.js";
 // Hier wird "Gameobject" aus Engine.js importiet
 // Hierbei wird Gameobject so behandelt als würde es auch
 // in dieser Datei geschrieben stehen
-import GameObject from './Engine.js';
+import GameObject, { Vector2 } from './Engine.js';
 
 // Hier wird die Methode "PlayParticles();" aus ParticleSystem.js importier
 import { PlayParticles } from "./ParticleSystem.js";
+
+import * as Audio from "./Audio.js";
 
 // Wird ausgeführe sobals diese Datei in HTML geladen wurde
 window.addEventListener('DOMContentLoaded', () => {
@@ -52,12 +54,17 @@ function Init()
     // mit .alpha kann die Transparenz verändert Werden
     player.alpha = 0.8;
 
+    // mit .scale kann die größe von gameobjects verändert werden
+    player.scale.x = 1;
+    player.scale.y = 1;
+
+    console.log(player.scale);
+
     
     
     // Hier wird ein weiteres Gameobject erzeugt.
     // Da dieses nach dem Spieler erzeugt wurde, wird es vor dem Spieler Angezeigt.
     var randomTile = new GameObject(new Engine.Vector2(5, 4), new Engine.Vector2(20, 17));
-
 
     
     
@@ -85,7 +92,7 @@ function Init()
         // Mit engine.Playsound können audio dateien aus 
         // dem "Audio" ordner abgespielt werden
         // übergeben wird der name der Datei inklusive Dateiformat
-        Engine.PlaySound("heheheha_.mp3");
+        Audio.PlaySound("heheheha_.mp3");
     });
 
 

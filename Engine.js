@@ -1,12 +1,12 @@
 import * as InputManager from "/InputManager.js";
 
 var canvas = document.querySelector("canvas");
-var context = canvas.getContext("2d");
+export var context = canvas.getContext("2d");
 var sprites = new Image();
 sprites.src = "images/Tileset.png";
 
-var spriteWidth = 32;
-var spriteHeight = 32;
+export const spriteWidth = 32;
+export const spriteHeight = 32;
 
 var backgroundWidth = 20;
 var backgroundHeight = 15;
@@ -15,9 +15,12 @@ var backgroundHeight = 15;
 // The Constructor of the base class must be called with super() when extending in order to make this work
 export default class GameObject
 {
-    constructor(pos, spritesheetPos, alpha = 1) 
+    constructor(pos, spritesheetPos, alpha = 1, scale = new Vector2(1, 1)) 
     {
         this.pos = pos;
+
+        this.scale = scale;
+        
         this.spritesheetPos = spritesheetPos;
         this.alive = true;
         this.id = 0;
@@ -66,14 +69,6 @@ export default class GameObject
         this.pos = potition;
     }
 
-}
-
-
-// Plays sound witht the given name inside the "Audio" Folder
-export function PlaySound(name)
-{
-    var sound = new Audio("/Audio/" + name);
-    sound.play();
 }
 
 // Used as Position Data
@@ -135,22 +130,6 @@ export class Vector2
     }
 }
 
-export function GetVectorsqrMagnitude(vector)
-{
-    return vector.x * vector.x + vector.y * vector.y;
-}
-
-export function GetVectorMagnitude(vector)
-{
-    return Math.sqrt(vector.x * vector.x + vector.y * vector.y);
-}
-
-export function NormalizeVector(vector)
-{
-    var magnitude = GetVectorMagnitude(vector);
-    return new Vector2(vector.x / magnitude, vector.y / magnitude);
-}
-
 // used to Determine in wich area the Background should be drawn
 export class MapSprites
 {
@@ -206,8 +185,6 @@ async function OnUpdate()
 {
     clear();
 
-
-
     var now = Date.now();
     var dt = (now - lastUpdate) / 1000;
     lastUpdate = now;
@@ -230,7 +207,11 @@ async function OnUpdate()
         gameObjects[key].OnDraw();
     }
     
+    //Reset global alpha from drawing
+    context.globalAlpha = 1;
+    
     window.dispatchEvent(updateEvent);
+
 }
 
 // Initialize the game Engine
@@ -282,16 +263,25 @@ sprites.onload = function() {
 
 
 //Draws sprite at Position
-export function draw(spritesheetPos, spritePos, alpha = 1)
+export function draw(spritesheetPos, spritePos, alpha = 1, scale = new Vector2(1, 1))
 {
+    context.save();
+
     context.globalAlpha = alpha;
-    context.drawImage(sprites, spritesheetPos.x * spriteWidth, spritesheetPos.y * spriteHeight, spriteWidth, spriteHeight, spriteWidth * spritePos.x, spriteHeight * spritePos.y, spriteWidth, spriteHeight);
+    context.scale(scale.x, scale.y);
+
+
+
+    context.drawImage(sprites, spritesheetPos.x * spriteWidth, spritesheetPos.y * spriteHeight, spriteWidth, spriteHeight, 
+        spriteWidth * spritePos.x / scale.x, spriteHeight * spritePos.y / scale.y, spriteWidth, spriteHeight);
+
+    context.restore();
 }
 
 //Draws any Gameobject
 export function drawGO(gameobject)
 {
-    draw(gameobject.spritesheetPos, gameobject.pos, gameobject.alpha);
+    draw(gameobject.spritesheetPos, gameobject.pos, gameobject.alpha, gameobject.scale);
 }
 
 //Draws given Background
@@ -306,32 +296,9 @@ function drawBG(mapSprites)
     }
 }
 
+
 //Clears sprites
 export function clear()
 {
     context.clearRect(0,0,2500,2500);
-}
-
-export function LerpUnclamped (a, b, t)
-{
-    return a + t * ( b - a );
-}
-
-export function Lerp (a, b, t)
-{
-    return Clamp(a + t * ( b - a ), b, );
-}
-
-export function Clamp(a, min, max)
-{
-    if (a < min)
-    {
-        return min;
-    }
-    if (a > max)
-    {
-        return max;
-    }
-
-    return a;
 }
