@@ -85,13 +85,11 @@ function InitDemo()
 
     // Hier wird mit dem Particle system ein Partikeleffekt abgespielt.
     // Hierzu muss:
-    //  -Die Particles.js datei im "Particles" ordner liegen, in dieser datei befinden
+    //  -Die Particles.json datei im "Particles" ordner liegen, in dieser datei befinden
     //  sich auch die Einstellungen für den Partikeleffekt
     //
-    // -Der name Der Particles.js datei übergeben werden 
-    //
-    // -Die Particles.js datei in der html datei (wie DefaultParticles.js) eingebunden sein
-    // (dies ist zwar nich unbedingt notwendig, allerdings muss sonst bei jeder Änderung der Browser cashe gelöscht werden)
-    PlayParticles("TestParticles.js");
+    // -Der name Der Particles.json datei übergeben werden 
+    
+    PlayParticles("TestParticles2.json");
 }
 

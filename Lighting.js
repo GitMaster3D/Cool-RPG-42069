@@ -1,5 +1,4 @@
 
-
 let sprite = new Image();
 sprite.src = "images/light.png";
 
@@ -25,7 +24,7 @@ class PointLight
         this.alpha = instensity;
         this.scale = scale;
 
-        pointlights[autoName++] = this;
+        pointlights[autoNameLighting++] = this;
     }
 
     OnUpdate()

@@ -6,7 +6,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 function Init()
 {
-
+    
 }
 
 // Plays sound witht the given name inside the "Audio" Folder

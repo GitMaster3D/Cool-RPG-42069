@@ -5,7 +5,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 class ParticleSystemData
 {
-    constructor(amount, pos, spriteSheetPos, lifetime, startSpeedMultiplier, endSpeedMultiplier, dropoffMultiplier, minSpread, maxSpread, fadeoutStart)
+    constructor(amount, pos, spriteSheetPos, lifetime, startSpeedMultiplier, endSpeedMultiplier, dropoffMultiplier, minSpread, maxSpread, fadeoutStart, spriteSheetPos_End, scaleRange)
     {
         this.amount = amount;
         this.pos = pos;
@@ -17,6 +17,8 @@ class ParticleSystemData
         this.minSpread = minSpread;
         this.maxSpread = maxSpread;
         this.fadeoutStart = fadeoutStart;
+        this.spriteSheetPos_End = spriteSheetPos_End;
+        this.scaleRange = scaleRange;
     }
 }
 
@@ -40,20 +42,37 @@ function InitParticleSystem()
 
 async function GetParticleData(name)
 {
-    var data = import(name).then(system =>
-    {
-        var particleData = system.SendParticleSystemData();
-        return particleData;
-    });
+    // Get Particle JSON
+    var response = await fetch(name);
+    var obj = await response.json();
+
+    //Convert Particle JSON to usable data
+    var data = new ParticleSystemData(
+        obj.Amount,
+        new Vector2(RandomRange(obj.PosXMin, obj.PosXMax), RandomRange(obj.PosYMin, obj.PosYMax)),
+        new Vector2(obj.SpriteSheetX_Start, obj.SpriteSheetY_Start),
+        obj.Lifetime,
+        obj.StartSpeedMultiplier,
+        obj.EndSpeedMultiplier,
+        obj.DropoffSpeedMultiplier,
+        obj.MinSpread,
+        obj.MaxSpread,
+        obj.FadeoutStart,
+        new Vector2(obj.SpriteSheetX_End, obj.SpriteSheetY_End),
+        new Vector2(obj.Scale_Min, obj.Scale_Max)
+    );
+
 
     return data;
 }
 
 class Particle extends GameObject
 {
-    constructor(pos, spritesheetPos, lifetime, name, startSpeedMultiplier, endSpeedMultiplier, dropoffMultiplier, minSpread, maxSpread, fadeoutStart) 
+    constructor(pos, spritesheetPos, lifetime, name, startSpeedMultiplier, endSpeedMultiplier, dropoffMultiplier, minSpread, maxSpread, fadeoutStart, spriteSheetPos_End, scaleRange) 
     {
-        super(pos, spritesheetPos);
+        var sprite = new Vector2(Math.round(RandomRange(spritesheetPos.x, spriteSheetPos_End.x)), Math.round(RandomRange(spritesheetPos.y, spriteSheetPos_End.y)));
+
+        super(pos, sprite);
         
         this.lifetime = lifetime;
 
@@ -62,6 +81,9 @@ class Particle extends GameObject
         this.spread = RandomRange(minSpread, maxSpread);
 
         this.name = name;
+
+        let scaleNumber = RandomRange(scaleRange.x, scaleRange.y);
+        this.scale = new Vector2(scaleNumber, scaleNumber);
 
         this.startLifetime = lifetime;
         this.lifetimeScale = this.startLifetime;
@@ -106,11 +128,22 @@ class Particle extends GameObject
     }
 }
 
-function SpawnParticles(amount, pos, spriteSheetPos, lifetime, startSpeedMultiplier, endSpeedMultiplier, dropoffMultiplier, minSpread, maxSpread, fadeoutStart)
+function SpawnParticles(amount, pos, spriteSheetPos, lifetime, startSpeedMultiplier, endSpeedMultiplier, dropoffMultiplier, minSpread, maxSpread, fadeoutStart, spriteSheetPos_End, scaleRange)
 {        
     for (let i = 0; i < amount; i++)
     {
-        var particle = new Particle(new Vector2(pos.x, pos.y), spriteSheetPos, lifetime, autoName, startSpeedMultiplier, endSpeedMultiplier, dropoffMultiplier, minSpread, maxSpread, fadeoutStart);
+        var particle = new Particle(
+            new Vector2(pos.x, pos.y),
+                spriteSheetPos,
+                lifetime, autoName,
+                startSpeedMultiplier,
+                endSpeedMultiplier,
+                dropoffMultiplier, 
+                minSpread, maxSpread,
+                fadeoutStart,
+                spriteSheetPos_End,
+                scaleRange
+                );
 
         currentParticles[autoName++] = particle;
     }
@@ -120,6 +153,7 @@ async function PlayParticles(name)
 {
     var path = "/Particles/" + name;
     var data = await GetParticleData(path);
+
 
     SpawnParticles(
         data.amount, 
@@ -131,13 +165,23 @@ async function PlayParticles(name)
         data.dropoffMultiplier,
         data.minSpread,
         data.maxSpread,
-        data.fadeoutStart 
+        data.fadeoutStart,
+        data.spriteSheetPos_End,
+        data.scaleRange
         )
 }
 
 
-async function ParticleTest()
+function ParticleTest()
 {
-    PlayParticles("DefaultParticles.js");
+
+    if (RandomRange(0, 1) > 0.5)
+    {
+        PlayParticles("TestParticles.json");
+    }
+    else
+    {
+        PlayParticles("TestParticles2.json");
+    }
 }
 
