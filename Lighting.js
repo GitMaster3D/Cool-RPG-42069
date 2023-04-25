@@ -1,12 +1,10 @@
-import * as Engine from "/Engine.js";
-import GameObject, { Vector2, context } from './Engine.js';
-import { Lerp, LerpUnclamped }  from "./Mathmatics.js";
+
 
 let sprite = new Image();
 sprite.src = "images/light.png";
 
 let pointlights = {};
-let autoName = 0;
+let autoNameLighting = 0;
 
 
 class PointLight 
@@ -32,15 +30,15 @@ class PointLight
 
     OnUpdate()
     {
-        Engine.context.globalAlpha = this.instensity;
+        context.globalAlpha = this.instensity;
 
-        var xPos = this.pos.x * Engine.spriteWidth - this.dimensions.x / 2;
-        var yPos = this.pos.y * Engine.spriteHeight - this.dimensions.y / 2;
+        var xPos = this.pos.x * spriteWidth - this.dimensions.x / 2;
+        var yPos = this.pos.y * spriteHeight - this.dimensions.y / 2;
 
-        Engine.context.save();
-        Engine.context.scale(this.scale.x, this.scale.y);
+        context.save();
+        context.scale(this.scale.x, this.scale.y);
 
-        Engine.context.drawImage(
+        context.drawImage(
             sprite, // Sprite
             xPos, // x position on canvas
             yPos, // y position on canvas
@@ -48,18 +46,18 @@ class PointLight
             this.dimensions.y // y size of the image
             ); 
 
-        Engine.context.restore();
+        context.restore();
     }
 }
 
 
 // This event will be called as soon as this script gets loaded by the html file
 window.addEventListener('DOMContentLoaded', () => {
-    Init();
+    InitLighting();
 });
 
 
-function Init()
+function InitLighting()
 {
     window.addEventListener("OnUpdate", () =>
     {

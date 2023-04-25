@@ -1,8 +1,8 @@
-import * as Engine from "/Engine.js";
-import GameObject from './Engine.js';
+//import * as Engine from "/Engine.js";
+//import GameObject from './Engine.js';
 
 
-export function Init()
+function InitInputManager()
 {
     console.log("Initiated Input manager"); 
 }
@@ -20,7 +20,7 @@ const rightReleaseEvent = new Event("RightRelease");
 const leftReleaseEvent = new Event("LeftRelease");
 const spaceReleaseEvent = new Event("SpaceRelease");
 
-export function KeyPress(key)
+function KeyPress(key)
 {
     switch (key)
     {
@@ -47,7 +47,7 @@ export function KeyPress(key)
 }
 
 
-export function KeyRelease(key)
+function KeyRelease(key)
 {
     switch (key)
     {

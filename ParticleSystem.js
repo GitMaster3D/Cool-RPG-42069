@@ -1,14 +1,9 @@
-import * as Engine from "/Engine.js";
-import * as Mathmatics from "./Mathmatics.js";
-import { Lerp, LerpUnclamped, RandomRange } from "./Mathmatics.js";
-import GameObject, { Vector2 } from './Engine.js';
-
 // This event will be called as soon as this script gets loaded by the html file
 window.addEventListener('DOMContentLoaded', () => {
-    Init();
+    InitParticleSystem();
 });
 
-export default class ParticleSystemData
+class ParticleSystemData
 {
     constructor(amount, pos, spriteSheetPos, lifetime, startSpeedMultiplier, endSpeedMultiplier, dropoffMultiplier, minSpread, maxSpread, fadeoutStart)
     {
@@ -29,7 +24,7 @@ export default class ParticleSystemData
 var currentParticles = {};
 var autoName = 0;
 
-function Init()
+function InitParticleSystem()
 {
     window.addEventListener("OnUpdate", () =>
     {
@@ -43,7 +38,7 @@ function Init()
 }
 
 
-export async function GetParticleData(name)
+async function GetParticleData(name)
 {
     var data = import(name).then(system =>
     {
@@ -81,12 +76,12 @@ class Particle extends GameObject
     UpdateParticle()
     {
         //Handle lifetime scale
-        this.lifetime -= Engine.deltaTime;
+        this.lifetime -= deltaTime;
         this.lifetimeScale = (1 - this.lifetime / this.startLifetime) * this.dropoffMultiplier;
     
         // Slow particles down over time
-        this.velocity = (Mathmatics.NormalizeVector(this.velocity));
-        this.velocity.Multiply(Mathmatics.Lerp(this.startSpeedMultiplier * this.spread, this.endSpeedMultiplier * this.spread, this.lifetimeScale));
+        this.velocity = (NormalizeVector(this.velocity));
+        this.velocity.Multiply(Lerp(this.startSpeedMultiplier * this.spread, this.endSpeedMultiplier * this.spread, this.lifetimeScale));
     
         // Fade effect at the end
         if (this.lifetime <= this.fadeoutStart)
@@ -106,12 +101,12 @@ class Particle extends GameObject
     
     
         // Apply particle movement
-        var moveDelta = new Vector2((this.velocity.x * Engine.deltaTime) || 0, (this.velocity.y * Engine.deltaTime) || 0);
+        var moveDelta = new Vector2((this.velocity.x * deltaTime) || 0, (this.velocity.y * deltaTime) || 0);
         this.pos.Add(moveDelta);
     }
 }
 
-export function SpawnParticles(amount, pos, spriteSheetPos, lifetime, startSpeedMultiplier, endSpeedMultiplier, dropoffMultiplier, minSpread, maxSpread, fadeoutStart)
+function SpawnParticles(amount, pos, spriteSheetPos, lifetime, startSpeedMultiplier, endSpeedMultiplier, dropoffMultiplier, minSpread, maxSpread, fadeoutStart)
 {        
     for (let i = 0; i < amount; i++)
     {
@@ -121,8 +116,7 @@ export function SpawnParticles(amount, pos, spriteSheetPos, lifetime, startSpeed
     }
 }
 
-
-export async function PlayParticles(name)
+async function PlayParticles(name)
 {
     var path = "/Particles/" + name;
     var data = await GetParticleData(path);
@@ -142,7 +136,7 @@ export async function PlayParticles(name)
 }
 
 
-export async function ParticleTest()
+async function ParticleTest()
 {
     PlayParticles("DefaultParticles.js");
 }

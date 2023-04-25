@@ -1,19 +1,18 @@
-import * as InputManager from "/InputManager.js";
 
 var canvas = document.querySelector("canvas");
-export var context = canvas.getContext("2d");
+var context = canvas.getContext("2d");
 var sprites = new Image();
 sprites.src = "images/Tileset.png";
 
-export const spriteWidth = 32;
-export const spriteHeight = 32;
+const spriteWidth = 32;
+const spriteHeight = 32;
 
 var backgroundWidth = 20;
 var backgroundHeight = 15;
 
 // Extend this to create objects that are visible easily
 // The Constructor of the base class must be called with super() when extending in order to make this work
-export default class GameObject
+class GameObject
 {
     constructor(pos, spritesheetPos, alpha = 1, scale = new Vector2(1, 1)) 
     {
@@ -72,7 +71,7 @@ export default class GameObject
 }
 
 // Used as Position Data
-export class Vector2
+class Vector2
 {
     constructor(x, y)
     {
@@ -131,7 +130,7 @@ export class Vector2
 }
 
 // used to Determine in wich area the Background should be drawn
-export class MapSprites
+class MapSprites
 {
     constructor(startPos, endPos, sprite)
     {
@@ -177,7 +176,7 @@ var background = new MapSprites(
 
 const updateEvent = new Event("OnUpdate");
 
-export var deltaTime = 0.01;
+var deltaTime = 0.01;
 var lastUpdate = 0.01;
 
 // Get called each frame
@@ -217,7 +216,7 @@ async function OnUpdate()
 // Initialize the game Engine
 function Init()
 {
-    InputManager.Init();
+    InitInputManager();
 
     // Listen for Key Down Events
     document.addEventListener('keydown', (event) => {
@@ -226,7 +225,7 @@ function Init()
     
     if (pressedKeys[code] == false || pressedKeys[code] == null)
     {
-        InputManager.KeyPress(code);
+        KeyPress(code);
     }
 
     pressedKeys[code] = true;
@@ -240,7 +239,7 @@ function Init()
         
         if (pressedKeys[code] == true || pressedKeys[code] == null)
         {
-            InputManager.KeyRelease(code);
+            KeyRelease(code);
         }
 
         pressedKeys[code] = false;
@@ -263,7 +262,7 @@ sprites.onload = function() {
 
 
 //Draws sprite at Position
-export function draw(spritesheetPos, spritePos, alpha = 1, scale = new Vector2(1, 1))
+function draw(spritesheetPos, spritePos, alpha = 1, scale = new Vector2(1, 1))
 {
     context.save();
 
@@ -279,7 +278,7 @@ export function draw(spritesheetPos, spritePos, alpha = 1, scale = new Vector2(1
 }
 
 //Draws any Gameobject
-export function drawGO(gameobject)
+function drawGO(gameobject)
 {
     draw(gameobject.spritesheetPos, gameobject.pos, gameobject.alpha, gameobject.scale);
 }
@@ -298,7 +297,7 @@ function drawBG(mapSprites)
 
 
 //Clears sprites
-export function clear()
+function clear()
 {
     context.clearRect(0,0,2500,2500);
 }
