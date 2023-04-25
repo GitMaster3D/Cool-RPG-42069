@@ -1,6 +1,3 @@
-//import * as Engine from "/Engine.js";
-//import GameObject from './Engine.js';
-
 
 function InitInputManager()
 {
