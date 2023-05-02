@@ -10,6 +10,8 @@ const spriteHeight = 32;
 var backgroundWidth = 20;
 var backgroundHeight = 15;
 
+var currentTiles;
+
 // Extend this to create objects that are visible easily
 // The Constructor of the base class must be called with super() when extending in order to make this work
 class GameObject
@@ -25,6 +27,8 @@ class GameObject
         this.id = 0;
         this.alpha = alpha;
 
+        this.suppressPosition = false; //Prevents this from being shown in currentTiles
+
         SpawnGO(this);
     }
 
@@ -35,18 +39,50 @@ class GameObject
 
     MoveX(amount)
     {
+        if (!this.suppressPosition)
+            this.InvalidatePosition(this.pos);
+
         this.pos.x += amount;
+
+        if (!this.suppressPosition)
+            this.UpdatePosition();
     }
 
     MoveY(amount)
     {
+        if (!this.suppressPosition)
+            this.InvalidatePosition(this.pos);
+
         this.pos.y -= amount;
+
+        if (!this.suppressPosition)
+            this.UpdatePosition();
     }
 
     Move(amount_Vec)
     {
-        this.pox.x += amount_Vec.x;
-        this.pos.y -= amount_Vec.y;
+        if (!this.suppressPosition)
+            this.InvalidatePosition(this.pos);
+
+        this.pos.Add(amount_Vec);
+
+        if (!this.suppressPosition)
+            this.UpdatePosition();
+    }
+
+    InvalidatePosition(lastPosition = new Vector2())
+    {
+        let index = currentTiles[lastPosition.x][lastPosition.y].indexOf(this);
+        if (index > -1) 
+        { // only splice array when item is found
+            // 2nd parameter means remove one item only
+            currentTiles[Math.floor(lastPosition.x)][Math.floor(lastPosition.y)].splice(index, 1);
+        }
+    }
+        
+    UpdatePosition()
+    {
+        currentTiles[Math.floor(this.pos.x)][Math.floor(this.pos.y)].push(this);       
     }
 
     OnDraw()
@@ -163,6 +199,8 @@ function SpawnGO(GameObject)
     gameObjects[++autoName_] = go;
     go.SetID(autoName_);
 
+    GameObject.UpdatePosition();
+
     return go;
 }
 
@@ -182,6 +220,7 @@ var lastUpdate = 0.01;
 // Get called each frame
 async function OnUpdate()
 {
+
     clear();
 
     var now = Date.now();
@@ -216,6 +255,17 @@ async function OnUpdate()
 // Initialize the game Engine
 function Init()
 {
+    // 2D array for all tiles
+    currentTiles = new Array(backgroundWidth);
+    for (var i = 0; i < backgroundWidth; i++)
+    {
+        currentTiles[i] = new Array(backgroundHeight);
+        for (var j = 0; j < backgroundHeight; j++)
+        {
+            currentTiles[i][j] = new Array();
+        }
+    }
+
     InitInputManager();
 
     // Listen for Key Down Events

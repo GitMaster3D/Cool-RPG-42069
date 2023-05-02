@@ -71,8 +71,9 @@ class Particle extends GameObject
     constructor(pos, spritesheetPos, lifetime, name, startSpeedMultiplier, endSpeedMultiplier, dropoffMultiplier, minSpread, maxSpread, fadeoutStart, spriteSheetPos_End, scaleRange) 
     {
         var sprite = new Vector2(Math.round(RandomRange(spritesheetPos.x, spriteSheetPos_End.x)), Math.round(RandomRange(spritesheetPos.y, spriteSheetPos_End.y)));
-
+        
         super(pos, sprite);
+        this.suppressPosition = true;
         
         this.lifetime = lifetime;
 
@@ -124,7 +125,8 @@ class Particle extends GameObject
     
         // Apply particle movement
         var moveDelta = new Vector2((this.velocity.x * deltaTime) || 0, (this.velocity.y * deltaTime) || 0);
-        this.pos.Add(moveDelta);
+    
+        this.Move(moveDelta);
     }
 }
 
