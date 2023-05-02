@@ -63,6 +63,16 @@ function InitDemo()
         player.MoveY(1); //Bewege den Spieler um 1 nach oben
     });
     
+
+    console.log(currentTiles[5][4]); //Giebt alle gameObjects an der Position 5 | 4 aus
+
+
+    // Wenn ein Gameobject manuell bewegt werden soll (ohne Move methode)
+    // Muss die Position invalidiert und danach geupdatet werden
+    // (Damit currentTiles funktioniert)
+    player.InvalidatePosition(player.pos);
+    player.pos.y -= 1;
+    player.UpdatePosition();
     
     
     // Hier wird nach dem Eventr SpaceRelease gelauscht, was vom
