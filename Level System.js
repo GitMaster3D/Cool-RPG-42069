@@ -35,6 +35,7 @@ function updatecounters()
 
      if(level==50)
      {
+        //freischalten Boss
         //freischalten Item
      }
 
@@ -61,7 +62,7 @@ function updatecounters()
      if(level==100)
      {
         
-        //freischalten Boss
+       
         //freischalten Item
      }
 
