@@ -16,7 +16,7 @@ var currentTiles;
 // The Constructor of the base class must be called with super() when extending in order to make this work
 class GameObject
 {
-    constructor(pos, spritesheetPos, alpha = 1, scale = new Vector2(1, 1)) 
+    constructor(pos = Vector2, spritesheetPos = Vector2, alpha = 1, scale = new Vector2(1, 1)) 
     {
         this.pos = pos;
 
@@ -59,7 +59,7 @@ class GameObject
             this.UpdatePosition();
     }
 
-    Move(amount_Vec)
+    Move(amount_Vec = Vector2)
     {
         if (!this.suppressPosition)
             this.InvalidatePosition(this.pos);
@@ -70,7 +70,7 @@ class GameObject
             this.UpdatePosition();
     }
 
-    InvalidatePosition(lastPosition = new Vector2())
+    InvalidatePosition(lastPosition = Vector2)
     {
         let index = currentTiles[lastPosition.x][lastPosition.y].indexOf(this);
         if (index > -1) 
@@ -99,47 +99,48 @@ class GameObject
         delete gameObjects[this.id];
     }
 
-    SetPos(potition)
+    SetPos(potition = Vector2)
     {
+        this.InvalidatePosition(this.pos);
         this.pos = potition;
+        this.UpdatePosition();
     }
-
 }
 
 // Used as Position Data
 class Vector2
 {
-    constructor(x, y)
+    constructor(x = 0, y = 0)
     {
         this.x = x;
         this.y = y;
     }
 
-    Add(addVector)
+    Add(addVector = Vector2)
     {
         this.x += addVector.x;
         this.y += addVector.y;
     }
 
-    Substract(substractVector)
+    Substract(substractVector = Vector2)
     {
         this.x -= substractVector.x;
         this.y -= substractVector.y;
     }
 
-    SubstractClamped(substractVector, minX, minY, maxX, maxY)
+    SubstractClamped(substractVector = Vector2, minX, minY, maxX, maxY)
     {
         this.x = Clamp(this.x - substractVector.x, minX, maxX);
         this.y = Clamp(this.y - substractVector.y, minY, maxY);
     }
 
-    LerpUnclamped(vector, t)
+    LerpUnclamped(vector = Vector2, t)
     {
         this.x = LerpUnclamped(this.x, vector.x, t);
         this.y = LerpUnclamped(this.y, vector.y, t);
     }
 
-    Lerp(vector, t)
+    Lerp(vector = Vector2, t)
     {
         this.x = Lerp(this.x, vector.x, t);
         this.y = Lerp(this.y, vector.y, t);
@@ -168,7 +169,7 @@ class Vector2
 // used to Determine in wich area the Background should be drawn
 class MapSprites
 {
-    constructor(startPos, endPos, sprite)
+    constructor(startPos = Vector2, endPos = Vector2, sprite = Vector2)
     {
         this.startPos = startPos;
         this.endPos = endPos;
@@ -182,7 +183,7 @@ var gameObjects = {}; //Keep track of all instanciated Game objects
 var pressedKeys = {}; //Keep track of all keys currently pressed
 
 // Call this to create a simple GameObject
-function InstanciateGO(pos, sprite)
+function InstanciateGO(pos = Vector2, sprite = Vector2)
 {
     var go = new GameObject(pos, sprite);
     gameObjects[++autoName_] = go;
@@ -220,7 +221,6 @@ var lastUpdate = 0.01;
 // Get called each frame
 async function OnUpdate()
 {
-
     clear();
 
     var now = Date.now();
@@ -249,7 +249,6 @@ async function OnUpdate()
     context.globalAlpha = 1;
     
     window.dispatchEvent(updateEvent);
-
 }
 
 // Initialize the game Engine
@@ -334,7 +333,7 @@ function drawGO(gameobject)
 }
 
 //Draws given Background
-function drawBG(mapSprites)
+function drawBG(mapSprites = MapSprites)
 {
     for (let i = 0; i < (mapSprites.endPos.x - mapSprites.startPos.x); i++)
     {
