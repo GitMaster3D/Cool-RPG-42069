@@ -1,9 +1,52 @@
 
-var money=0,level=1,xp=0,levelxp=5;
+var money=0,level=1,xp=0,levelxp=5, questsFaktor=5;
 
 function updatecounters()
 {
-    if (xp > levelxp) 
+    if(questsDone==true)
+    {
+        if(questslvl1==true)
+        {
+            
+            xp=xp+(questsfaktor*1);
+            questslvl1=false;
+            
+        }
+        
+        f(questslvl2==true)
+        {
+            
+            xp=xp+(questsfaktor*2);
+            questslvl2=false;
+            
+        }
+        
+        f(questslvl3==true)
+        {
+           
+            xp=xp+(questsfaktor*3);
+            questslvl3=false;
+            
+        }
+        
+        f(questslvl4==true)
+        {
+            
+            xp=xp+(questsfaktor*4);
+            questslvl4=false;
+        }
+        
+        f(questslvl5==true)
+        {
+            
+            xp=xp+(questsfaktor*5);
+            questslvl5=false;
+            
+        }
+        questsDone=false;
+    }
+    
+    if (xp >= levelxp) 
     {
         
         level+=Math.floor(xp/levelxp);// if xp is 1000, two levels up
