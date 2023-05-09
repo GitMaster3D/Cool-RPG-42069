@@ -17,7 +17,7 @@ const rightReleaseEvent = new Event("RightRelease");
 const leftReleaseEvent = new Event("LeftRelease");
 const spaceReleaseEvent = new Event("SpaceRelease");
 
-function KeyPress(key)
+function KeyPress(key = "")
 {
     switch (key)
     {

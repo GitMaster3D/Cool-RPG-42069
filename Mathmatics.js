@@ -23,12 +23,12 @@ function Clamp(a, min, max)
     return a;
 }
 
-function GetVectorsqrMagnitude(vector)
+function GetVectorsqrMagnitude(vector = Vector2)
 {
     return vector.x * vector.x + vector.y * vector.y;
 }
 
-function GetVectorMagnitude(vector)
+function GetVectorMagnitude(vector = Vector2)
 {
     return Math.sqrt(vector.x * vector.x + vector.y * vector.y);
 }
