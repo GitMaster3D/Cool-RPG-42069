@@ -1,27 +1,7 @@
 
-// Mit import können alle variablen und Funktionen die 
-// in einer Anderen .js datei stehen und mit dem Schlüsselwort 
-// "export" sichtbar gemacht wurden "importiert" werden, d.h. dass
-// man zugriff auf all diese Funktionen, methoden, klassen etc. hat (ähnlich wie public in klassen bei c#)
-//
-// der * steht hier dafür, dass alles übernommen werden soll,
-// "as Engine" steht dafür, dass die funktionen, klassen, variablen, aus 
-// Engine.js in der variable Engine gespeichert werden, (ähnlich wie eine instanz einer c# klasse)
-import * as Engine from "/Engine.js";
-
-// Hier wird "Gameobject" aus Engine.js importiet
-// Hierbei wird Gameobject so behandelt als würde es auch
-// in dieser Datei geschrieben stehen
-import GameObject, { Vector2 } from './Engine.js';
-
-// Hier wird die Methode "PlayParticles();" aus ParticleSystem.js importier
-import { PlayParticles } from "./ParticleSystem.js";
-
-import * as Audio from "./Audio.js";
-
 // Wird ausgeführe sobals diese Datei in HTML geladen wurde
 window.addEventListener('DOMContentLoaded', () => {
-    Init();
+    InitDemo();
 });
 
 // Klassen die mit "extends Gameobject" enden, also eine Erweiterung von Gameobject sind
@@ -39,9 +19,9 @@ class Player extends GameObject {
   
     }
 }
-
+var player = new Player(new Vector2(4, 4), new Vector2(22, 16));
 // Wird als Pseudo void main verwendet
-function Init()
+function InitDemo()
 {
     // Jedes Gameobject benötigt einen Vector2 (Punkt auf einem Koordinatensystem) mit 
     // Einer x und einer Y koordinate als Position, und einen 2. der angiebt, welcher
@@ -49,7 +29,7 @@ function Init()
     //
     // Um eine Klasse die Gameobject erweitert oder ein Gameobject loszuwerden
     // kann man .Destroy() verwenden. hier also player.Destroy();
-    var player = new Player(new Engine.Vector2(4, 4), new Engine.Vector2(22, 16));
+    
 
     // mit .alpha kann die Transparenz verändert Werden
     player.alpha = 0.8;
@@ -64,7 +44,7 @@ function Init()
     
     // Hier wird ein weiteres Gameobject erzeugt.
     // Da dieses nach dem Spieler erzeugt wurde, wird es vor dem Spieler Angezeigt.
-    var randomTile = new GameObject(new Engine.Vector2(5, 4), new Engine.Vector2(20, 17));
+    var randomTile = new GameObject(new Vector2(5, 4), new Vector2(20, 17));
 
     
     
@@ -83,16 +63,26 @@ function Init()
         player.MoveY(1); //Bewege den Spieler um 1 nach oben
     });
     
+
+    console.log(currentTiles[5][4]); //Giebt alle gameObjects an der Position 5 | 4 aus
+
+
+    // Wenn ein Gameobject manuell bewegt werden soll (ohne Move methode)
+    // Muss die Position invalidiert und danach geupdatet werden
+    // (Damit currentTiles funktioniert)
+    player.InvalidatePosition(player.pos);
+    player.pos.y -= 1;
+    player.UpdatePosition();
     
     
     // Hier wird nach dem Eventr SpaceRelease gelauscht, was vom
     // input manager versendet wird, sobald die leertaste losgelassen wurde
     window.addEventListener("SpaceRelease", () =>
     {
-        // Mit engine.Playsound können audio dateien aus 
+        // Mit Playsound können audio dateien aus 
         // dem "Audio" ordner abgespielt werden
         // übergeben wird der name der Datei inklusive Dateiformat
-        Audio.PlaySound("heheheha_.mp3");
+        PlaySound("heheheha_.mp3");
     });
 
 
@@ -105,13 +95,11 @@ function Init()
 
     // Hier wird mit dem Particle system ein Partikeleffekt abgespielt.
     // Hierzu muss:
-    //  -Die Particles.js datei im "Particles" ordner liegen, in dieser datei befinden
+    //  -Die Particles.json datei im "Particles" ordner liegen, in dieser datei befinden
     //  sich auch die Einstellungen für den Partikeleffekt
     //
-    // -Der name Der Particles.js datei übergeben werden 
-    //
-    // -Die Particles.js datei in der html datei (wie DefaultParticles.js) eingebunden sein
-    // (dies ist zwar nich unbedingt notwendig, allerdings muss sonst bei jeder Änderung der Browser cashe gelöscht werden)
-    PlayParticles("TestParticles.js");
+    // -Der name Der Particles.json datei übergeben werden 
+    
+    PlayParticles("TestParticles2.json");
 }
 
