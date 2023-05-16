@@ -62,7 +62,18 @@ function InitDemo()
     {
         player.MoveY(1); //Bewege den Spieler um 1 nach oben
     });
-    
+    window.addEventListener("DownInput",() =>
+    {
+        player.MoveY(-1); // Bewege den Spieler um 1 nach unten
+    })
+    window.addEventListener("RightInput", () => 
+    {
+        player.MoveX(1); // Bege den Spieler um 1 nach rechts
+    })
+    window.addEventListener("LeftInput", () => 
+    {
+        player.MoveX(-1); // Bege den Spieler um 1 nach links 
+    })
     
     
     // Hier wird nach dem Eventr SpaceRelease gelauscht, was vom
