@@ -304,10 +304,10 @@ function Init()
 
 }
 
-//Start Engine
-sprites.onload = function() {
+//Load Event
+window.addEventListener('DOMContentLoaded', () => {
     Init();
-};
+});
 
 
 //Draws sprite at Position

@@ -1,4 +1,3 @@
-
 let sprite = new Image();
 sprite.src = "images/light.png";
 
