@@ -6,7 +6,7 @@ function updatecounters()
     if (xp > levelxp) 
     {
         
-        level+=Math.floor(xp/400);// if xp is 1000, two levels up
+        level+=Math.floor(xp/levelup);// if xp is 1000, two levels up
         levelxp=(levelxp*2)/1,25;// je höher der Level desto mehr xp muss man leveln
         xp=0;//nach jeden levelup wird die exp anzahl auf 0 gesetzt
 
@@ -35,6 +35,7 @@ function updatecounters()
 
      if(level==50)
      {
+        //freischalten Boss
         //freischalten Item
      }
 
@@ -61,7 +62,7 @@ function updatecounters()
      if(level==100)
      {
         
-        //freischalten Boss
+        
         //freischalten Item
      }
 
