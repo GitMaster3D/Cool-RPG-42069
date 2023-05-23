@@ -1,0 +1,36 @@
+{ "compressionlevel":-1,
+ "height":5,
+ "infinite":false,
+ "layers":[
+        {
+         "data":[3, 3, 3, 3, 3,
+            0, 323, 323, 66, 0,
+            0, 323, 66, 323, 0,
+            0, 66, 323, 6, 0,
+            2, 2, 2, 2, 2],
+         "height":5,
+         "id":1,
+         "name":"Kachelebene 1",
+         "opacity":1,
+         "type":"tilelayer",
+         "visible":true,
+         "width":5,
+         "x":0,
+         "y":0
+        }],
+ "nextlayerid":2,
+ "nextobjectid":1,
+ "orientation":"orthogonal",
+ "renderorder":"right-down",
+ "tiledversion":"1.10.1",
+ "tileheight":32,
+ "tilesets":[
+        {
+         "firstgid":1,
+         "source":"Tileset.tsx"
+        }],
+ "tilewidth":32,
+ "type":"map",
+ "version":"1.10",
+ "width":5
+}
