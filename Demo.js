@@ -73,8 +73,7 @@ function InitDemo()
     window.addEventListener("LeftInput", () => 
     {
         player.MoveX(-1); // Bege den Spieler um 1 nach links 
-    })
-    
+    })    
 
     console.log(currentTiles[5][4]); //Giebt alle gameObjects an der Position 5 | 4 aus
 

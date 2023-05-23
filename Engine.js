@@ -10,6 +10,9 @@ const spriteHeight = 32;
 var backgroundWidth = 20;
 var backgroundHeight = 15;
 
+var spriteSheetWidth = 32;
+var spriteSheetHeight = 16;
+
 var currentTiles;
 
 // Extend this to create objects that are visible easily
@@ -246,6 +249,7 @@ async function OnUpdate()
     }
     
     //Reset global alpha from drawing
+
     context.globalAlpha = 1;
     
     window.dispatchEvent(updateEvent);
@@ -302,6 +306,7 @@ function Init()
     };
     main();
 
+    extractVector2Arrays("map.json");
 }
 
 //Load Event
