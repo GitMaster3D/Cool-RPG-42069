@@ -6,7 +6,7 @@ sprites.src = "./assets/images/Tileset.png";
 
 const spriteWidth = 32;
 const spriteHeight = 32;
-var spriteSheetWidth = 64;
+var spriteSheetWidth = 65;
 
 var backgroundWidth = 20;
 var backgroundHeight = 15;

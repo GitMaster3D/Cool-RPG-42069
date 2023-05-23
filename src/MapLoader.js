@@ -31,8 +31,9 @@ async function GetTileset(name = "") {
 
 
 function TileidToVec(id = 0) {
-    var y = 0;
-    id--;
+    var y;
+
+
 
     while (id > spriteSheetWidth)
     {
