@@ -10,8 +10,8 @@ const spriteHeight = 32;
 var backgroundWidth = 20;
 var backgroundHeight = 15;
 
-var spriteSheetWidth = 32;
-var spriteSheetHeight = 16;
+var spriteSheetWidth = 65;
+
 
 var currentTiles;
 

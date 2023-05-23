@@ -33,10 +33,14 @@ async function GetTileset(name = "") {
 function TileidToVec(id = 0) {
     var y;
 
+
+
     while (id > spriteSheetWidth)
     {
         id -= spriteSheetWidth;
+        y++;
     }
 
-    return new Vector2(id, y);
+
+    return new Vector2(id | 0, y | 0);
 }
