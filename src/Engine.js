@@ -212,6 +212,11 @@ var background = new MapSprites(
     new Vector2(backgroundWidth, backgroundHeight),
     standartSprite
 );
+var inv_background = new MapSprites(
+    new Vector2 (13,0),
+    new Vector2(13,4),
+    new Vector2(0,9)
+    )
 
 
 const updateEvent = new Event("OnUpdate");
@@ -238,7 +243,7 @@ async function OnUpdate()
     }
 
     //Draw background
-    drawBG(background);
+    drawBG(background,inv_background);
 
     //Draw Game objects
     for (const [key, value] of Object.entries(gameObjects))
@@ -334,8 +339,9 @@ function drawGO(gameobject)
 }
 
 //Draws given Background
-function drawBG(mapSprites = MapSprites)
+function drawBG(mapSprites = MapSprites,inv = MapSprites)
 {
+    //draw(inv.MapSprites.sprite|0,new Vector2(0,13)|0)
     for (let i = 0; i < (mapSprites.endPos.x - mapSprites.startPos.x); i++)
     {
         for (let j = 0; j < (mapSprites.endPos.y - mapSprites.startPos.y); j++)
@@ -343,6 +349,7 @@ function drawBG(mapSprites = MapSprites)
             draw(mapSprites.sprite, new Vector2(i + 1, j + 1));
         }
     }
+    
 }
 
 
