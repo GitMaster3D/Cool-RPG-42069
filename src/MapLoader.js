@@ -20,19 +20,6 @@ async function extractVector2Arrays(name = "") {
             go = new GameObject(new Vector2(x, y), TileidToVec(tileId));
         }
     }
-     let layer1 = mapData.layers[1];
-
-    for (let i = 0; i < layer1.data.length; i++) {
-        const tileId = layer1.data[i];
-        if (tileId !== 0) {
-            const x = i % width;
-            const y = Math.floor(i / width);
-            tilePositions.push([x, y]);
-            tileIds.push(tileId);
-
-            go = new GameObject(new Vector2(x, y), TileidToVec(tileId));
-        }
-    }
 }
 
 
@@ -43,9 +30,9 @@ async function GetTileset(name = "") {
 }
 
 
-function TileidToVec(id= 0) {
+function TileidToVec(id = 0) {
     var y = 0;
-    
+    id--;
 
     while (id > spriteSheetWidth)
     {
@@ -53,6 +40,6 @@ function TileidToVec(id= 0) {
         y++;
     }
 
-    id--;
+
     return new Vector2(id | 0, y | 0 );
 }
