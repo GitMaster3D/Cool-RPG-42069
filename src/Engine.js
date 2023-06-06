@@ -11,13 +11,15 @@ var spriteSheetWidth = 64;
 var backgroundWidth = 20;
 var backgroundHeight = 15;
 
+var drawBuffer = {};
+
 var currentTiles;
 
 // Extend this to create objects that are visible easily
 // The Constructor of the base class must be called with super() when extending in order to make this work
 class GameObject
 {
-    constructor(pos = Vector2, spritesheetPos = Vector2, alpha = 1, scale = new Vector2(1, 1)) 
+    constructor(pos = Vector2, spritesheetPos = Vector2, alpha = 1, scale = new Vector2(1, 1), drawingOrder = 0) 
     {
         this.pos = pos;
 
@@ -27,6 +29,7 @@ class GameObject
         this.alive = true;
         this.id = 0;
         this.alpha = alpha;
+        this.drawingOrder = drawingOrder;
 
         this.suppressPosition = false; //Prevents this from being shown in currentTiles
 
@@ -90,7 +93,7 @@ class GameObject
     {
         if (this.alive)
         {
-            drawGO(this);
+            drawBuffer[this.id] = this;
         }
     }
 
@@ -203,6 +206,8 @@ function SpawnGO(GameObject)
 
     GameObject.UpdatePosition();
 
+    drawBufferSorted = false;
+
     return go;
 }
 
@@ -240,17 +245,42 @@ async function OnUpdate()
     //Draw background
     drawBG(background);
 
-    //Draw Game objects
+    // Create Draw Buffer
     for (const [key, value] of Object.entries(gameObjects))
     {
         gameObjects[key].OnDraw();
     }
-    
+
+    // Create items array
+    var items = [];
+    for (var key in drawBuffer) {
+        if (drawBuffer.hasOwnProperty(key)) {
+            items.push( drawBuffer[key]  );
+        }
+    }
+  
+    // Sort the array based on the second element
+    items.sort(function(first, second) {
+        return first.drawingOrder - second.drawingOrder;
+    });
+  
+
+    // Draw Gameobjects
+    for (var i = 0; i < items.length; i++)
+    {
+        drawGO(items[i]);
+    }
+    drawBuffer = {};
+
     //Reset global alpha from drawing
     context.globalAlpha = 1;
     
     window.dispatchEvent(updateEvent);
 }
+
+  
+
+
 
 // Initialize the game Engine
 function Init()
@@ -319,8 +349,6 @@ function draw(spritesheetPos, spritePos, alpha = 1, scale = new Vector2(1, 1))
     context.globalAlpha = alpha;
     context.scale(scale.x, scale.y);
 
-
-
     context.drawImage(sprites, spritesheetPos.x * spriteWidth, spritesheetPos.y * spriteHeight, spriteWidth, spriteHeight, 
         spriteWidth * spritePos.x / scale.x, spriteHeight * spritePos.y / scale.y, spriteWidth, spriteHeight);
 
@@ -328,8 +356,9 @@ function draw(spritesheetPos, spritePos, alpha = 1, scale = new Vector2(1, 1))
 }
 
 //Draws any Gameobject
-function drawGO(gameobject)
+function drawGO(gameobject = GameObject)
 {
+    if (gameObjects == undefined) return;
     draw(gameobject.spritesheetPos, gameobject.pos, gameobject.alpha, gameobject.scale);
 }
 

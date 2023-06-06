@@ -30,6 +30,7 @@ function InitDemo()
     // Um eine Klasse die Gameobject erweitert oder ein Gameobject loszuwerden
     // kann man .Destroy() verwenden. hier also player.Destroy();
     var player = new Player(new Vector2(4, 4), new Vector2(22, 16));
+    player.drawingOrder = 100;
 
     // mit .alpha kann die Transparenz verändert Werden
     player.alpha = 0.8;
