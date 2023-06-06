@@ -8,6 +8,8 @@ const spriteWidth = 32;
 const spriteHeight = 32;
 var spriteSheetWidth = 64;
 
+var cameraPosition;
+
 var backgroundWidth = 20;
 var backgroundHeight = 15;
 
@@ -331,6 +333,9 @@ function Init()
         
         OnUpdate();
     };
+
+    cameraPosition = new Vector2(0, 0);
+
     main();
     extractVector2Arrays("map.json");
 }
@@ -359,7 +364,7 @@ function draw(spritesheetPos, spritePos, alpha = 1, scale = new Vector2(1, 1))
 function drawGO(gameobject = GameObject)
 {
     if (gameObjects == undefined) return;
-    draw(gameobject.spritesheetPos, gameobject.pos, gameobject.alpha, gameobject.scale);
+    draw(gameobject.spritesheetPos, new Vector2(gameobject.pos.x + cameraPosition.x, gameobject.pos.y + cameraPosition.y), gameobject.alpha, gameobject.scale);
 }
 
 //Draws given Background
