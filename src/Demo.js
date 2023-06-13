@@ -1,5 +1,4 @@
 
-
 // Wird ausgeführe sobals diese Datei in HTML geladen wurde
 window.addEventListener('DOMContentLoaded', () => {
     InitDemo();
@@ -30,7 +29,7 @@ function InitDemo()
     //
     // Um eine Klasse die Gameobject erweitert oder ein Gameobject loszuwerden
     // kann man .Destroy() verwenden. hier also player.Destroy();
-    var player = new Player(new Vector2(4, 4), new Vector2(22, 16));
+    var player = new Player(new Vector2(4, 7), new Vector2(37, 31));
     player.drawingOrder = 100;
 
     // mit .alpha kann die Transparenz verändert Werden
@@ -47,9 +46,14 @@ function InitDemo()
     // Hier wird ein weiteres Gameobject erzeugt.
     // Da dieses nach dem Spieler erzeugt wurde, wird es vor dem Spieler Angezeigt.
     var randomTile = new GameObject(new Vector2(5, 4), new Vector2(20, 17));
+    var NPTest = new GameObject(new Vector2(4,2),new Vector2(0,2));
+    var NPX = 4;
+    var NPY = 2;
+
 
     
     
+
     // mit addeventlistener kann man nach events lauschen. 
     // Sobald ein Event mit dem "Namen" UpInput auf dem Fenster versendet
     // wird, wird der code in den geschweiften klammern ausgeführt.
@@ -64,18 +68,66 @@ function InitDemo()
     {
         player.MoveY(1); //Bewege den Spieler um 1 nach oben
     });
-    window.addEventListener("DownInput", () =>
+
+    window.addEventListener("RightInput",()=>
     {
-        player.MoveY(-1); //Bewege den Spieler um 1 nach oben
+        player.MoveX(1); //Bewege den Spieler um 1 nach rechts
     });
-    window.addEventListener("RightInput", () =>
+
+    window.addEventListener("LeftInput",()=>
     {
-        player.MoveX(1); //Bewege den Spieler um 1 nach oben
+        player.MoveX(-1); //Bewege den Spieler um 1 nach links
     });
-    window.addEventListener("LeftInput", () =>
+
+    window.addEventListener("DownInput",()=>
     {
-        player.MoveX(-1); //Bewege den Spieler um 1 nach oben
+        player.MoveY(-1); //Bewege den Spieler um 1 nach unten
+    })
+
+    window.addEventListener("SpaceInput",()=>
+    {
+        if (player.x == 4 && player.y ==2){
+            var TesstDialog = new GameObject(new Vector2(7,8), new Vector2(0,8))
+        }
     });
+
+    window.addEventListener("MInput",()=>
+    {
+        if(player.pos.x == NPX && player.pos.y == NPY)
+        {
+            Dialog();
+        }
+          
+            
+    });
+
+var conver = []  ;
+    conver.push("Nul");
+    conver.push("Ganz schön windig heute");
+    conver.push("Ich bin halt anders");
+    conver.push("Ich bin einfach schon 2 Jahre alt! Kannst du das glauben?");
+    conver.push("Danke dass du heute hier bist!");
+    conver.push("Sonniger Tag heute");
+    conver.push("Was, es ist schon so spät?!");
+    conver.push("Beeile dich! Sonst bringt dich das Monster auch um!“");
+    conver.push("Let‘s goooooooo!!! Ich cringo");
+    conver.push("Ich mag dieses Wetter");
+    conver.push("Hey :)");
+    conver.push("Bonjour");
+    conver.push("Auf welcher Schule warst du?");
+    conver.push("Du lässt mich nicht im Stich oder?");
+    conver.push("Beeil dich es wird bald dunkel!");
+    conver.push("Bitte helfen Sie mir ich bin in Gefahr!");
+    conver.push("Ich habe heute Geburtstag! ");
+    
+    function Dialog()
+    {
+        var zufallsx = Math.floor((Math.random() * conver.length) + 1);
+        alert(conver[zufallsx]);
+        
+    }
+
+    
     
 
     console.log(currentTiles[5][4]); //Giebt alle gameObjects an der Position 5 | 4 aus
