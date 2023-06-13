@@ -1,4 +1,5 @@
 
+
 // Wird ausgeführe sobals diese Datei in HTML geladen wurde
 window.addEventListener('DOMContentLoaded', () => {
     InitDemo();

@@ -15,3 +15,4 @@ function PlaySound(name = "Path")
     var sound = new Audio("/Audio/Sound/" + name);
     sound.play();
 }
+
