@@ -1,4 +1,5 @@
 
+
 function InitInputManager()
 {
     console.log("Initiated Input manager"); 
@@ -69,3 +70,4 @@ function KeyRelease(key)
         break;
     }   
 }
+

@@ -1,3 +1,4 @@
+
 let sprite = new Image();
 sprite.src = "./assets/images/light.png";
 
@@ -67,5 +68,6 @@ function InitLighting()
 
     var light = new PointLight(new Vector2(10, 5), 0.5, new Vector2(1920, 1080), new Vector2(0.3, 0.3));
 }
+
 
 

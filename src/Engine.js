@@ -1,4 +1,5 @@
 
+
 var canvas = document.querySelector("canvas");
 var context = canvas.getContext("2d");
 var sprites = new Image();
@@ -8,8 +9,12 @@ const spriteWidth = 32;
 const spriteHeight = 32;
 var spriteSheetWidth = 64;
 
-var backgroundWidth = 100;
-var backgroundHeight = 100;
+var cameraPosition;
+
+var backgroundWidth = 20;
+var backgroundHeight = 15;
+
+var drawBuffer = {};
 
 var currentTiles;
 
@@ -17,7 +22,7 @@ var currentTiles;
 // The Constructor of the base class must be called with super() when extending in order to make this work
 class GameObject
 {
-    constructor(pos = Vector2, spritesheetPos = Vector2, alpha = 1, scale = new Vector2(1, 1)) 
+    constructor(pos = Vector2, spritesheetPos = Vector2, alpha = 1, scale = new Vector2(1, 1), drawingOrder = 0) 
     {
         this.pos = pos;
 
@@ -27,6 +32,7 @@ class GameObject
         this.alive = true;
         this.id = 0;
         this.alpha = alpha;
+        this.drawingOrder = drawingOrder;
 
         this.suppressPosition = false; //Prevents this from being shown in currentTiles
 
@@ -90,7 +96,7 @@ class GameObject
     {
         if (this.alive)
         {
-            drawGO(this);
+            drawBuffer[this.id] = this;
         }
     }
 
@@ -203,6 +209,8 @@ function SpawnGO(GameObject)
 
     GameObject.UpdatePosition();
 
+    drawBufferSorted = false;
+
     return go;
 }
 
@@ -240,18 +248,42 @@ async function OnUpdate()
     //Draw background
     drawBG(background);
 
-    //Draw Game objects
+    // Create Draw Buffer
     for (const [key, value] of Object.entries(gameObjects))
     {
         gameObjects[key].OnDraw();
-        gameObjects[1].OnDraw();
     }
-    
+
+    // Create items array
+    var items = [];
+    for (var key in drawBuffer) {
+        if (drawBuffer.hasOwnProperty(key)) {
+            items.push( drawBuffer[key]  );
+        }
+    }
+  
+    // Sort the array based on the second element
+    items.sort(function(first, second) {
+        return first.drawingOrder - second.drawingOrder;
+    });
+  
+
+    // Draw Gameobjects
+    for (var i = 0; i < items.length; i++)
+    {
+        drawGO(items[i]);
+    }
+    drawBuffer = {};
+
     //Reset global alpha from drawing
     context.globalAlpha = 1;
     
     window.dispatchEvent(updateEvent);
 }
+
+  
+
+
 
 // Initialize the game Engine
 function Init()
@@ -302,6 +334,9 @@ function Init()
         
         OnUpdate();
     };
+
+    cameraPosition = new Vector2(0, 0);
+
     main();
     extractVector2Arrays("map.json");
 }
@@ -320,8 +355,6 @@ function draw(spritesheetPos, spritePos, alpha = 1, scale = new Vector2(1, 1))
     context.globalAlpha = alpha;
     context.scale(scale.x, scale.y);
 
-
-
     context.drawImage(sprites, spritesheetPos.x * spriteWidth, spritesheetPos.y * spriteHeight, spriteWidth, spriteHeight, 
         spriteWidth * spritePos.x / scale.x, spriteHeight * spritePos.y / scale.y, spriteWidth, spriteHeight);
 
@@ -329,9 +362,10 @@ function draw(spritesheetPos, spritePos, alpha = 1, scale = new Vector2(1, 1))
 }
 
 //Draws any Gameobject
-function drawGO(gameobject)
+function drawGO(gameobject = GameObject)
 {
-    draw(gameobject.spritesheetPos, gameobject.pos, gameobject.alpha, gameobject.scale);
+    if (gameObjects == undefined) return;
+    draw(gameobject.spritesheetPos, new Vector2(gameobject.pos.x + cameraPosition.x, gameobject.pos.y + cameraPosition.y), gameobject.alpha, gameobject.scale);
 }
 
 //Draws given Background

@@ -1,3 +1,4 @@
+
 {
     "Amount": 50,
 
@@ -24,4 +25,5 @@
     "MaxSpread": 2,
 
     "FadeoutStart": 0.5
+
 }

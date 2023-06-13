@@ -1,4 +1,5 @@
 
+
 // Wird ausgeführe sobals diese Datei in HTML geladen wurde
 window.addEventListener('DOMContentLoaded', () => {
     InitDemo();
@@ -22,14 +23,15 @@ class Player extends GameObject {
 
 // Wird als Pseudo void main verwendet
 function InitDemo()
-{      
+{
     // Jedes Gameobject benötigt einen Vector2 (Punkt auf einem Koordinatensystem) mit 
     // Einer x und einer Y koordinate als Position, und einen 2. der angiebt, welcher
     // Sprite aus dem Spritesheet gerendert werden soll
     //
     // Um eine Klasse die Gameobject erweitert oder ein Gameobject loszuwerden
     // kann man .Destroy() verwenden. hier also player.Destroy();
-     var player = new Player(new Vector2(4, 4), new Vector2(22, 16));
+    var player = new Player(new Vector2(4, 4), new Vector2(22, 16));
+    player.drawingOrder = 100;
 
     // mit .alpha kann die Transparenz verändert Werden
     player.alpha = 0.8;
@@ -44,7 +46,7 @@ function InitDemo()
     
     // Hier wird ein weiteres Gameobject erzeugt.
     // Da dieses nach dem Spieler erzeugt wurde, wird es vor dem Spieler Angezeigt.
- var randomTile = new GameObject(new Vector2(5, 4), new Vector2(20, 17));
+    var randomTile = new GameObject(new Vector2(5, 4), new Vector2(20, 17));
 
     
     
@@ -86,6 +88,7 @@ function InitDemo()
     player.pos.y -= 1;
     player.UpdatePosition();
     
+    
     // Hier wird nach dem Eventr SpaceRelease gelauscht, was vom
     // input manager versendet wird, sobald die leertaste losgelassen wurde
     window.addEventListener("SpaceRelease", () =>
@@ -113,5 +116,4 @@ function InitDemo()
     
     PlayParticles("TestParticles2.json");
 }
-
 

@@ -44,7 +44,8 @@ async function GetTileset(name = "") {
 }
 
 
-function TileidToVec(id= 0) {
+
+function TileidToVec(id = 0) {
     var y = 0;
     id--;
 
@@ -53,7 +54,6 @@ function TileidToVec(id= 0) {
         id -= spriteSheetWidth;
         y++;
     }
-
 
     return new Vector2(id | 0, y | 0 );
 }

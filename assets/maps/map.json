@@ -47,6 +47,7 @@
          "height":15,
          "id":3,
          "name":"Kachelebene 2",
+
          "opacity":1,
          "type":"tilelayer",
          "visible":true,
