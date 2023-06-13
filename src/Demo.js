@@ -125,8 +125,6 @@ var conver = []  ;
         var zufallsx = Math.floor((Math.random() * conver.length) + 1);
         alert(conver[zufallsx]);
         
-
-        
     }
 
     
