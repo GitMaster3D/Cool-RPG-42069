@@ -1,0 +1,27 @@
+{
+    "Amount": 50,
+
+    "PosXMin": 1,
+    "PosXMax": 20,
+    "PosYMin": 1,
+    "PosYMax": 15,
+
+    "Scale_Min": 0.6,
+    "Scale_Max": 1.2,
+
+    "SpriteSheetX_Start": 4,
+    "SpriteSheetX_End": 6,
+    "SpriteSheetY_Start": 0,
+    "SpriteSheetY_End": 0,
+
+    "Lifetime": 3,
+
+    "StartSpeedMultiplier": 50,
+    "EndSpeedMultiplier": 0,
+    "DropoffSpeedMultiplier": 30,
+
+    "MinSpread": -1,
+    "MaxSpread": 2,
+
+    "FadeoutStart": 0.5
+}
