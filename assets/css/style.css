@@ -1,0 +1,11 @@
+
+.html, body
+{
+    overflow: hidden;
+}
+
+.Map
+{
+    transform: scale(1.5);
+    margin: 18%;
+}
