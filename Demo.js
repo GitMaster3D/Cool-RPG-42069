@@ -29,7 +29,7 @@ function InitDemo()
     //
     // Um eine Klasse die Gameobject erweitert oder ein Gameobject loszuwerden
     // kann man .Destroy() verwenden. hier also player.Destroy();
-    var player = new Player(new Vector2(4, 4), new Vector2(37, 31));
+    var player = new Player(new Vector2(4, 7), new Vector2(37, 31));
 
     // mit .alpha kann die Transparenz verändert Werden
     player.alpha = 0.8;
@@ -94,38 +94,36 @@ function InitDemo()
     {
         if(player.pos.x == NPX && player.pos.y == NPY)
         {
-            alert("geht rterin");
             Dialog();
         }
           
             
     });
-var conver=[] = conver[16] ;
-    conver[0]="Null";
-    conver[1]= "Ganz schön windig heute";
-    conver[2]= "Ich bin halt anders";
-    conver[3]= "Ich bin einfach schon 2 Jahre alt! Kannst du das glauben?";
-    conver[4]= "Danke dass du heute hier bist!";
-    conver[5]= "Sonniger Tag heute";
-    conver[6]= "Was, es ist schon so spät?!";
-    conver[7]= "Beeile dich! Sonst bringt dich das Monster auch um!“";
-    conver[8]= "Let‘s goooooooo!!! Ich cringo";
-    conver[9]= "Ich mag dieses Wetter";
-    conver[10]= "Hey :)";
-    conver[11]= "Bonjour";
-    conver[12]= "Auf welcher Schule warst du?";
-    conver[13]= "Du lässt mich nicht im Stich oder?";
-    conver[14]= "Beeil dich es wird bald dunkel!";
-    conver[14]= "Bitte helfen Sie mir ich bin in Gefahr!";
-    conver[15] = "Ich habe heute Geburtstag! ";
+
+var conver = []  ;
+    conver.push("Nul");
+    conver.push("Ganz schön windig heute");
+    conver.push("Ich bin halt anders");
+    conver.push("Ich bin einfach schon 2 Jahre alt! Kannst du das glauben?");
+    conver.push("Danke dass du heute hier bist!");
+    conver.push("Sonniger Tag heute");
+    conver.push("Was, es ist schon so spät?!");
+    conver.push("Beeile dich! Sonst bringt dich das Monster auch um!“");
+    conver.push("Let‘s goooooooo!!! Ich cringo");
+    conver.push("Ich mag dieses Wetter");
+    conver.push("Hey :)");
+    conver.push("Bonjour");
+    conver.push("Auf welcher Schule warst du?");
+    conver.push("Du lässt mich nicht im Stich oder?");
+    conver.push("Beeil dich es wird bald dunkel!");
+    conver.push("Bitte helfen Sie mir ich bin in Gefahr!");
+    conver.push("Ich habe heute Geburtstag! ");
+    
     function Dialog()
     {
-
-        alert("geht rein");
-        var zufallsx = Math.random() * 13;
-        alert("vor dem Alert");
-        alert(conver[0]);
-        alert("nope");
+        var zufallsx = Math.floor((Math.random() * conver.length) + 1);
+        alert(conver[zufallsx]);
+        
 
         
     }
