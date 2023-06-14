@@ -8,7 +8,7 @@ window.addEventListener('DOMContentLoaded', () => {
 // können von der Engine automatisch Gerendert werden und enthalten
 // nützliche Funktionen wie z.b. MoveX, moveY, Destroy und SetPos
 class Player extends GameObject {
-    constructor(pos, spritesheetPos) {
+    constructor(pos, spritesheetPos,health) {
     
       // Super ruft den Konstruktor der klasse auf, die
       // erweitert wird, hier Gameobject.
@@ -17,6 +17,12 @@ class Player extends GameObject {
 
       console.log("Spawned Player!");
   
+    }
+}
+class Monster extends GameObject{
+    constructor(pos,spritesheetPos,health,){
+        super(pos,spritesheetPos,health);
+        console.log("Spawned MonsterLVL1")
     }
 }
 
@@ -29,7 +35,7 @@ function InitDemo()
     //
     // Um eine Klasse die Gameobject erweitert oder ein Gameobject loszuwerden
     // kann man .Destroy() verwenden. hier also player.Destroy();
-    var player = new Player(new Vector2(4, 7), new Vector2(37, 31));
+    var player = new Player(new Vector2(4, 4), new Vector2(22, 16),100);
     player.drawingOrder = 100;
 
     // mit .alpha kann die Transparenz verändert Werden
@@ -41,19 +47,20 @@ function InitDemo()
 
     console.log(player.scale);
 
+    var monster1 = new Monster(new Vector2(5,5),new Vector2(22,33),100);
+    var monster2 = new Monster(new Vector2(6,6),new Vector2(11,17),100);
+    var monster3 = new Monster(new Vector2(7,7),new Vector2(9,8),100);
+    var monsters = [monster1,monster2,monster3];
     
-    
+
+    //var arrowUp = new Arrows(new Vector2(player.x-1,player.y-1),new Vector2(44,10))
+
     // Hier wird ein weiteres Gameobject erzeugt.
     // Da dieses nach dem Spieler erzeugt wurde, wird es vor dem Spieler Angezeigt.
     var randomTile = new GameObject(new Vector2(5, 4), new Vector2(20, 17));
-    var NPTest = new GameObject(new Vector2(4,2),new Vector2(0,2));
-    var NPX = 4;
-    var NPY = 2;
-
 
     
     
-
     // mit addeventlistener kann man nach events lauschen. 
     // Sobald ein Event mit dem "Namen" UpInput auf dem Fenster versendet
     // wird, wird der code in den geschweiften klammern ausgeführt.
@@ -68,67 +75,46 @@ function InitDemo()
     {
         player.MoveY(1); //Bewege den Spieler um 1 nach oben
     });
-
-    window.addEventListener("RightInput",()=>
+    window.addEventListener("DownInput", () =>
     {
-        player.MoveX(1); //Bewege den Spieler um 1 nach rechts
+        player.MoveY(-1); //Bewege den Spieler um 1 nach oben
     });
-
-    window.addEventListener("LeftInput",()=>
+    window.addEventListener("RightInput", () =>
     {
-        player.MoveX(-1); //Bewege den Spieler um 1 nach links
+        player.MoveX(1); //Bewege den Spieler um 1 nach oben
     });
-
-    window.addEventListener("DownInput",()=>
+    window.addEventListener("LeftInput", () =>
     {
-        player.MoveY(-1); //Bewege den Spieler um 1 nach unten
-    })
-
-    window.addEventListener("SpaceInput",()=>
-    {
-        if (player.x == 4 && player.y ==2){
-            var TesstDialog = new GameObject(new Vector2(7,8), new Vector2(0,8))
+        player.MoveX(-1); //Bewege den Spieler um 1 nach oben
+    });
+    window.addEventListener("ArrowUpInput",()=>{
+        for(x=0; x < monsters.length; x=x+1){
+            if((player.pos.x)==(monsters[x].pos.x)&&(player.pos.y-1)==(monsters[x].pos.y)){
+                monsters[x].Destroy();
+            }
         }
     });
-
-    window.addEventListener("MInput",()=>
-    {
-        if(player.pos.x == NPX && player.pos.y == NPY)
-        {
-            Dialog();
+    window.addEventListener("ArrowDownInput",()=>{
+        for(x=0; x < monsters.length; x=x+1){
+            if((player.pos.x)==(monsters[x].pos.x)&&(player.pos.y+1)==(monsters[x].pos.y)){
+                monsters[x].Destroy();
+            }
         }
-          
-            
     });
-
-var conver = []  ;
-    conver.push("Nul");
-    conver.push("Ganz schön windig heute");
-    conver.push("Ich bin halt anders");
-    conver.push("Ich bin einfach schon 2 Jahre alt! Kannst du das glauben?");
-    conver.push("Danke dass du heute hier bist!");
-    conver.push("Sonniger Tag heute");
-    conver.push("Was, es ist schon so spät?!");
-    conver.push("Beeile dich! Sonst bringt dich das Monster auch um!“");
-    conver.push("Let‘s goooooooo!!! Ich cringo");
-    conver.push("Ich mag dieses Wetter");
-    conver.push("Hey :)");
-    conver.push("Bonjour");
-    conver.push("Auf welcher Schule warst du?");
-    conver.push("Du lässt mich nicht im Stich oder?");
-    conver.push("Beeil dich es wird bald dunkel!");
-    conver.push("Bitte helfen Sie mir ich bin in Gefahr!");
-    conver.push("Ich habe heute Geburtstag! ");
-    
-    function Dialog()
-    {
-        var zufallsx = Math.floor((Math.random() * conver.length) + 1);
-        alert(conver[zufallsx]);
-        
-    }
-
-    
-    
+    window.addEventListener("ArrowRightInput",()=>{
+        for(x=0; x < monsters.length; x=x+1){
+            if((player.pos.x+1)==(monsters[x].pos.x)&&(player.pos.y)==(monsters[x].pos.y)){
+                monsters[x].Destroy();
+            }
+        }
+    });
+    window.addEventListener("ArrowLeftInput",()=>{
+        for(x=0; x < monsters.length; x=x+1){
+            if((player.pos.x-1)==(monsters[x].pos.x)&&(player.pos.y)==(monsters[x].pos.y)){
+                monsters[x].Destroy();
+            }
+        }
+    });
 
     console.log(currentTiles[5][4]); //Giebt alle gameObjects an der Position 5 | 4 aus
 
@@ -148,6 +134,7 @@ var conver = []  ;
         // Mit Playsound können audio dateien aus 
         // dem "Audio" ordner abgespielt werden
         // übergeben wird der name der Datei inklusive Dateiformat
+        alert("SPACE")
         PlaySound("heheheha_.mp3");
     });
 

@@ -10,14 +10,17 @@ const downInputEvent = new Event("DownInput");
 const rightInputEvent = new Event("RightInput");
 const leftInputEvent = new Event("LeftInput");
 const spaceInputEvent = new Event("SpaceInput");
-const minputEvent = new Event("MInput");
 
 const upReleaseEvent = new Event("UpRelease");
 const downReleaseEvent = new Event("DownRelease");
 const rightReleaseEvent = new Event("RightRelease");
 const leftReleaseEvent = new Event("LeftRelease");
 const spaceReleaseEvent = new Event("SpaceRelease");
-const mReleaseEvent = new Event("MRelease");
+
+const arrowUpInputEvent = new Event("ArrowUpInput");
+const arrowDownInputEvent = new Event("ArrowDownInput");
+const arrowRightInputEvent = new Event("ArrowRightInput");
+const arrowleftInputEvent = new Event("ArrowLeftInput");
 
 function KeyPress(key = "")
 {
@@ -39,13 +42,24 @@ function KeyPress(key = "")
             window.dispatchEvent(downInputEvent);
         break;
 
-        case "KeyM":
-            window.dispatchEvent(minputEvent);
-        break;
-
         case "Space":
             window.dispatchEvent(spaceInputEvent);
         break;
+        case "ArrowUp":
+            window.dispatchEvent(arrowUpInputEvent);
+            break;
+
+        case "ArrowDown":
+            window.dispatchEvent(arrowDownInputEvent);
+            break;
+
+        case "ArrowRight":
+            window.dispatchEvent(arrowRightInputEvent);
+            break;
+
+        case "ArrowLeft":
+            window.dispatchEvent(arrowleftInputEvent);
+            break;
     }   
 }
 
@@ -68,10 +82,6 @@ function KeyRelease(key)
 
         case "KeyS":
             window.dispatchEvent(downReleaseEvent);
-        break;
-
-        case "KeyM":
-            window.dispatchEvent(mReleaseEvent);
         break;
 
         case "Space":

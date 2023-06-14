@@ -1,4 +1,3 @@
-var drawBackground = false;
 
 var canvas = document.querySelector("canvas");
 var context = canvas.getContext("2d");
@@ -246,10 +245,7 @@ async function OnUpdate()
     }
 
     //Draw background
-    if (drawBackground)
-    {
-        drawBG(background);
-    }
+    drawBG(background);
 
     // Create Draw Buffer
     for (const [key, value] of Object.entries(gameObjects))
