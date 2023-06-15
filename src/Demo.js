@@ -151,6 +151,15 @@ var conver = []  ;
         PlaySound("heheheha_.mp3");
     });
 
+    cameraOffset = new Vector2(12, 7);
+    window.addEventListener("OnUpdate", () =>
+    {
+        cameraPosition = new Vector2(
+            -Lerp(cameraPosition.x, player.pos.x, 0.5),
+            -Lerp(cameraPosition.y, player.pos.y, 0.5)
+        );
+        
+    });
 
     // Events sind Methoden, die auf einem objekt aufgerufen werden. Jedes event hat einen String als "namen".
     var myEvent = new Event("MyEvent");
