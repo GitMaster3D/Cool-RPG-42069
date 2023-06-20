@@ -23,6 +23,8 @@ window.addEventListener("DOMContentLoaded", () =>
     // Um eine Klasse die Gameobject erweitert oder ein Gameobject loszuwerden
     // kann man .Destroy() verwenden. hier also player.Destroy();
     player = new Player(new Vector2(4, 7), new Vector2(37, 31));
+
+    // Drawingorder auf 100 damit es vor der map gerendert wird
     player.ChangeDrawingOrder(100);
 
     // mit .alpha kann die Transparenz verändert Werden

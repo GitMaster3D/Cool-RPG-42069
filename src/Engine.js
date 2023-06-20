@@ -108,6 +108,7 @@ class GameObject
     {
         this.alive = false;
         delete gameObjects[this.id];
+        needsUpdate = true;
     }
 
     SetPos(potition = Vector2)
