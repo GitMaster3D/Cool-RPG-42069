@@ -1,3 +1,5 @@
+var player;
+
 // Klassen die mit "extends Gameobject" enden, also eine Erweiterung von Gameobject sind
 // können von der Engine automatisch Gerendert werden und enthalten
 // nützliche Funktionen wie z.b. MoveX, moveY, Destroy und SetPos
@@ -11,10 +13,12 @@ class Player extends GameObject {
 
     }
 }
+
 var HasMoved = false;
 var mapx = 0;
 var mapy = 0;
 var newMap = "";
+
 window.addEventListener("DOMContentLoaded", () =>
 {
     // Jedes Gameobject benötigt einen Vector2 (Punkt auf einem Koordinatensystem) mit 
@@ -23,12 +27,14 @@ window.addEventListener("DOMContentLoaded", () =>
     //
     // Um eine Klasse die Gameobject erweitert oder ein Gameobject loszuwerden
     // kann man .Destroy() verwenden. hier also player.Destroy();
-    var player = new Player(new Vector2(4, 7), new Vector2(37, 31));
-    player.drawingOrder = 100;
+
+    player = new Player(new Vector2(4, 7), new Vector2(37, 31));
+
+    // Drawingorder auf 100 damit es vor der map gerendert wird
+    player.ChangeDrawingOrder(100);
 
     // mit .alpha kann die Transparenz verändert Werden
-    player.alpha = 0.8;
-
+    player.alpha = 1;
     // mit .scale kann die größe von gameobjects verändert werden
     player.scale.x = 1;
     player.scale.y = 1;
@@ -40,6 +46,7 @@ window.addEventListener("DOMContentLoaded", () =>
            -Lerp(cameraPosition.x, player.pos.x, 0.5),
          -Lerp(cameraPosition.y, player.pos.y, 0.5)
      );
+
         
     });
 
@@ -55,6 +62,7 @@ window.addEventListener("DOMContentLoaded", () =>
     // Geladen wurde
     window.addEventListener("UpInput", () =>
     {
+
         if(player.pos.y!=0){
         player.MoveY(1); //Bewege den Spieler um 1 nach oben
 
@@ -84,6 +92,7 @@ window.addEventListener("DOMContentLoaded", () =>
             HasMoved=false;
 
         }
+
     });
 
     window.addEventListener("LeftInput",()=>
@@ -118,5 +127,3 @@ window.addEventListener("DOMContentLoaded", () =>
         }
     })
 });
-
-
