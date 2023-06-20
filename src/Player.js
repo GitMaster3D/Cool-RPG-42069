@@ -52,21 +52,22 @@ window.addEventListener("DOMContentLoaded", () =>
     // Geladen wurde
     window.addEventListener("UpInput", () =>
     {
-        player.MoveY(1); //Bewege den Spieler um 1 nach oben
+            player.MoveY(1); //Bewege den Spieler um 1 nach oben   
     });
 
     window.addEventListener("RightInput",()=>
     {
-        player.MoveX(1); //Bewege den Spieler um 1 nach rechts
+            player.MoveX(1); //Bewege den Spieler um 1 nach rechts
     });
 
     window.addEventListener("LeftInput",()=>
     {
-        player.MoveX(-1); //Bewege den Spieler um 1 nach links
+            player.MoveX(-1); //Bewege den Spieler um 1 nach links
+        
     });
 
     window.addEventListener("DownInput",()=>
     {
-        player.MoveY(-1); //Bewege den Spieler um 1 nach unten
+            player.MoveY(-1); //Bewege den Spieler um 1 nach unten
     })
 });
