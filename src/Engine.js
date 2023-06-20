@@ -46,6 +46,7 @@ class GameObject
     SetID(id)
     {
         this.id = id;
+        needsUpdate = true;
     }
 
     MoveX(amount)
