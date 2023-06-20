@@ -1,14 +1,36 @@
+let player = {
+  name: "Spieler",
+  level: 1,
+  experience: 0,
+  maxHealth: 100,
+  currentHealth: 100,
+  attack: 10,
+  defense: 5
+};
 
-var PlayerEXP=0;
-var LevelPlayer=0;
-// Wenn gegner besiegt bekommt man ein bestimmten Anteil von EXP, Schwache Gegner wenig und Starke viel.
-
-while(LevelPlayer<100)
-{
-    //if Gegner Besiegt von LVL 1 bis BossLVL. gibt entsorechende EXP den Spieler
-    //Ab EXP 10 lvl ein und dann immer doppelt so viel vür nächstes lvl
-    //Freischalten von bestimmen Items bei lvl
-    // Jede 10. Lvl also 10,20,30,40,50,60,70,80,90,100 gibt es starke Items
-    // Quests geben Items und EXP
-
+// Funktion zum Level-Up des Spielers
+function levelUp(player) {
+  player.level++;
+  player.maxHealth += 10;
+  player.currentHealth = player.maxHealth;
+  player.attack += 5;
+  player.defense += 2;
+  console.log(player.name + " hat Level " + player.level + " erreicht!");
 }
+
+// Funktion zum Hinzufügen von Erfahrungspunkten
+function addExperience(player, exp) {
+  player.experience += exp;
+
+  // Überprüfe, ob der Spieler genug Erfahrungspunkte zum Level-Up hat
+  if (player.experience >= player.level * 100) {
+    levelUp(player);
+  }
+}
+
+// Beispielverwendung
+console.log(player.name + " startet auf Level " + player.level);
+addExperience(player, 50); // Füge 50 Erfahrungspunkte hinzu
+console.log(player.name + " hat " + player.experience + " Erfahrungspunkte");
+addExperience(player, 150); // Füge 150 Erfahrungspunkte hinzu
+console.log(player.name + " hat " + player.experience + " Erfahrungspunkte");
