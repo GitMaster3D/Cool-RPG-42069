@@ -152,7 +152,7 @@ function SpawnParticles(amount, pos, spriteSheetPos, lifetime, startSpeedMultipl
     }
 }
 
-async function PlayParticles(name, pos = new Vector2(0, 0))
+async function PlayParticles(name)
 {
     var path = "./assets/particles/" + name;
     var data = await GetParticleData(path);
@@ -160,7 +160,7 @@ async function PlayParticles(name, pos = new Vector2(0, 0))
 
     SpawnParticles(
         data.amount, 
-        new Vector2(data.pos.x + pos.x, data.pos.y + pos.y), 
+        data.pos, 
         data.spriteSheetPos, 
         data.lifetime,
         data.startSpeedMultiplier,
