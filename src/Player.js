@@ -26,7 +26,7 @@ window.addEventListener("DOMContentLoaded", () =>
     player.ChangeDrawingOrder(100);
 
     // mit .alpha kann die Transparenz verändert Werden
-    player.alpha = 0.8;
+    player.alpha = 1;
 
     // mit .scale kann die größe von gameobjects verändert werden
     player.scale.x = 1;
