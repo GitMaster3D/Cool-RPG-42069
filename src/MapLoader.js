@@ -1,5 +1,5 @@
 async function extractVector2Arrays(name = "") {
-    path = "./assets/maps/" + name;
+    path = "./assets/maps/map"+mapx+"_"+mapy+".json";
     mapData = await GetTileset(path);
 
     const tilePositions = [];
@@ -47,13 +47,13 @@ async function GetTileset(name = "") {
 
 function TileidToVec(id = 0) {
     var y = 0;
-    id--;
+
 
     while (id > spriteSheetWidth)
     {
         id -= spriteSheetWidth;
         y++;
     }
-
+    id--;
     return new Vector2(id | 0, y | 0 );
 }
