@@ -19,6 +19,9 @@ var drawBuffer = {};
 
 var currentTiles;
 
+var items = [];
+var needsUpdate = true;
+
 // Extend this to create objects that are visible easily
 // The Constructor of the base class must be called with super() when extending in order to make this work
 class GameObject
@@ -112,6 +115,12 @@ class GameObject
         this.InvalidatePosition(this.pos);
         this.pos = potition;
         this.UpdatePosition();
+    }
+
+    ChangeDrawingOrder(newOrder)
+    {
+        this.drawingOrder = newOrder;
+        needsUpdate = true;
     }
 }
 
@@ -211,8 +220,29 @@ function SpawnGO(GameObject)
     GameObject.UpdatePosition();
 
     drawBufferSorted = false;
+    needsUpdate = true;
 
     return go;
+}
+
+function UpdateItems()
+{
+    if (needsUpdate)
+    {
+        items = [];
+        for (var key in drawBuffer) {
+            if (drawBuffer.hasOwnProperty(key)) {
+                items.push( drawBuffer[key]  );
+            }
+        }
+      
+        // Sort the array based on the second element
+        items.sort(function(first, second) {
+            return first.drawingOrder - second.drawingOrder;
+        });
+    
+        needsUpdate = false;
+    }
 }
 
 // Area in wich the Background should be drawn
@@ -258,20 +288,7 @@ async function OnUpdate()
         gameObjects[key].OnDraw();
     }
 
-    // Create items array
-    var items = [];
-    for (var key in drawBuffer) {
-        if (drawBuffer.hasOwnProperty(key)) {
-            items.push( drawBuffer[key]  );
-        }
-    }
-  
-    // Sort the array based on the second element
-    items.sort(function(first, second) {
-        return first.drawingOrder - second.drawingOrder;
-    });
-  
-
+    UpdateItems();
     // Draw Gameobjects
     for (var i = 0; i < items.length; i++)
     {
@@ -368,7 +385,7 @@ function draw(spritesheetPos, spritePos, alpha = 1, scale = new Vector2(1, 1))
 //Draws any Gameobject
 function drawGO(gameobject = GameObject)
 {
-    if (gameObjects == undefined) return;
+    if (gameObjects === undefined) return;
     draw(gameobject.spritesheetPos, new Vector2(gameobject.pos.x + cameraPosition.x + cameraOffset.x, gameobject.pos.y + cameraPosition.y + cameraOffset.y), gameobject.alpha, gameobject.scale);
 }
 

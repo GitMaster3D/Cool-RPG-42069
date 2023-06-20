@@ -1,3 +1,5 @@
+var player;
+
 // Klassen die mit "extends Gameobject" enden, also eine Erweiterung von Gameobject sind
 // können von der Engine automatisch Gerendert werden und enthalten
 // nützliche Funktionen wie z.b. MoveX, moveY, Destroy und SetPos
@@ -20,8 +22,8 @@ window.addEventListener("DOMContentLoaded", () =>
     //
     // Um eine Klasse die Gameobject erweitert oder ein Gameobject loszuwerden
     // kann man .Destroy() verwenden. hier also player.Destroy();
-    var player = new Player(new Vector2(4, 7), new Vector2(37, 31));
-    player.drawingOrder = 100;
+    player = new Player(new Vector2(4, 7), new Vector2(37, 31));
+    player.ChangeDrawingOrder(100);
 
     // mit .alpha kann die Transparenz verändert Werden
     player.alpha = 0.8;
@@ -69,4 +71,12 @@ window.addEventListener("DOMContentLoaded", () =>
     {
         player.MoveY(-1); //Bewege den Spieler um 1 nach unten
     })
+
+
+        // Wenn ein Gameobject manuell bewegt werden soll (ohne Move methode)
+    // Muss die Position invalidiert und danach geupdatet werden
+    // (Damit currentTiles funktioniert)
+    player.InvalidatePosition(player.pos);
+    player.pos.y -= 1;
+    player.UpdatePosition();
 });
