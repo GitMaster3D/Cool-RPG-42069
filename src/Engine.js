@@ -29,7 +29,6 @@ class GameObject
     constructor(pos = Vector2, spritesheetPos = Vector2, alpha = 1, scale = new Vector2(1, 1), drawingOrder = 0) 
     {
         this.pos = pos;
-        this.walkable = true;
 
         this.scale = scale;
         
