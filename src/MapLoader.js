@@ -22,7 +22,7 @@ async function extractVector2Arrays(name = "", layerAmount = 2) {
                 tileIds.push(tileId);
     
                 go = new GameObject(new Vector2(x, y), TileidToVec(tileId));
-                if (j == 1 && tileId == 65)
+                if (j == 0 && tileId == 65)
                 {
                     go.walkable = false;
                 }

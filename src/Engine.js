@@ -1,4 +1,4 @@
-var drawBackground = true;
+var drawBackground = false;
 
 var canvas = document.querySelector("canvas");
 var context = canvas.getContext("2d");

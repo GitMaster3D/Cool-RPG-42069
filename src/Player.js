@@ -79,8 +79,8 @@ class Player extends GameObject {
 }
 
 var HasMoved = false;
-var mapx = 0;
-var mapy = 0;
+var mapx = 2;
+var mapy = 3;
 var newMap = "";
 
 window.addEventListener("DOMContentLoaded", () =>
