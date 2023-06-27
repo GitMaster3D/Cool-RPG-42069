@@ -1,16 +1,15 @@
-var player;
-
 // Klassen die mit "extends Gameobject" enden, also eine Erweiterung von Gameobject sind
 // können von der Engine automatisch Gerendert werden und enthalten
 // nützliche Funktionen wie z.b. MoveX, moveY, Destroy und SetPos
 class Player extends GameObject {
-    constructor(pos, spritesheetPos) {
+    constructor(pos, spritesheetPos, health, damage) {
     
       // Super ruft den Konstruktor der klasse auf, die
       // erweitert wird, hier Gameobject.
       // Dies wird hier benötigt, damit es richtig funktioniert
       super(pos, spritesheetPos);
-
+        this.health = health;
+        this.damage = damage;
     }
 }
 
@@ -22,13 +21,23 @@ window.addEventListener("DOMContentLoaded", () =>
     //
     // Um eine Klasse die Gameobject erweitert oder ein Gameobject loszuwerden
     // kann man .Destroy() verwenden. hier also player.Destroy();
-    player = new Player(new Vector2(4, 7), new Vector2(37, 31));
+    var player = new Player(new Vector2(4, 7), new Vector2(37, 31),100,10);
 
-    // Drawingorder auf 100 damit es vor der map gerendert wird
-    player.ChangeDrawingOrder(100);
+
+    player.drawingOrder = 100;
+
+    var monster1 = new Monster(new Vector2(2,2),new Vector2(9,8),1,30,2);
+    var monster2 = new Monster(new Vector2(2,3),new Vector2(9,9),1,30,2);
+    monster1.drawingOrder = 111;
+    monster2.drawingOrder = 112;
+    //var monster3 = new Monster(new Vector2(3,4),new Vector2(11,10),1,30,2);
+    const Monsters = [monster1,monster2];
+    //monster3.drawingOrder = 101;
+    
+    
 
     // mit .alpha kann die Transparenz verändert Werden
-    player.alpha = 1;
+    player.alpha = 0.8;
 
     // mit .scale kann die größe von gameobjects verändert werden
     player.scale.x = 1;
@@ -44,6 +53,10 @@ window.addEventListener("DOMContentLoaded", () =>
         
     });
 
+    //Alle Monster estellen und schließend in das Array "Monsters[]" setzten:
+        
+
+
     // mit addeventlistener kann man nach events lauschen. 
     // Sobald ein Event mit dem "Namen" UpInput auf dem Fenster versendet
     // wird, wird der code in den geschweiften klammern ausgeführt.
@@ -56,30 +69,71 @@ window.addEventListener("DOMContentLoaded", () =>
     // Geladen wurde
     window.addEventListener("UpInput", () =>
     {
-            player.MoveY(1); //Bewege den Spieler um 1 nach oben   
+        player.MoveY(1); //Bewege den Spieler um 1 nach oben 
     });
 
     window.addEventListener("RightInput",()=>
     {
-            player.MoveX(1); //Bewege den Spieler um 1 nach rechts
+        player.MoveX(1); //Bewege den Spieler um 1 nach rechts
     });
 
     window.addEventListener("LeftInput",()=>
     {
-            player.MoveX(-1); //Bewege den Spieler um 1 nach links
-        
+        player.MoveX(-1); //Bewege den Spieler um 1 nach links
     });
 
     window.addEventListener("DownInput",()=>
     {
-            player.MoveY(-1); //Bewege den Spieler um 1 nach unten
+        player.MoveY(-1); //Bewege den Spieler um 1 nach unten
     })
 
+    window.addEventListener("ArrowUpInput",()=>{
+        
+        for(x=0; x < Monsters.length; x=x+1){
+            
+            if((player.pos.x)==(Monsters[x].pos.x)&&(player.pos.y-1)==(Monsters[x].pos.y)){
+                if((Monsters[x].health - player.damage) <= 0){
+                    Monsters[x].Destroy();
+                }else{
+                    Monsters[x].health = (Monsters[x].health-player.damage);
+                }
+            }
+        }
+    });
+    
+    window.addEventListener("ArrowDownInput",()=>{
+        for(x=0; x < Monsters.length; x=x+1){
+            if((player.pos.x)==(Monsters[x].pos.x)&&(player.pos.y+1)==(Monsters[x].pos.y)){
+                if((Monsters[x].health - player.damage) <= 0){
+                    Monsters[x].Destroy();
+                }else{
+                    Monsters[x].health = (Monsters[x].health-player.damage);
+                }
+            }
+        }
+    });
+    window.addEventListener("ArrowRightInput",()=>{
+        for(x=0; x < Monsters.length; x=x+1){
+            if((player.pos.x+1)==(Monsters[x].pos.x)&&(player.pos.y)==(Monsters[x].pos.y)){
+                if((Monsters[x].health - player.damage) <= 0){
+                    Monsters[x].Destroy();
+                }else{
+                    Monsters[x].health = (Monsters[x].health-player.damage);
+                }
+            }
+        }
+    });
+    window.addEventListener("ArrowLeftInput",()=>{
+        for(x=0; x < Monsters.length; x=x+1){
+            if((player.pos.x-1)==(Monsters[x].pos.x)&&(player.pos.y)==(Monsters[x].pos.y)){
+                if((Monsters[x].health - player.damage) <= 0){
+                    Monsters[x].Destroy();
+                }else{
+                    Monsters[x].health = (Monsters[x].health-player.damage);
+                }
+            }
+        }
+    });
 
-        // Wenn ein Gameobject manuell bewegt werden soll (ohne Move methode)
-    // Muss die Position invalidiert und danach geupdatet werden
-    // (Damit currentTiles funktioniert)
-    player.InvalidatePosition(player.pos);
-    player.pos.y -= 1;
-    player.UpdatePosition();
+
 });
