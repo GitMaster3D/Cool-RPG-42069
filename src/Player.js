@@ -10,7 +10,71 @@ class Player extends GameObject {
       // erweitert wird, hier Gameobject.
       // Dies wird hier benötigt, damit es richtig funktioniert
       super(pos, spritesheetPos);
+    }
 
+    WalkableCheck(xmove, ymove)
+    {
+        var arr = currentTiles[Math.floor(this.pos.x + xmove)][Math.floor(this.pos.y + ymove)];
+
+        for (var i = 0; i < arr.length; i++)
+        {
+            if (!arr[i].walkable)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    MoveX(amount)
+    {
+        if (!this.WalkableCheck(amount, 0))
+        {
+            return;
+        }
+
+        if (!this.suppressPosition)
+            this.InvalidatePosition(this.pos);
+
+        this.pos.x += amount;
+
+        if (!this.suppressPosition)
+            this.UpdatePosition();
+
+    }
+
+    MoveY(amount)
+    {
+        if (!this.WalkableCheck(0, -amount))
+        {
+            return;
+        }
+
+        if (!this.suppressPosition)
+            this.InvalidatePosition(this.pos);
+
+        this.pos.y -= amount;
+
+        if (!this.suppressPosition)
+            this.UpdatePosition();
+
+    }
+
+    Move(amount_Vec = Vector2)
+    {
+        if (!this.WalkableCheck(amount_Vec.x, -amount_Vec.y))
+        {
+            return;
+        }
+
+        if (!this.suppressPosition)
+            this.InvalidatePosition(this.pos);
+
+        this.pos.Add(amount_Vec);
+
+        if (!this.suppressPosition)
+            this.UpdatePosition();
     }
 }
 
@@ -43,8 +107,8 @@ window.addEventListener("DOMContentLoaded", () =>
     window.addEventListener("OnUpdate", () =>
     {
       cameraPosition = new Vector2(
-           -Lerp(cameraPosition.x, player.pos.x, 0.5),
-         -Lerp(cameraPosition.y, player.pos.y, 0.5)
+        -Lerp(cameraPosition.x, player.pos.x, 0.5),
+        -Lerp(cameraPosition.y, player.pos.y, 0.5)
      );
 
         

@@ -18,6 +18,11 @@ async function extractVector2Arrays(name = "") {
             tileIds.push(tileId);
 
             go = new GameObject(new Vector2(x, y), TileidToVec(tileId));
+
+            if (tileId == 1157)
+            {
+                go.walkable = false;
+            }
         }
     }
 
@@ -29,8 +34,11 @@ async function extractVector2Arrays(name = "") {
             const y = Math.floor(i / width);
             tilePositions.push([x, y]);
             tileIds.push(tileId);
-
-            go = new GameObject(new Vector2(x, y), TileidToVec(tileId));
+            
+            var vec = TileidToVec(tileId);
+            go = new GameObject(new Vector2(x, y), vec);
+            
+            
         }
     }
     
