@@ -136,6 +136,9 @@ window.addEventListener("DOMContentLoaded", () =>
             extractVector2Arrays()
             player.pos.y =19;
             HasMoved=false;
+            window.dispatchEvent(new Event("OnMapChange"));
+
+            console.log("Event stufF!");
 
         }
     });
@@ -153,11 +156,15 @@ window.addEventListener("DOMContentLoaded", () =>
             player.pos.x = 0;
             HasMoved=false;
 
+            window.dispatchEvent(new Event("OnMapChange"));
         }
+
+
     });
 
     window.addEventListener("LeftInput",()=>
     {
+
         if(player.pos.x!=0){
         player.MoveX(-1); //Bewege den Spieler um 1 nach links
         HasMoved=true;
@@ -168,6 +175,8 @@ window.addEventListener("DOMContentLoaded", () =>
             extractVector2Arrays()
             player.pos.x = 19;
             HasMoved=false;
+
+            window.dispatchEvent(new Event("OnMapChange"));
 
         }
     });
@@ -184,6 +193,8 @@ window.addEventListener("DOMContentLoaded", () =>
             extractVector2Arrays()
             player.pos.y = 0;
             HasMoved=false;
+
+            window.dispatchEvent(new Event("OnMapChange"));
 
         }
     })

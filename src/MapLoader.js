@@ -1,3 +1,4 @@
+
 async function extractVector2Arrays(name = "", layerAmount = 2) {
     path = "./assets/maps/map"+mapx+"_"+mapy+".json";
     mapData = await GetTileset(path);
