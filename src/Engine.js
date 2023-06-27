@@ -21,7 +21,7 @@ var pixelRatio = 1;
 var globalScale = 2.5;
 var width = 800 * globalScale;
 var height = 600 * globalScale;
-var renderScale = 0.05; // How high the resolution is
+var renderScale = 1; // How high the resolution is
 
 const xCamOffset = 13;
 const yCamOffset = 8;
