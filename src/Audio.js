@@ -4,7 +4,7 @@ window.addEventListener('DOMContentLoaded', () => {
     InitAudio();
 });
 
-function InitAudio()
+async function InitAudio()
 {
     PlaySong("titleSong RPG.mp3")
 }
