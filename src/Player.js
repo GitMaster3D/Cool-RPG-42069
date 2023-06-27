@@ -126,7 +126,6 @@ window.addEventListener("DOMContentLoaded", () =>
     // Geladen wurde
     window.addEventListener("UpInput", () =>
     {
-
         if(player.pos.y!=0){
         player.MoveY(1); //Bewege den Spieler um 1 nach oben
 
@@ -156,11 +155,10 @@ window.addEventListener("DOMContentLoaded", () =>
             HasMoved=false;
 
         }
-
     });
 
     window.addEventListener("LeftInput",()=>
-    {
+    {D
         if(player.pos.x!=0){
         player.MoveX(-1); //Bewege den Spieler um 1 nach links
         HasMoved=true;
