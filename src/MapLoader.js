@@ -19,13 +19,9 @@ async function extractVector2Arrays(name = "") {
 
             go = new GameObject(new Vector2(x, y), TileidToVec(tileId));
 
-            if (tileId == 1157)
-            {
-                go.walkable = false;
-            }
         }
     }
-
+    
     let layer2 = mapData.layers[1];
     for (let i = 0; i < layer2.data.length; i++) {
         const tileId = layer2.data[i];
@@ -38,7 +34,10 @@ async function extractVector2Arrays(name = "") {
             var vec = TileidToVec(tileId);
             go = new GameObject(new Vector2(x, y), vec);
             
-            
+            if (tileId == 65)
+            {
+                go.walkable = false;
+            }
         }
     }
     
