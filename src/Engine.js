@@ -16,6 +16,15 @@ var backgroundWidth = 100;
 var backgroundHeight = 50;
 var backgroundPos;
 
+
+const pixelRatio = window.devicePixelRatio || 1;
+const globalScale = 2.5;
+const width = 800 * globalScale;
+const height = 600 * globalScale;
+
+const xCamOffset = 13;
+const yCamOffset = 8;
+
 var drawBuffer = {};
 
 var currentTiles;
@@ -307,14 +316,26 @@ async function OnUpdate()
 }
 
   
+function UpdateAspect()
+{
+    canvas.width = width * pixelRatio;
+    canvas.height = height * pixelRatio;
+    
+    canvas.style.width = `${width / pixelRatio}px`;
+    canvas.style.height = `${height / pixelRatio}px`;
+    
 
-
+    context.mozImageSmoothingEnabled = false;  // firefox
+    context.imageSmoothingEnabled = false;
+}
 
 // Initialize the game Engine
 function Init()
 {
     backgroundPos = new Vector2(-backgroundWidth / 2, -backgroundHeight / 2);
-    cameraOffset = new Vector2(12, 11);
+    cameraOffset = new Vector2(xCamOffset, yCamOffset);
+
+    UpdateAspect();
     
     // 2D array for all tiles
     currentTiles = new Array(backgroundWidth);
@@ -380,8 +401,10 @@ function draw(spritesheetPos, spritePos, alpha = 1, scale = new Vector2(1, 1))
 {
     context.save();
 
+    
+
     context.globalAlpha = alpha;
-    context.scale(scale.x, scale.y);
+    context.scale(scale.x * pixelRatio * globalScale, scale.y * pixelRatio * globalScale);
 
     context.drawImage(sprites, spritesheetPos.x * spriteWidth, spritesheetPos.y * spriteHeight, spriteWidth, spriteHeight, 
         spriteWidth * spritePos.x / scale.x, spriteHeight * spritePos.y / scale.y, spriteWidth, spriteHeight);
