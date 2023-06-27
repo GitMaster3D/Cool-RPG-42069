@@ -126,10 +126,6 @@ window.addEventListener("DOMContentLoaded", () =>
     // Geladen wurde
     window.addEventListener("UpInput", () =>
     {
-<<<<<<< HEAD
-=======
-
->>>>>>> parent of 60404d3 (Add files via upload)
         if(player.pos.y!=0){
         player.MoveY(1); //Bewege den Spieler um 1 nach oben
 
@@ -163,10 +159,6 @@ window.addEventListener("DOMContentLoaded", () =>
 
     window.addEventListener("LeftInput",()=>
     {
-<<<<<<< HEAD
-
-=======
->>>>>>> parent of 60404d3 (Add files via upload)
         if(player.pos.x!=0){
         player.MoveX(-1); //Bewege den Spieler um 1 nach links
         HasMoved=true;
