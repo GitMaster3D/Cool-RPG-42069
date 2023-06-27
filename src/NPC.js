@@ -72,8 +72,6 @@ window.addEventListener("TInput",()=>                                   //sobalt
     {
         Dialog();
     }
-    
-        
 });
 
 

@@ -122,6 +122,17 @@ class GameObject
         this.alive = false;
         delete gameObjects[this.id];
         needsUpdate = true;
+
+        
+        if (!this.suppressPosition && typeof currentTiles[this.pos.x][this.pos.y] !== undefined)
+        {
+            let index = currentTiles[this.pos.x][this.pos.y].indexOf(this);
+            if (index > -1) 
+            { // only splice array when item is found
+                // 2nd parameter means remove one item only
+                currentTiles[Math.floor(this.pos.x)][Math.floor(this.pos.y)].splice(index, 1);
+            }
+        }
     }
 
     SetPos(potition = Vector2)

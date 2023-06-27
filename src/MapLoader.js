@@ -1,5 +1,11 @@
 
+var currentMapTiles = [];
+
+
 async function extractVector2Arrays(name = "", layerAmount = 2) {
+    window.dispatchEvent(new Event("MapLoad"));
+
+
     path = "./assets/maps/map"+mapx+"_"+mapy+".json";
     mapData = await GetTileset(path);
 
@@ -27,25 +33,12 @@ async function extractVector2Arrays(name = "", layerAmount = 2) {
                 {
                     go.walkable = false;
                 }
+
+                currentMapTiles.push(go);
             }
         }
     }
 
-    /*
-    let layer2 = mapData.layers[1];
-    for (let i = 0; i < layer2.data.length; i++) {
-        const tileId = layer2.data[i];
-        if (tileId !== 0) {
-            const x = i % width;
-            const y = Math.floor(i / width);
-            tilePositions.push([x, y]);
-            tileIds.push(tileId);
-
-            go = new GameObject(new Vector2(x, y), TileidToVec(tileId));
-        }
-    }
-    */
-    
 }
 
 
@@ -69,3 +62,14 @@ function TileidToVec(id = 0) {
     id--;
     return new Vector2(id | 0, y | 0 );
 }
+
+window.addEventListener("MapLoad", () =>
+{
+    console.log(currentTiles[player.pos.x][player.pos.y].length);
+
+    for (let i = 0; i < currentMapTiles.length; i++)
+    {
+        currentMapTiles[i].Destroy();
+    }
+    currentMapTiles = [];
+});

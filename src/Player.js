@@ -195,7 +195,6 @@ window.addEventListener("DOMContentLoaded", () =>
             HasMoved=false;
 
             window.dispatchEvent(new Event("OnMapChange"));
-
         }
     })
 });
