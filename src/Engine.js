@@ -1,4 +1,4 @@
-var drawBackground = false;
+var drawBackground = true;
 
 var canvas = document.querySelector("canvas");
 var context = canvas.getContext("2d");
@@ -12,8 +12,9 @@ var spriteSheetWidth = 64;
 var cameraPosition;
 var cameraOffset;
 
-var backgroundWidth = 20;
-var backgroundHeight = 20;
+var backgroundWidth = 100;
+var backgroundHeight = 50;
+var backgroundPos;
 
 var drawBuffer = {};
 
@@ -198,7 +199,7 @@ class MapSprites
 }
 
 var autoName_ = 0;
-var standartSprite = new Vector2(23, 16);
+var standartSprite = new Vector2(20, 19);
 var gameObjects = {}; //Keep track of all instanciated Game objects
 var pressedKeys = {}; //Keep track of all keys currently pressed
 
@@ -250,8 +251,8 @@ function UpdateItems()
 
 // Area in wich the Background should be drawn
 var background = new MapSprites(
-    new Vector2(1, 1),
-    new Vector2(backgroundWidth, backgroundHeight),
+    new Vector2(-backgroundWidth / 2, -backgroundHeight / 2),
+    new Vector2(backgroundWidth / 2, backgroundHeight / 2),
     standartSprite
 );
 
@@ -312,6 +313,9 @@ async function OnUpdate()
 // Initialize the game Engine
 function Init()
 {
+    backgroundPos = new Vector2(-backgroundWidth / 2, -backgroundHeight / 2);
+    cameraOffset = new Vector2(12, 11);
+    
     // 2D array for all tiles
     currentTiles = new Array(backgroundWidth);
     for (var i = 0; i < backgroundWidth; i++)
@@ -399,7 +403,7 @@ function drawBG(mapSprites = MapSprites)
     {
         for (let j = 0; j < (mapSprites.endPos.y - mapSprites.startPos.y); j++)
         {
-            draw(mapSprites.sprite, new Vector2(i + 1, j + 1));
+            draw(mapSprites.sprite, new Vector2(i + 1 + backgroundPos.x, j + 1 + backgroundPos.y));
         }
     }
 }

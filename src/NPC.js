@@ -6,7 +6,6 @@ var conver = []  ;
 window.addEventListener("DOMContentLoaded",()=>
 {
     console.log("Loaded");
-
    
 
     

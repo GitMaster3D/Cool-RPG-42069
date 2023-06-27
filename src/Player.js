@@ -103,7 +103,6 @@ window.addEventListener("DOMContentLoaded", () =>
     player.scale.x = 1;
     player.scale.y = 1;
 
-    cameraOffset = new Vector2(12, 7);
     window.addEventListener("OnUpdate", () =>
     {
       cameraPosition = new Vector2(

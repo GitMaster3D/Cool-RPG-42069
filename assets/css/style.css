@@ -6,6 +6,11 @@
 
 .Map
 {
-    transform: scale(1.5);
-    margin: 18%;
+    position: absolute;
+    left: auto;
+    right: auto;
+
+    image-rendering: -moz-crisp-edges;    /* Firefox */
+    image-rendering: -webkit-crisp-edges; /* Webkit (Safari) */
+    image-rendering: pixelated;           /* Chrome */
 }
