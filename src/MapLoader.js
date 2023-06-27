@@ -1,27 +1,39 @@
-async function extractVector2Arrays(name = "") {
+async function extractVector2Arrays(name = "", layerAmount = 2) {
     path = "./assets/maps/map"+mapx+"_"+mapy+".json";
     mapData = await GetTileset(path);
 
     const tilePositions = [];
     const tileIds = [];
 
-    let layer = mapData.layers[0];
-    const width = layer.width;
-    const height = layer.height;
+    
+    // Load each Layer
+    for (let j = 0; j < layerAmount; j++)
+    {
+        // Load single layer
+        let layer = mapData.layers[j];
+        const width = layer.width;
+        const height = layer.height;
 
-    for (let i = 0; i < layer.data.length; i++) {
-        const tileId = layer.data[i];
-        if (tileId !== 0) {
-            const x = i % width;
-            const y = Math.floor(i / width);
-            tilePositions.push([x, y]);
-            tileIds.push(tileId);
+        for (let i = 0; i < layer.data.length; i++) {
+            const tileId = layer.data[i];
+            if (tileId !== 0) {
+                const x = i % width;
+                const y = Math.floor(i / width);
+                tilePositions.push([x, y]);
+                tileIds.push(tileId);
+    
+                go = new GameObject(new Vector2(x, y), TileidToVec(tileId));
 
-            go = new GameObject(new Vector2(x, y), TileidToVec(tileId));
-
+                if (j == 1 && tileId == 65)
+                {
+                    go.walkable = false;
+                }
+            }
         }
     }
-    
+
+    // Old layer2 code
+    /*
     let layer2 = mapData.layers[1];
     for (let i = 0; i < layer2.data.length; i++) {
         const tileId = layer2.data[i];
@@ -40,7 +52,7 @@ async function extractVector2Arrays(name = "") {
             }
         }
     }
-    
+    */
 }
 
 
