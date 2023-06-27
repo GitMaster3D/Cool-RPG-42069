@@ -11,6 +11,7 @@ const rightInputEvent = new Event("RightInput");
 const leftInputEvent = new Event("LeftInput");
 const spaceInputEvent = new Event("SpaceInput");
 const minputEvent = new Event("MInput");
+const EInputEvent = new Event("EInputEvent");
 
 const upReleaseEvent = new Event("UpRelease");
 const downReleaseEvent = new Event("DownRelease");
@@ -18,6 +19,7 @@ const rightReleaseEvent = new Event("RightRelease");
 const leftReleaseEvent = new Event("LeftRelease");
 const spaceReleaseEvent = new Event("SpaceRelease");
 const mReleaseEvent = new Event("MRelease");
+const EReleaseEvent = new Event("ERelease");
 
 function KeyPress(key = "")
 {
@@ -46,6 +48,10 @@ function KeyPress(key = "")
         case "Space":
             window.dispatchEvent(spaceInputEvent);
         break;
+
+        case "KeyE":
+            window.dispatchEvent(EInputEvent);
+            break;
     }   
 }
 
@@ -77,5 +83,8 @@ function KeyRelease(key)
         case "Space":
             window.dispatchEvent(spaceReleaseEvent);
         break;
+        case "KeyE":
+            window.dispatchEvent(EReleaseEvent);
+            break;
     }   
 }
