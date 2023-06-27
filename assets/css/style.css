@@ -16,3 +16,8 @@
     image-rendering: -webkit-crisp-edges; /* Webkit (Safari) */
     image-rendering: pixelated;           /* Chrome */
 }
+
+.slider
+{
+    position: absolute;
+}

@@ -17,10 +17,11 @@ var backgroundHeight = 50;
 var backgroundPos;
 
 
-const pixelRatio = window.devicePixelRatio || 1;
-const globalScale = 2.5;
-const width = 800 * globalScale;
-const height = 600 * globalScale;
+var pixelRatio = 1;
+var globalScale = 2.5;
+var width = 800 * globalScale;
+var height = 600 * globalScale;
+var renderScale = 0.05; // How high the resolution is
 
 const xCamOffset = 13;
 const yCamOffset = 8;
@@ -318,12 +319,13 @@ async function OnUpdate()
   
 function UpdateAspect()
 {
-    canvas.width = width * pixelRatio;
-    canvas.height = height * pixelRatio;
+    pixelRatio = window.devicePixelRatio || 1;
+
+    canvas.width = width * renderScale;
+    canvas.height = height * renderScale;
     
     canvas.style.width = `${width / pixelRatio}px`;
     canvas.style.height = `${height / pixelRatio}px`;
-    
 
     context.mozImageSmoothingEnabled = false;  // firefox
     context.imageSmoothingEnabled = false;
@@ -404,7 +406,7 @@ function draw(spritesheetPos, spritePos, alpha = 1, scale = new Vector2(1, 1))
     
 
     context.globalAlpha = alpha;
-    context.scale(scale.x * pixelRatio * globalScale, scale.y * pixelRatio * globalScale);
+    context.scale(scale.x * renderScale * globalScale, scale.y * renderScale * globalScale);
 
     context.drawImage(sprites, spritesheetPos.x * spriteWidth, spritesheetPos.y * spriteHeight, spriteWidth, spriteHeight, 
         spriteWidth * spritePos.x / scale.x, spriteHeight * spritePos.y / scale.y, spriteWidth, spriteHeight);
