@@ -45,6 +45,7 @@ window.addEventListener("DOMContentLoaded", () =>
       cameraPosition = new Vector2(
            -Lerp(cameraPosition.x, player.pos.x, 0.5),
          -Lerp(cameraPosition.y, player.pos.y, 0.5)
+         
      );
 
         
@@ -62,7 +63,7 @@ window.addEventListener("DOMContentLoaded", () =>
     // Geladen wurde
     window.addEventListener("UpInput", () =>
     {
-
+        OnMapUpdate();                                                  //On map update guckt, auf welchem bereich der spieler ist und was er laden muss, (Funktion bei NPC unten)
         if(player.pos.y!=0){
         player.MoveY(1); //Bewege den Spieler um 1 nach oben
 
@@ -80,6 +81,7 @@ window.addEventListener("DOMContentLoaded", () =>
 
     window.addEventListener("RightInput",()=>
     {
+        OnMapUpdate();
         if(player.pos.x!=19){
         player.MoveX(1); //Bewege den Spieler um 1 nach rechts
         HasMoved=true;
@@ -97,6 +99,7 @@ window.addEventListener("DOMContentLoaded", () =>
 
     window.addEventListener("LeftInput",()=>
     {
+        OnMapUpdate();
         if(player.pos.x!=0){
         player.MoveX(-1); //Bewege den Spieler um 1 nach links
         HasMoved=true;
@@ -113,6 +116,7 @@ window.addEventListener("DOMContentLoaded", () =>
 
     window.addEventListener("DownInput",()=>
     {
+        OnMapUpdate();
         if(player.pos.y!=19){
         player.MoveY(-1); //Bewege den Spieler um 1 nach unten        
         HasMoved=true;

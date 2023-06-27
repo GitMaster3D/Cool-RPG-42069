@@ -7,8 +7,8 @@ window.addEventListener("DOMContentLoaded",()=>
 {
     console.log("Loaded");
 
-    NPC = new CoolGuy(new Vector2(8,4), new Vector2(4,2));  
-    NPC.ChangeDrawingOrder(100);
+   
+
     
         
         conver.push("Gott zum Gruße!");
@@ -21,6 +21,8 @@ window.addEventListener("DOMContentLoaded",()=>
         conver.push("Ihr werdet mir helfen dieses Monster zu töten nicht wahr?");
         conver.push("Beeilet euch! Sonst bringt Euch das Monster auch noch um!");
         conver.push("Ganz schön windig heute");
+
+        
         
 });
 
@@ -29,15 +31,17 @@ window.addEventListener("DOMContentLoaded",()=>
 
     window.addEventListener("TInput",()=>                                   //sobalt man vor dme NPC steht, redet man mit ihm mit "M"
     {
+        console.log("Tinput");
         if(Math.round(player.pos.x) == Math.round(NPCX) && Math.round(player.pos.y) == (Math.round(NPCY)+1))
         {
             Dialog();
         }
-          
+       
             
     });
 
-    
+
+
     function Dialog()
     {
         var zufallsx = Math.floor((Math.random() * conver.length));
@@ -51,5 +55,24 @@ window.addEventListener("DOMContentLoaded",()=>
         constructor(pos, sprite)
         {
             super(pos,sprite);
+        }
+    }
+
+    function OnMapUpdate()
+    {
+        if(mapx == 0 && mapy == 0)
+        {
+            NPC = new CoolGuy(new Vector2(NPCX,NPCY), new Vector2(4,2));  
+            NPC.ChangeDrawingOrder(100);
+        }
+        else 
+        {
+            
+        }
+    
+        if(mapx == 1 && mapy == 0)
+        {
+            NPC2 = new CoolGuy(new Vector2(10,2), new Vector2(0,3));
+            NPC2.ChangeDrawingOrder(100);
         }
     }
