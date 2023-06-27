@@ -63,7 +63,7 @@ window.addEventListener("DOMContentLoaded", () =>
     // Geladen wurde
     window.addEventListener("UpInput", () =>
     {
-        OnMapUpdate();                                                  //On map update guckt, auf welchem bereich der spieler ist und was er laden muss, (Funktion bei NPC unten)
+                                                         //On map update guckt, auf welchem bereich der spieler ist und was er laden muss, (Funktion bei NPC unten)
         if(player.pos.y!=0){
         player.MoveY(1); //Bewege den Spieler um 1 nach oben
 
@@ -75,13 +75,15 @@ window.addEventListener("DOMContentLoaded", () =>
             extractVector2Arrays()
             player.pos.y =19;
             HasMoved=false;
+            window.dispatchEvent(new Event("OnMapChange"));
 
+            console.log("Event stufF!");
         }
     });
 
     window.addEventListener("RightInput",()=>
     {
-        OnMapUpdate();
+       
         if(player.pos.x!=19){
         player.MoveX(1); //Bewege den Spieler um 1 nach rechts
         HasMoved=true;
@@ -92,14 +94,14 @@ window.addEventListener("DOMContentLoaded", () =>
             extractVector2Arrays()
             player.pos.x = 0;
             HasMoved=false;
-
+            window.dispatchEvent(new Event("OnMapChange"));
         }
 
     });
 
     window.addEventListener("LeftInput",()=>
     {
-        OnMapUpdate();
+       
         if(player.pos.x!=0){
         player.MoveX(-1); //Bewege den Spieler um 1 nach links
         HasMoved=true;
@@ -110,13 +112,13 @@ window.addEventListener("DOMContentLoaded", () =>
             extractVector2Arrays()
             player.pos.x = 19;
             HasMoved=false;
-
+            window.dispatchEvent(new Event("OnMapChange"));
         }
     });
 
     window.addEventListener("DownInput",()=>
     {
-        OnMapUpdate();
+      
         if(player.pos.y!=19){
         player.MoveY(-1); //Bewege den Spieler um 1 nach unten        
         HasMoved=true;
@@ -127,7 +129,7 @@ window.addEventListener("DOMContentLoaded", () =>
             extractVector2Arrays()
             player.pos.y = 0;
             HasMoved=false;
-
+            window.dispatchEvent(new Event("OnMapChange"));
         }
     })
 });
