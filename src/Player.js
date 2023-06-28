@@ -1,4 +1,9 @@
 var player;
+var moveDirection;
+var moveXTimer;
+var moveYTimer;
+const moveTime = 0.15;
+const camFollowSpeed = 15;
 
 // Klassen die mit "extends Gameobject" enden, also eine Erweiterung von Gameobject sind
 // können von der Engine automatisch Gerendert werden und enthalten
@@ -85,6 +90,10 @@ var newMap = "";
 
 window.addEventListener("DOMContentLoaded", () =>
 {
+    moveDirection = new Vector2(0, 0);
+    moveXTimer = moveTime;
+    moveYTimer = moveTime;
+
     // Jedes Gameobject benötigt einen Vector2 (Punkt auf einem Koordinatensystem) mit 
     // Einer x und einer Y koordinate als Position, und einen 2. der angiebt, welcher
     // Sprite aus dem Spritesheet gerendert werden soll
@@ -105,12 +114,54 @@ window.addEventListener("DOMContentLoaded", () =>
 
     window.addEventListener("OnUpdate", () =>
     {
-      cameraPosition = new Vector2(
-        -Lerp(cameraPosition.x, player.pos.x, 0.5),
-        -Lerp(cameraPosition.y, player.pos.y, 0.5)
-     );
+        moveXTimer -= deltaTime;
+        moveYTimer -= deltaTime;
 
-        
+        var move = new Vector2(
+            (player.pos.x - cameraPosition.x),
+            (player.pos.y - cameraPosition.y)
+        );
+
+        cameraPosition = new Vector2(cameraPosition.x + move.x * deltaTime * camFollowSpeed, cameraPosition.y + move.y * deltaTime * camFollowSpeed);
+
+        var movedX = false;
+        var movedY = false;
+        if (moveYTimer <= 0)
+        {
+            if (moveDirection.y == 1)
+            {
+                MoveUp();
+                movedY = true;
+            }
+    
+            if (moveDirection.y == -1)
+            {
+                MoveDown();
+                movedY = true;
+            }
+    
+            if (movedY)
+                moveYTimer = moveTime;
+        }
+
+        if (moveXTimer <= 0)
+        {
+            if (moveDirection.x == -1)
+            {
+                MoveLeft();
+                movedX = true;
+            }
+    
+            if (moveDirection.x == 1)
+            {
+                MoveRight();
+                movedX = true;
+            }
+
+
+            if (movedX)
+                moveXTimer = moveTime;
+        }
     });
 
     // mit addeventlistener kann man nach events lauschen. 
@@ -125,51 +176,99 @@ window.addEventListener("DOMContentLoaded", () =>
     // Geladen wurde
     window.addEventListener("UpInput", () =>
     {
-        if(player.pos.y!=0){
-        player.MoveY(1); //Bewege den Spieler um 1 nach oben
+        moveDirection.y = 1;
+    });
 
-        HasMoved=true;
+    window.addEventListener("RightInput",()=>
+    {
+        moveDirection.x = 1;
+    });
+
+    window.addEventListener("LeftInput",()=>
+    {
+        moveDirection.x = -1;
+    });
+
+    window.addEventListener("DownInput",()=>
+    {
+        moveDirection.y = -1;
+    })
+
+
+    window.addEventListener("DownRelease", () =>
+    {
+        if (moveDirection.y == -1)
+        {
+            moveDirection.y = 0;
         }
- 
+    });
+
+    window.addEventListener("UpRelease", () =>
+    {
+        if (moveDirection.y == 1)
+        {
+            moveDirection.y = 0;
+        }
+    });
+
+    window.addEventListener("LeftRelease", () =>
+    {
+        if (moveDirection.x == -1)
+        {
+            moveDirection.x = 0;
+        }
+    });
+
+    window.addEventListener("RightRelease", () =>
+    {
+        if (moveDirection.x == 1)
+        {
+            moveDirection.x = 0;
+        }
+    });
+    
+    
+    function MoveUp()
+    {
+        if(player.pos.y!=0){
+            player.MoveY(1); //Bewege den Spieler um 1 nach oben
+    
+            HasMoved=true;
+        }
+    
         if(player.pos.y<=0&&HasMoved){
             mapy--;
             extractVector2Arrays()
             player.pos.y =19;
             HasMoved=false;
             window.dispatchEvent(new Event("OnMapChange"));
-
-            console.log("Event stufF!");
-
-        }
-    });
-
-    window.addEventListener("RightInput",()=>
+        }   
+    }
+    
+    function MoveDown()
     {
-        if(player.pos.x!=19){
-        player.MoveX(1); //Bewege den Spieler um 1 nach rechts
-        HasMoved=true;
+        if(player.pos.y!=19){
+            player.MoveY(-1); //Bewege den Spieler um 1 nach unten        
+            HasMoved=true;
         }
-
-        if(player.pos.x>=19&&HasMoved){
-            mapx++;
+    
+        if(player.pos.y>=19&&HasMoved){
+            mapy++;
             extractVector2Arrays()
-            player.pos.x = 0;
+            player.pos.y = 0;
             HasMoved=false;
 
             window.dispatchEvent(new Event("OnMapChange"));
         }
+    }
 
-
-    });
-
-    window.addEventListener("LeftInput",()=>
+    function MoveLeft()
     {
-
         if(player.pos.x!=0){
-        player.MoveX(-1); //Bewege den Spieler um 1 nach links
-        HasMoved=true;
+            player.MoveX(-1); //Bewege den Spieler um 1 nach links
+            HasMoved=true;
         }
-
+    
         if(player.pos.x<=0&&HasMoved){
             mapx--;
             extractVector2Arrays()
@@ -179,22 +278,23 @@ window.addEventListener("DOMContentLoaded", () =>
             window.dispatchEvent(new Event("OnMapChange"));
 
         }
-    });
+    }
 
-    window.addEventListener("DownInput",()=>
+    function MoveRight()
     {
-        if(player.pos.y!=19){
-        player.MoveY(-1); //Bewege den Spieler um 1 nach unten        
-        HasMoved=true;
+        if(player.pos.x!=19){
+            player.MoveX(1); //Bewege den Spieler um 1 nach rechts
+            HasMoved=true;
         }
-
-        if(player.pos.y>=19&&HasMoved){
-            mapy++;
+    
+        if(player.pos.x>=19&&HasMoved){
+            mapx++;
             extractVector2Arrays()
-            player.pos.y = 0;
+            player.pos.x = 0;
             HasMoved=false;
 
             window.dispatchEvent(new Event("OnMapChange"));
         }
-    })
+    
+    }
 });

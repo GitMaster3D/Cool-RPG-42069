@@ -7,7 +7,7 @@ slider.addEventListener("input", (event) =>
     UpdateAspect();
 });
 
-window.addEventListener("resize", () =>
+window.addEventListener("resize",() =>
 {
     UpdateAspect();
 });

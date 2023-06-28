@@ -429,7 +429,7 @@ function draw(spritesheetPos, spritePos, alpha = 1, scale = new Vector2(1, 1))
 function drawGO(gameobject = GameObject)
 {
     if (gameObjects === undefined) return;
-    draw(gameobject.spritesheetPos, new Vector2(gameobject.pos.x + cameraPosition.x + cameraOffset.x, gameobject.pos.y + cameraPosition.y + cameraOffset.y), gameobject.alpha, gameobject.scale);
+    draw(gameobject.spritesheetPos, new Vector2(gameobject.pos.x - cameraPosition.x + cameraOffset.x, gameobject.pos.y - cameraPosition.y + cameraOffset.y), gameobject.alpha, gameobject.scale);
 }
 
 //Draws given Background
