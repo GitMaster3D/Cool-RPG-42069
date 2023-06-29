@@ -12,8 +12,19 @@ var spriteSheetWidth = 64;
 var cameraPosition;
 var cameraOffset;
 
-var backgroundWidth = 20;
-var backgroundHeight = 20;
+var backgroundWidth = 100;
+var backgroundHeight = 50;
+var backgroundPos;
+
+
+var pixelRatio = 1;
+var globalScale = 2.5;
+var width = 800 * globalScale;
+var height = 600 * globalScale;
+var renderScale = 1; // How high the resolution is
+
+const xCamOffset = 13;
+const yCamOffset = 8;
 
 var drawBuffer = {};
 
@@ -29,6 +40,7 @@ class GameObject
     constructor(pos = Vector2, spritesheetPos = Vector2, alpha = 1, scale = new Vector2(1, 1), drawingOrder = 0) 
     {
         this.pos = pos;
+        this.walkable = true;
 
         this.scale = scale;
         
@@ -110,6 +122,17 @@ class GameObject
         this.alive = false;
         delete gameObjects[this.id];
         needsUpdate = true;
+
+        
+        if (!this.suppressPosition && typeof currentTiles[this.pos.x][this.pos.y] !== undefined)
+        {
+            let index = currentTiles[this.pos.x][this.pos.y].indexOf(this);
+            if (index > -1) 
+            { // only splice array when item is found
+                // 2nd parameter means remove one item only
+                currentTiles[Math.floor(this.pos.x)][Math.floor(this.pos.y)].splice(index, 1);
+            }
+        }
     }
 
     SetPos(potition = Vector2)
@@ -197,7 +220,7 @@ class MapSprites
 }
 
 var autoName_ = 0;
-var standartSprite = new Vector2(23, 16);
+var standartSprite = new Vector2(20, 19);
 var gameObjects = {}; //Keep track of all instanciated Game objects
 var pressedKeys = {}; //Keep track of all keys currently pressed
 
@@ -249,8 +272,8 @@ function UpdateItems()
 
 // Area in wich the Background should be drawn
 var background = new MapSprites(
-    new Vector2(1, 1),
-    new Vector2(backgroundWidth, backgroundHeight),
+    new Vector2(-backgroundWidth / 2, -backgroundHeight / 2),
+    new Vector2(backgroundWidth / 2, backgroundHeight / 2),
     standartSprite
 );
 
@@ -305,12 +328,28 @@ async function OnUpdate()
 }
 
   
+function UpdateAspect()
+{
+    pixelRatio = window.devicePixelRatio || 1;
 
+    canvas.width = width * renderScale;
+    canvas.height = height * renderScale;
+    
+    canvas.style.width = `${width / pixelRatio}px`;
+    canvas.style.height = `${height / pixelRatio}px`;
 
+    context.mozImageSmoothingEnabled = false;  // firefox
+    context.imageSmoothingEnabled = false;
+}
 
 // Initialize the game Engine
 function Init()
 {
+    backgroundPos = new Vector2(-backgroundWidth / 2, -backgroundHeight / 2);
+    cameraOffset = new Vector2(xCamOffset, yCamOffset);
+
+    UpdateAspect();
+    
     // 2D array for all tiles
     currentTiles = new Array(backgroundWidth);
     for (var i = 0; i < backgroundWidth; i++)
@@ -375,8 +414,10 @@ function draw(spritesheetPos, spritePos, alpha = 1, scale = new Vector2(1, 1))
 {
     context.save();
 
+    
+
     context.globalAlpha = alpha;
-    context.scale(scale.x, scale.y);
+    context.scale(scale.x * renderScale * globalScale, scale.y * renderScale * globalScale);
 
     context.drawImage(sprites, spritesheetPos.x * spriteWidth, spritesheetPos.y * spriteHeight, spriteWidth, spriteHeight, 
         spriteWidth * spritePos.x / scale.x, spriteHeight * spritePos.y / scale.y, spriteWidth, spriteHeight);
@@ -388,7 +429,7 @@ function draw(spritesheetPos, spritePos, alpha = 1, scale = new Vector2(1, 1))
 function drawGO(gameobject = GameObject)
 {
     if (gameObjects === undefined) return;
-    draw(gameobject.spritesheetPos, new Vector2(gameobject.pos.x + cameraPosition.x + cameraOffset.x, gameobject.pos.y + cameraPosition.y + cameraOffset.y), gameobject.alpha, gameobject.scale);
+    draw(gameobject.spritesheetPos, new Vector2(gameobject.pos.x - cameraPosition.x + cameraOffset.x, gameobject.pos.y - cameraPosition.y + cameraOffset.y), gameobject.alpha, gameobject.scale);
 }
 
 //Draws given Background
@@ -398,7 +439,7 @@ function drawBG(mapSprites = MapSprites)
     {
         for (let j = 0; j < (mapSprites.endPos.y - mapSprites.startPos.y); j++)
         {
-            draw(mapSprites.sprite, new Vector2(i + 1, j + 1));
+            draw(mapSprites.sprite, new Vector2(i + 1 + backgroundPos.x, j + 1 + backgroundPos.y));
         }
     }
 }

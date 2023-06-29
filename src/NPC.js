@@ -1,17 +1,53 @@
-var NPC;
-var NPCX = 8;
-var NPCY = 4;
-var NPC2;
+
+var VILX = 5;
+var VILY = 3;
+
+var OGRX = 4;
+var OGRY = 4;
+
+var DRAGX = 9;
+var DRAGY = 5;
+
+var FRagezX = 5;
+var FRagezY = 6;
+
+var NPCVILloaded = true;
+var NPCOGRloaded = true;
+var NPCDRAGloaded = true;
+var NPCFRAGloaded = true;
+
+var Villager;
+var ogre;
+var fDragon;
+var FRagez;
+
 var conver = []  ;
-var nppos = 0;
-var NPC1loaded = true;
-var NPC;
-var NPC2;
-var NPC2loaded;
+var NPCsx = [];
+var NPCsy = [];
+
 window.addEventListener("DOMContentLoaded",()=>
 {
-    NPC = new CoolGuy(new Vector2(NPCX,NPCY), new Vector2( 4, 2));  
-    NPC2 = new CoolGuy(new Vector2(6,8), new Vector2(0,3));
+    
+  
+    Villager = new CoolGuy(new Vector2(VILX,VILY), new Vector2( 4, 2));  
+    ogre = new CoolGuy(new Vector2(OGRX,OGRY), new Vector2(0,3));
+    fDragon = new CoolGuy(new Vector2(DRAGX,DRAGY), new Vector2(2,3));
+    FRagez = new CoolGuy(new Vector2(DRAGX,DRAGY), new Vector2(0,21));
+
+
+        NPCsx.push(VILX);
+        NPCsx.push(OGRX);
+        NPCsx.push(DRAGX);
+        NPCsx.push(FRagezX);
+
+        NPCsy.push(VILY);
+        NPCsy.push(OGRY);
+        NPCsy.push(DRAGY);
+        NPCsy.push(FRagezY);
+
+
+
+
         conver.push("Gott zum Gruße!");
         conver.push("Habet Dank");
         conver.push("Am gestrigen Tage..");
@@ -29,46 +65,77 @@ window.addEventListener("DOMContentLoaded",()=>
 
 function UpdateNPC()
 {
-    if(mapx == 0 && mapy == 0)
+    if(mapx == 2 && mapy == 3)
     {
-        NPC1loaded = true;
-        NPC.alpha = 1;
-        NPC.ChangeDrawingOrder(100);
+       
+        NPCVILloaded = true;
+        Villager.alpha = 1;
+        Villager.ChangeDrawingOrder(100);
     }
     else 
     {
-        NPC1loaded = false;  
-        NPC.alpha = 0.0;
+        NPCVILloaded = false;  
+        Villager.alpha = 0.0;
     }
 
-    if(mapx == 1 && mapy == 0)
+
+    if(mapx == 3 && mapy == 3)
     {
-        NPC2loaded = true;
-        NPC2.alpha = 1.0
-        NPC2.ChangeDrawingOrder(100);
+     
+        NPCOGRloaded = true;
+        ogre.alpha = 1.0
+        ogre.ChangeDrawingOrder(100);
     }
     else 
     {
-        NPC2loaded = false;
-        NPC2.alpha = 0.0;  
+        NPCOGRloaded = false;
+        ogre.alpha = 0.0;  
+    }
+
+    /*if(mapx == 3 && mapy == 2)
+    {
+        
+        NPCFRAGloaded = true;
+        FRagez.alpha = 1.0
+        Fraget.ChangeDrawingOrder(100);                             //platzhalter
+    }
+    else 
+    {
+        NPCFRAGloaded = false;
+        FRagez.alpha = 0.0;  
+    }*/
+
+
+    if(mapx == 2 && mapy == 2)
+    {
+        
+        NPCDRAGloaded = true;
+        fDragon.alpha = 1.0
+        fDragon.ChangeDrawingOrder(100);
+    }
+    else 
+    {
+        NPCDRAGloaded = false;
+        fDragon.alpha = 0.0;  
     }
 }
 
     window.addEventListener("OnMapChange",()=>{
-        console.log(NPC1loaded);
+        console.log("map x,y"+ mapx + "" + mapy);
+        console.log(NPCVILloaded);
         UpdateNPC();
     });
 
 
     window.addEventListener("TInput",()=>                                   //sobalt man vor dme NPC steht, redet man mit ihm mit "T"
     {
-        console.log(mapx);
-        console.log(mapy);
-        console.log(NPC1loaded);
-        if(Math.round(player.pos.x) == Math.round(NPCX) && Math.round(player.pos.y) == (Math.round(NPCY)+1))
-        {
-            Dialog();
+        for (var i = 0;i < NPCsx.length; i++){
+            if(Math.round(player.pos.x) == Math.round(NPCsx[i]) && Math.round(player.pos.y) == (Math.round(NPCsy[i])+1))
+            {
+                Dialog();
+            }
         }
+       
        
             
     });
@@ -77,11 +144,21 @@ function UpdateNPC()
 
     function Dialog()
     {
-        if (NPC1loaded == true){
+        if (NPCVILloaded == true){
             var zufallsx = Math.floor((Math.random() * conver.length));
             alert(conver[zufallsx]);
         }
-        
+
+        if (NPCOGRloaded == true)
+        {
+            alert("ughrahr");
+        }
+
+        if (NPCDRAGloaded == true) 
+        {
+            alert("bwuah *spits fire*");
+        }
+      
     }
 
     class CoolGuy extends GameObject
