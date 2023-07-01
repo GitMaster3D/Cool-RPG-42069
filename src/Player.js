@@ -10,9 +10,78 @@ class Player extends GameObject {
       // erweitert wird, hier Gameobject.
       // Dies wird hier benötigt, damit es richtig funktioniert
       super(pos, spritesheetPos);
+    }
+
+    WalkableCheck(xmove, ymove)
+    {
+        var arr = currentTiles[Math.floor(this.pos.x + xmove)][Math.floor(this.pos.y + ymove)];
+
+        for (var i = 0; i < arr.length; i++)
+        {
+            if (!arr[i].walkable)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    MoveX(amount)
+    {
+        if (!this.WalkableCheck(amount, 0))
+        {
+            return;
+        }
+
+        if (!this.suppressPosition)
+            this.InvalidatePosition(this.pos);
+
+        this.pos.x += amount;
+
+        if (!this.suppressPosition)
+            this.UpdatePosition();
 
     }
+
+    MoveY(amount)
+    {
+        if (!this.WalkableCheck(0, -amount))
+        {
+            return;
+        }
+
+        if (!this.suppressPosition)
+            this.InvalidatePosition(this.pos);
+
+        this.pos.y -= amount;
+
+        if (!this.suppressPosition)
+            this.UpdatePosition();
+
+    }
+
+    Move(amount_Vec = Vector2)
+    {
+        if (!this.WalkableCheck(amount_Vec.x, -amount_Vec.y))
+        {
+            return;
+        }
+
+        if (!this.suppressPosition)
+            this.InvalidatePosition(this.pos);
+
+        this.pos.Add(amount_Vec);
+
+        if (!this.suppressPosition)
+            this.UpdatePosition();
+    }
 }
+
+var HasMoved = false;
+var mapx = 0;
+var mapy = 0;
+var newMap = "";
 
 window.addEventListener("DOMContentLoaded", () =>
 {
@@ -22,6 +91,7 @@ window.addEventListener("DOMContentLoaded", () =>
     //
     // Um eine Klasse die Gameobject erweitert oder ein Gameobject loszuwerden
     // kann man .Destroy() verwenden. hier also player.Destroy();
+
     player = new Player(new Vector2(4, 7), new Vector2(37, 31));
 
     // Drawingorder auf 100 damit es vor der map gerendert wird
@@ -29,18 +99,17 @@ window.addEventListener("DOMContentLoaded", () =>
 
     // mit .alpha kann die Transparenz verändert Werden
     player.alpha = 1;
-
     // mit .scale kann die größe von gameobjects verändert werden
     player.scale.x = 1;
     player.scale.y = 1;
 
-    cameraOffset = new Vector2(12, 7);
     window.addEventListener("OnUpdate", () =>
     {
-        cameraPosition = new Vector2(
-            -Lerp(cameraPosition.x, player.pos.x, 0.5),
-            -Lerp(cameraPosition.y, player.pos.y, 0.5)
-        );
+      cameraPosition = new Vector2(
+        -Lerp(cameraPosition.x, player.pos.x, 0.5),
+        -Lerp(cameraPosition.y, player.pos.y, 0.5)
+     );
+
         
     });
 
@@ -56,30 +125,66 @@ window.addEventListener("DOMContentLoaded", () =>
     // Geladen wurde
     window.addEventListener("UpInput", () =>
     {
-            player.MoveY(1); //Bewege den Spieler um 1 nach oben   
+        if(player.pos.y!=0){
+        player.MoveY(1); //Bewege den Spieler um 1 nach oben
+
+        HasMoved=true;
+        }
+ 
+        if(player.pos.y<=0&&HasMoved){
+            mapy--;
+            extractVector2Arrays()
+            player.pos.y =19;
+            HasMoved=false;
+
+        }
     });
 
     window.addEventListener("RightInput",()=>
     {
-            player.MoveX(1); //Bewege den Spieler um 1 nach rechts
+        if(player.pos.x!=19){
+        player.MoveX(1); //Bewege den Spieler um 1 nach rechts
+        HasMoved=true;
+        }
+
+        if(player.pos.x>=19&&HasMoved){
+            mapx++;
+            extractVector2Arrays()
+            player.pos.x = 0;
+            HasMoved=false;
+
+        }
     });
 
     window.addEventListener("LeftInput",()=>
     {
-            player.MoveX(-1); //Bewege den Spieler um 1 nach links
-        
+        if(player.pos.x!=0){
+        player.MoveX(-1); //Bewege den Spieler um 1 nach links
+        HasMoved=true;
+        }
+
+        if(player.pos.x<=0&&HasMoved){
+            mapx--;
+            extractVector2Arrays()
+            player.pos.x = 19;
+            HasMoved=false;
+
+        }
     });
 
     window.addEventListener("DownInput",()=>
     {
-            player.MoveY(-1); //Bewege den Spieler um 1 nach unten
+        if(player.pos.y!=19){
+        player.MoveY(-1); //Bewege den Spieler um 1 nach unten        
+        HasMoved=true;
+        }
+
+        if(player.pos.y>=19&&HasMoved){
+            mapy++;
+            extractVector2Arrays()
+            player.pos.y = 0;
+            HasMoved=false;
+
+        }
     })
-
-
-        // Wenn ein Gameobject manuell bewegt werden soll (ohne Move methode)
-    // Muss die Position invalidiert und danach geupdatet werden
-    // (Damit currentTiles funktioniert)
-    player.InvalidatePosition(player.pos);
-    player.pos.y -= 1;
-    player.UpdatePosition();
 });
