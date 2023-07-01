@@ -3,6 +3,7 @@ var currentMapTiles = [];
 
 
 async function extractVector2Arrays(layerAmount = 2) {
+
     window.dispatchEvent(new Event("MapLoad"));
 
 
@@ -65,8 +66,6 @@ function TileidToVec(id = 0) {
 
 window.addEventListener("MapLoad", () =>
 {
-    console.log(mapx);
-    console.log(mapy);
 
     for (let i = 0; i < currentMapTiles.length; i++)
     {
@@ -86,5 +85,6 @@ window.addEventListener("MapLoad", () =>
             gameObjects[key].enabled = false;
         }
     }
+
 
 });
