@@ -9,7 +9,7 @@ const camFollowSpeed = 15;
 // können von der Engine automatisch Gerendert werden und enthalten
 // nützliche Funktionen wie z.b. MoveX, moveY, Destroy und SetPos
 class Player extends GameObject {
-    constructor(pos, spritesheetPos) {
+    constructor(pos, spritesheetPos, health) {
     
       // Super ruft den Konstruktor der klasse auf, die
       // erweitert wird, hier Gameobject.
@@ -17,8 +17,10 @@ class Player extends GameObject {
       super(pos, spritesheetPos);
 
 
-      this.health = 10;
+      this.health = 24;
+      this.maxHealth = 24;
       this.dead = false;
+
     }
 
     WalkableCheck(xmove, ymove)
@@ -135,6 +137,7 @@ window.addEventListener("DOMContentLoaded", () =>
 
     player = new Player(new Vector2(4, 7), new Vector2(37, 31));
     player.activeEverywhere = true; 
+
 
     // Drawingorder auf 100 damit es vor der map gerendert wird
     player.ChangeDrawingOrder(100);

@@ -1,6 +1,6 @@
 var drawBackground = false;
 
-var canvas = document.querySelector("canvas");
+var canvas = document.querySelector(".Map canvas");
 var context = canvas.getContext("2d");
 var sprites = new Image();
 sprites.src = "./assets/images/Tileset.png";
@@ -49,6 +49,8 @@ class GameObject {
         this.id = 0;
         this.alpha = alpha;
         this.drawingOrder = drawingOrder;
+
+        this.name = this.constructor.name;
 
         this.suppressPosition = false; //Prevents this from being shown in currentTiles
 
