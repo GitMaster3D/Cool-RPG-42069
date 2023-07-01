@@ -37,15 +37,13 @@ var needsUpdate = true;
 
 // Extend this to create objects that are visible easily
 // The Constructor of the base class must be called with super() when extending in order to make this work
-class GameObject
-{
-    constructor(pos = Vector2, spritesheetPos = Vector2, alpha = 1, scale = new Vector2(1, 1), drawingOrder = 0) 
-    {
+class GameObject {
+    constructor(pos = Vector2, spritesheetPos = Vector2, alpha = 1, scale = new Vector2(1, 1), drawingOrder = 0) {
         this.pos = pos;
         this.walkable = true;
 
         this.scale = scale;
-        
+
         this.spritesheetPos = spritesheetPos;
         this.alive = true;
         this.id = 0;
@@ -62,17 +60,31 @@ class GameObject
         SpawnGO(this);
     }
 
-    SetID(id)
-    {
+
+    LoadSave(cgo) {
+        console.log("overwriting values");
+        this.pos = cgo.pos;
+        this.scale = cgo.scale;
+        this.spritesheetPos = cgo.spritesheetPos;
+        this.alive = cgo.alive;
+        this.id = cgo.id;
+        this.alpha = cgo.alpha;
+        this.suppressPosition = cgo.suppressPosition;
+    }
+
+    SetID(id) {
         if (!this.enabled) return;
 
+        
         this.id = id;
         needsUpdate = true;
     }
 
+
     MoveX(amount)
     {
         if (!this.enabled) return;
+
 
         if (!this.suppressPosition)
             this.InvalidatePosition(this.pos);
@@ -83,9 +95,11 @@ class GameObject
             this.UpdatePosition();
     }
 
+
     MoveY(amount)
     {
         if (!this.enabled) return;
+
 
         if (!this.suppressPosition)
             this.InvalidatePosition(this.pos);
@@ -100,6 +114,7 @@ class GameObject
     {
         if (!this.enabled) return;
 
+
         if (!this.suppressPosition)
             this.InvalidatePosition(this.pos);
 
@@ -113,13 +128,14 @@ class GameObject
     {
         if (!this.enabled) return;
 
+
         let index = currentTiles[lastPosition.x][lastPosition.y].indexOf(this);
-        if (index > -1) 
-        { // only splice array when item is found
+        if (index > -1) { // only splice array when item is found
             // 2nd parameter means remove one item only
             currentTiles[Math.floor(lastPosition.x)][Math.floor(lastPosition.y)].splice(index, 1);
         }
     }
+
         
     UpdatePosition()
     {
@@ -128,16 +144,13 @@ class GameObject
         currentTiles[Math.floor(this.pos.x)][Math.floor(this.pos.y)].push(this);       
     }
 
-    OnDraw()
-    {
-        if (this.alive)
-        {
+    OnDraw() {
+        if (this.alive) {
             drawBuffer[this.id] = this;
         }
     }
 
-    Destroy()
-    {
+    Destroy() {
         this.alive = false;
         delete gameObjects[this.id];
         needsUpdate = true;
@@ -154,9 +167,11 @@ class GameObject
         }
     }
 
+
     SetPos(potition = Vector2)
     {
         if (!this.enabled) return;
+
 
         this.InvalidatePosition(this.pos);
         this.pos = potition;
@@ -173,73 +188,66 @@ class GameObject
 }
 
 // Used as Position Data
-class Vector2
-{
-    constructor(x = 0, y = 0)
-    {
+class Vector2 {
+    constructor(x = 0, y = 0) {
         this.x = x;
         this.y = y;
     }
 
-    Add(addVector = Vector2)
-    {
+    Add(addVector = Vector2) {
         this.x += addVector.x;
         this.y += addVector.y;
 
         return this;
     }
 
-    Substract(substractVector = Vector2)
-    {
+    Substract(substractVector = Vector2) {
         this.x -= substractVector.x;
         this.y -= substractVector.y;
 
         return this;
     }
 
-    SubstractClamped(substractVector = Vector2, minX, minY, maxX, maxY)
-    {
+    SubstractClamped(substractVector = Vector2, minX, minY, maxX, maxY) {
         this.x = Clamp(this.x - substractVector.x, minX, maxX);
         this.y = Clamp(this.y - substractVector.y, minY, maxY);
 
         return this;
     }
 
-    LerpUnclamped(vector = Vector2, t)
-    {
+    LerpUnclamped(vector = Vector2, t) {
         this.x = LerpUnclamped(this.x, vector.x, t);
         this.y = LerpUnclamped(this.y, vector.y, t);
 
         return this;
     }
 
-    Lerp(vector = Vector2, t)
-    {
+    Lerp(vector = Vector2, t) {
         this.x = Lerp(this.x, vector.x, t);
         this.y = Lerp(this.y, vector.y, t);
 
         return this;
     }
 
-    Divide(divisionNumber)
-    {
+    Divide(divisionNumber) {
         this.x /= divisionNumber;
         this.y /= divisionNumber;
 
         return this;
     }
 
-    Multiply(multiplicationNumber)
-    {
+    Multiply(multiplicationNumber) {
         this.x *= multiplicationNumber;
         this.y *= multiplicationNumber;
 
         return this;
     }
 
+
     Normalize()
     {
         var magnitude = GetVectorMagnitude(this);
+
         this.x /= magnitude;
         this.y /= magnitude;
 
@@ -277,10 +285,8 @@ class Vector2
 }
 
 // used to Determine in wich area the Background should be drawn
-class MapSprites
-{
-    constructor(startPos = Vector2, endPos = Vector2, sprite = Vector2)
-    {
+class MapSprites {
+    constructor(startPos = Vector2, endPos = Vector2, sprite = Vector2) {
         this.startPos = startPos;
         this.endPos = endPos;
         this.sprite = sprite;
@@ -309,8 +315,7 @@ var gameObjects = {}; //Keep track of all instanciated Game objects
 var pressedKeys = {}; //Keep track of all keys currently pressed
 
 // Call this to create a simple GameObject
-function InstanciateGO(pos = Vector2, sprite = Vector2)
-{
+function InstanciateGO(pos = Vector2, sprite = Vector2) {
     var go = new GameObject(pos, sprite);
     gameObjects[++autoName_] = go;
     go.SetID(autoName_);
@@ -320,8 +325,7 @@ function InstanciateGO(pos = Vector2, sprite = Vector2)
 
 // Call this for extensions of Gameobjects and Gameobjects that 
 // already have been created
-function SpawnGO(GameObject)
-{
+function SpawnGO(GameObject) {
     var go = GameObject;
     gameObjects[++autoName_] = go;
     go.SetID(autoName_);
@@ -376,12 +380,10 @@ function OnUpdate()
     var dt = (now - lastUpdate) / 1000;
     lastUpdate = now;
 
-    if (dt > 10)
-    {
+    if (dt > 10) {
         console.error("Frametime was over 10s!");
     }
-    else
-    {
+    else {
         deltaTime = dt;
     }
 
@@ -400,35 +402,34 @@ function OnUpdate()
 
 
     //Draw background
-    if (drawBackground)
-    {
+    if (drawBackground) {
         drawBG(background);
     }
 
     // Create Draw Buffer
-    for (const [key, value] of Object.entries(gameObjects))
-    {
+    for (const [key, value] of Object.entries(gameObjects)) {
         gameObjects[key].OnDraw();
     }
-    
+
     UpdateItems();
+
     // Draw Gameobjects
-    for (var i = 0; i < items.length; i++)
-    {
+    for (var i = 0; i < items.length; i++) {
         drawGO(items[i]);
     }
     drawBuffer = {};
     
     //Reset global alpha from drawing
     context.globalAlpha = 1;
-    
+
     window.dispatchEvent(updateEvent);
 }
 
-  
+
 function UpdateAspect()
 {
     pixelRatio = window.devicePixelRatio || 1;
+
 
     canvas.width = width * renderScale;
     canvas.height = height * renderScale;
@@ -448,28 +449,26 @@ function Init()
 
     UpdateAspect();
     
+
     // 2D array for all tiles
     currentTiles = new Array(backgroundWidth);
-    for (var i = 0; i < backgroundWidth; i++)
-    {
+    for (var i = 0; i < backgroundWidth; i++) {
         currentTiles[i] = new Array(backgroundHeight);
-        for (var j = 0; j < backgroundHeight; j++)
-        {
+        for (var j = 0; j < backgroundHeight; j++) {
             currentTiles[i][j] = new Array();
         }
     }
 
     // Listen for Key Down Events
     document.addEventListener('keydown', (event) => {
-    var name = event.key;
-    var code = event.code;
-    
-    if (pressedKeys[code] == false || pressedKeys[code] == null)
-    {
-        KeyPress(code);
-    }
+        var name = event.key;
+        var code = event.code;
 
-    pressedKeys[code] = true;
+        if (pressedKeys[code] == false || pressedKeys[code] == null) {
+            KeyPress(code);
+        }
+
+        pressedKeys[code] = true;
 
     }, false);
 
@@ -477,19 +476,18 @@ function Init()
     document.addEventListener('keyup', (event) => {
         var name = event.key;
         var code = event.code;
-        
-        if (pressedKeys[code] == true || pressedKeys[code] == null)
-        {
+
+        if (pressedKeys[code] == true || pressedKeys[code] == null) {
             KeyRelease(code);
         }
 
         pressedKeys[code] = false;
-        }, false);
+    }, false);
 
 
     window.main = () => {
         window.requestAnimationFrame(main);
-        
+
         OnUpdate();
     };
 
@@ -512,8 +510,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
 //Draws sprite at Position
-function draw(spritesheetPos, spritePos, alpha = 1, scale = new Vector2(1, 1))
-{
+function draw(spritesheetPos, spritePos, alpha = 1, scale = new Vector2(1, 1)) {
     context.save();
 
     
@@ -521,7 +518,7 @@ function draw(spritesheetPos, spritePos, alpha = 1, scale = new Vector2(1, 1))
     context.globalAlpha = alpha;
     context.scale(scale.x * renderScale * globalScale, scale.y * renderScale * globalScale);
 
-    context.drawImage(sprites, spritesheetPos.x * spriteWidth, spritesheetPos.y * spriteHeight, spriteWidth, spriteHeight, 
+    context.drawImage(sprites, spritesheetPos.x * spriteWidth, spritesheetPos.y * spriteHeight, spriteWidth, spriteHeight,
         spriteWidth * spritePos.x / scale.x, spriteHeight * spritePos.y / scale.y, spriteWidth, spriteHeight);
 
     context.restore();
@@ -550,7 +547,6 @@ function drawBG(mapSprites = MapSprites)
 
 
 //Clears sprites
-function clear()
-{
-    context.clearRect(0,0,2500,2500);
+function clear() {
+    context.clearRect(0, 0, 2500, 2500);
 }
