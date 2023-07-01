@@ -20,7 +20,7 @@ window.addEventListener("DOMContentLoaded",()=>
 
     // Sorgt dafür dass NPCS2 überall aktiv ist (keine ahnung was der macht)
     NPC2.activeEverywhere = true;
-
+    
     conver.push("Gott zum Gruße!");
     conver.push("Habet Dank");
     conver.push("Am gestrigen Tage..");
@@ -31,7 +31,7 @@ window.addEventListener("DOMContentLoaded",()=>
     conver.push("Ihr werdet mir helfen dieses Monster zu töten nicht wahr?");
     conver.push("Beeilet euch! Sonst bringt Euch das Monster auch noch um!");
     conver.push("Ganz schön windig heute");
-
+    
     NPC.ChangeDrawingOrder(100);
     NPC2.ChangeDrawingOrder(100);
 

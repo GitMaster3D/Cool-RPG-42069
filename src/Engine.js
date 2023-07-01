@@ -11,8 +11,8 @@ var spriteSheetWidth = 64;
 
 var cameraPosition;
 var cameraOffset;
-var camShakeAmount;
-var camShakeIntensity;
+var camShakeAmount = 0;
+var camShakeIntensity = 0;
 
 var backgroundWidth = 100;
 var backgroundHeight = 50;
@@ -130,8 +130,6 @@ class GameObject
 
     OnDraw()
     {
-        if (!this.enabled) return;
-
         if (this.alive)
         {
             drawBuffer[this.id] = this;
@@ -140,8 +138,6 @@ class GameObject
 
     Destroy()
     {
-        if (!this.enabled) return;
-
         this.alive = false;
         delete gameObjects[this.id];
         needsUpdate = true;
@@ -372,7 +368,7 @@ var deltaTime = 0.01;
 var lastUpdate = 0.01;
 
 // Get called each frame
-async function OnUpdate()
+function OnUpdate()
 {
     clear();
 
@@ -414,7 +410,7 @@ async function OnUpdate()
     {
         gameObjects[key].OnDraw();
     }
-
+    
     UpdateItems();
     // Draw Gameobjects
     for (var i = 0; i < items.length; i++)
@@ -422,7 +418,7 @@ async function OnUpdate()
         drawGO(items[i]);
     }
     drawBuffer = {};
-
+    
     //Reset global alpha from drawing
     context.globalAlpha = 1;
     
@@ -463,8 +459,6 @@ function Init()
         }
     }
 
-    InitInputManager();
-
     // Listen for Key Down Events
     document.addEventListener('keydown', (event) => {
     var name = event.key;
@@ -502,7 +496,6 @@ function Init()
     cameraPosition = new Vector2(0, 0);
 
     main();
-    extractVector2Arrays("map.json");
 }
 
 function ShakeCamera(amount, intensity)
@@ -514,6 +507,7 @@ function ShakeCamera(amount, intensity)
 //Load Event
 window.addEventListener('DOMContentLoaded', () => {
     Init();
+    extractVector2Arrays();
 });
 
 

@@ -52,7 +52,7 @@ class Enemy extends GameObject
                 this.path = FindBestPath(this.pos, player.pos);
                 this.pathIndex = 0;
             }
-
+            
             // Move
             if (this.path.length > this.pathIndex)
             {
@@ -61,14 +61,14 @@ class Enemy extends GameObject
             else if (!PositionCheck(player, this.pos))
             {
                 var possibleMove = this.pos.Copy();
-
+                
                 if (IsWalkable(possibleMove.Add(new Vector2(RandomRange(-1, 1), RandomRange(-1, 1)).Normalize().Round().RemoveNaN())))
                 {
                     // Alternative Movement (When no path is available)
                     this.pos = possibleMove;
                 }
             }
-
+            
             // Hit Player
             if (PositionCheck(player, this.pos))
             {
@@ -81,17 +81,34 @@ class Enemy extends GameObject
     }
 }
 
+var updateEnemys = false;
 window.addEventListener("DOMContentLoaded", () =>
 {
-    var enemy = new Enemy(new Vector2(6, 7),  new Vector2(38, 31), 5);
+    var enemy = new Enemy(new Vector2(6, 7),  new Vector2(38, 31), 5000);
     enemy.ChangeDrawingOrder(50);
+    
+    enemy.mapPosition = new Vector2(2, 2);
+    enemy.enabled = false;
+
 });
 
+window.addEventListener("OnMapChange", () =>
+{
+    updateEnemys = true;
+})
 
 window.addEventListener("OnUpdate", () =>
 {
-    enemyBuffer.forEach(enemy =>
+    if (enemyBuffer === undefined) return;
+    if (enemyBuffer.length <= 0) return;
+    
+    
+    enemyBuffer.forEach(element =>
     {
-        enemy.UpdateEnemy();
+        if (element.enabled)
+        {
+            element.UpdateEnemy();
+        }
     });
+    
 });

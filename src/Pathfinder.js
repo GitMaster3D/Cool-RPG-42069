@@ -1,8 +1,4 @@
 
-function GetManhattenDistance(vecA, vecB)
-{
-    return Math.abs(vecA.x - vecB.x) - Math.abs(vecA.y - vecB.y);
-}
 
 function IsWalkable(pos = Vector2(0, 0))
 {
