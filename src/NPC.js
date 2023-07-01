@@ -15,6 +15,12 @@ window.addEventListener("DOMContentLoaded",()=>
     NPC = new CoolGuy(new Vector2(NPCX,NPCY), new Vector2( 4, 2));  
     NPC2 = new CoolGuy(new Vector2(6,8), new Vector2(0,3));
 
+    // Plaziert NPC auf Mapteil 2 | 2
+    NPC.mapPosition = new Vector2(2, 2);
+
+    // Sorgt dafür dass NPCS2 überall aktiv ist (keine ahnung was der macht)
+    NPC2.activeEverywhere = true;
+
     conver.push("Gott zum Gruße!");
     conver.push("Habet Dank");
     conver.push("Am gestrigen Tage..");

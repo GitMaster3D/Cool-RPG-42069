@@ -44,3 +44,8 @@ function RandomRange(min, max)
 {
     return Math.random() * (max - min) + min;
 }
+
+function GetVectorDistance(vecA, vecB)
+{
+    return GetVectorMagnitude(new Vector2(vecA.x - vecB.x, vecA.y - vecB.y));
+}

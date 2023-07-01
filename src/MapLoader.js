@@ -65,11 +65,26 @@ function TileidToVec(id = 0) {
 
 window.addEventListener("MapLoad", () =>
 {
-    console.log(currentTiles[player.pos.x][player.pos.y].length);
+    console.log(mapx);
+    console.log(mapy);
 
     for (let i = 0; i < currentMapTiles.length; i++)
     {
         currentMapTiles[i].Destroy();
     }
     currentMapTiles = [];
+
+    // Deactivate and activate objects spawned in this map part
+    for (const [key, value] of Object.entries(gameObjects))
+    {
+        if (gameObjects[key].mapPosition.x == mapx && gameObjects[key].mapPosition.y == mapy || gameObjects[key].activeEverywhere)
+        {
+            gameObjects[key].enabled = true;
+        }
+        else
+        {
+            gameObjects[key].enabled = false;
+        }
+    }
+
 });

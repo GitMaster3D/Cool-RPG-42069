@@ -15,6 +15,10 @@ class Player extends GameObject {
       // erweitert wird, hier Gameobject.
       // Dies wird hier benötigt, damit es richtig funktioniert
       super(pos, spritesheetPos);
+
+
+      this.health = 10;
+      this.dead = false;
     }
 
     WalkableCheck(xmove, ymove)
@@ -34,6 +38,8 @@ class Player extends GameObject {
 
     MoveX(amount)
     {
+        if (this.dead) return;
+
         if (!this.WalkableCheck(amount, 0))
         {
             return;
@@ -51,6 +57,8 @@ class Player extends GameObject {
 
     MoveY(amount)
     {
+        if (this.dead) return;
+
         if (!this.WalkableCheck(0, -amount))
         {
             return;
@@ -68,6 +76,8 @@ class Player extends GameObject {
 
     Move(amount_Vec = Vector2)
     {
+        if (this.dead) return;
+
         if (!this.WalkableCheck(amount_Vec.x, -amount_Vec.y))
         {
             return;
@@ -80,6 +90,28 @@ class Player extends GameObject {
 
         if (!this.suppressPosition)
             this.UpdatePosition();
+    }
+
+    LoseLife(amount)
+    {
+        this.health -= amount;
+
+        
+        if (this.health <= 0)
+        {
+            // Death Effects
+            ShakeCamera(0.4, 2);
+            PlayParticles("PlayerDeathParticles.json", this.pos);
+            
+            this.dead = true;
+            this.Destroy();
+        }
+        else
+        {
+            // Hit effects
+            ShakeCamera(0.2, 1.2);
+            PlayParticles("PlayerHitParticles.json", this.pos);
+        }
     }
 }
 
@@ -102,6 +134,7 @@ window.addEventListener("DOMContentLoaded", () =>
     // kann man .Destroy() verwenden. hier also player.Destroy();
 
     player = new Player(new Vector2(4, 7), new Vector2(37, 31));
+    player.activeEverywhere = true; 
 
     // Drawingorder auf 100 damit es vor der map gerendert wird
     player.ChangeDrawingOrder(100);

@@ -11,6 +11,8 @@ var spriteSheetWidth = 64;
 
 var cameraPosition;
 var cameraOffset;
+var camShakeAmount;
+var camShakeIntensity;
 
 var backgroundWidth = 100;
 var backgroundHeight = 50;
@@ -52,17 +54,26 @@ class GameObject
 
         this.suppressPosition = false; //Prevents this from being shown in currentTiles
 
+        this.mapPosition = new Vector2(mapx, mapy);
+
+        this.activeEverywhere = false;
+        this.enabled = true;
+
         SpawnGO(this);
     }
 
     SetID(id)
     {
+        if (!this.enabled) return;
+
         this.id = id;
         needsUpdate = true;
     }
 
     MoveX(amount)
     {
+        if (!this.enabled) return;
+
         if (!this.suppressPosition)
             this.InvalidatePosition(this.pos);
 
@@ -74,6 +85,8 @@ class GameObject
 
     MoveY(amount)
     {
+        if (!this.enabled) return;
+
         if (!this.suppressPosition)
             this.InvalidatePosition(this.pos);
 
@@ -85,6 +98,8 @@ class GameObject
 
     Move(amount_Vec = Vector2)
     {
+        if (!this.enabled) return;
+
         if (!this.suppressPosition)
             this.InvalidatePosition(this.pos);
 
@@ -96,6 +111,8 @@ class GameObject
 
     InvalidatePosition(lastPosition = Vector2)
     {
+        if (!this.enabled) return;
+
         let index = currentTiles[lastPosition.x][lastPosition.y].indexOf(this);
         if (index > -1) 
         { // only splice array when item is found
@@ -106,11 +123,15 @@ class GameObject
         
     UpdatePosition()
     {
+        if (!this.enabled) return;
+
         currentTiles[Math.floor(this.pos.x)][Math.floor(this.pos.y)].push(this);       
     }
 
     OnDraw()
     {
+        if (!this.enabled) return;
+
         if (this.alive)
         {
             drawBuffer[this.id] = this;
@@ -119,6 +140,8 @@ class GameObject
 
     Destroy()
     {
+        if (!this.enabled) return;
+
         this.alive = false;
         delete gameObjects[this.id];
         needsUpdate = true;
@@ -137,6 +160,8 @@ class GameObject
 
     SetPos(potition = Vector2)
     {
+        if (!this.enabled) return;
+
         this.InvalidatePosition(this.pos);
         this.pos = potition;
         this.UpdatePosition();
@@ -144,6 +169,8 @@ class GameObject
 
     ChangeDrawingOrder(newOrder)
     {
+        if (!this.enabled) return;
+
         this.drawingOrder = newOrder;
         needsUpdate = true;
     }
@@ -162,49 +189,94 @@ class Vector2
     {
         this.x += addVector.x;
         this.y += addVector.y;
+
+        return this;
     }
 
     Substract(substractVector = Vector2)
     {
         this.x -= substractVector.x;
         this.y -= substractVector.y;
+
+        return this;
     }
 
     SubstractClamped(substractVector = Vector2, minX, minY, maxX, maxY)
     {
         this.x = Clamp(this.x - substractVector.x, minX, maxX);
         this.y = Clamp(this.y - substractVector.y, minY, maxY);
+
+        return this;
     }
 
     LerpUnclamped(vector = Vector2, t)
     {
         this.x = LerpUnclamped(this.x, vector.x, t);
         this.y = LerpUnclamped(this.y, vector.y, t);
+
+        return this;
     }
 
     Lerp(vector = Vector2, t)
     {
         this.x = Lerp(this.x, vector.x, t);
         this.y = Lerp(this.y, vector.y, t);
+
+        return this;
     }
 
     Divide(divisionNumber)
     {
         this.x /= divisionNumber;
         this.y /= divisionNumber;
+
+        return this;
     }
 
     Multiply(multiplicationNumber)
     {
         this.x *= multiplicationNumber;
         this.y *= multiplicationNumber;
+
+        return this;
     }
 
     Normalize()
     {
-        var magnitude = this.Magnitude();
+        var magnitude = GetVectorMagnitude(this);
         this.x /= magnitude;
         this.y /= magnitude;
+
+        return this;
+    }
+
+    Round()
+    {
+        this.x = Math.round(this.x);
+        this.y = Math.round(this.y);
+
+        return this;
+    }
+
+    RemoveNaN()
+    {
+        this.x = this.x | 0;
+        this.y = this.y | 0;
+        
+        return this;
+    }
+
+    Equals(vec = Vector2)
+    {
+        var testX = this.x == vec.x;
+        var testY = this.y == vec.y;
+
+        return testX && testY;
+    }
+
+    Copy()
+    {
+        return new Vector2(this.x, this.y);
     }
 }
 
@@ -217,6 +289,22 @@ class MapSprites
         this.endPos = endPos;
         this.sprite = sprite;
     }
+}
+
+function PositionCheck(object, pos = Vector2)
+{
+    pos.Round();
+    var arr = currentTiles[pos.x][pos.y];
+
+    for (var i = 0; i < arr.length; i++)
+    {
+        if (arr[i] == object)
+        {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 var autoName_ = 0;
@@ -300,6 +388,20 @@ async function OnUpdate()
     {
         deltaTime = dt;
     }
+
+    // CamShake
+    if (camShakeAmount > 0)
+    {
+        camShakeAmount -= deltaTime;
+    }
+    else
+    {
+        camShakeAmount = 0;
+    }
+
+    cameraOffset = new Vector2(xCamOffset + camShakeAmount * camShakeIntensity * RandomRange(-1, 1), yCamOffset + camShakeAmount * camShakeIntensity * RandomRange(-1, 1));
+
+
 
     //Draw background
     if (drawBackground)
@@ -403,6 +505,12 @@ function Init()
     extractVector2Arrays("map.json");
 }
 
+function ShakeCamera(amount, intensity)
+{
+    camShakeAmount = amount
+    camShakeIntensity = intensity;
+}
+
 //Load Event
 window.addEventListener('DOMContentLoaded', () => {
     Init();
@@ -429,6 +537,8 @@ function draw(spritesheetPos, spritePos, alpha = 1, scale = new Vector2(1, 1))
 function drawGO(gameobject = GameObject)
 {
     if (gameObjects === undefined) return;
+    if (!gameobject.enabled) return;
+
     draw(gameobject.spritesheetPos, new Vector2(gameobject.pos.x - cameraPosition.x + cameraOffset.x, gameobject.pos.y - cameraPosition.y + cameraOffset.y), gameobject.alpha, gameobject.scale);
 }
 
