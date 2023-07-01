@@ -62,6 +62,16 @@ window.addEventListener("DOMContentLoaded",()=>
     Stein = new CoolGuy(new Vector2(SteinX ,SteinY), new Vector2(8,11));
     Skelett = new CoolGuy(new Vector2(SkelettX ,SkelettY), new Vector2(21,8));
 
+    Villager1.activeEverywhere = true;
+    Villager2.activeEverywhere = true;
+    Villager3.activeEverywhere = true;
+    Jaeger.activeEverywhere = true;
+    Merchant.activeEverywhere = true;
+    fakehorse.activeEverywhere = true;
+    Buff.activeEverywhere = true;
+    Stein.activeEverywhere = true;
+    Skelett.activeEverywhere = true;
+
 
         NPCsx.push(VILX1);
         NPCsx.push(VILX2);
