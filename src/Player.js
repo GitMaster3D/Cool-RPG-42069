@@ -11,16 +11,16 @@ const camFollowSpeed = 15;
 class Player extends GameObject {
     constructor(pos, spritesheetPos, health) {
     
-      // Super ruft den Konstruktor der klasse auf, die
-      // erweitert wird, hier Gameobject.
-      // Dies wird hier benötigt, damit es richtig funktioniert
-      super(pos, spritesheetPos);
+        // Super ruft den Konstruktor der klasse auf, die
+        // erweitert wird, hier Gameobject.
+        // Dies wird hier benötigt, damit es richtig funktioniert
+        super(pos, spritesheetPos);
 
 
-      this.health = 24;
-      this.maxHealth = 24;
-      this.dead = false;
-
+        this.health = 24;
+        this.maxHealth = 24;
+        this.dead = false;
+        this.lookDirection = new Vector2(1, 0);
     }
 
     WalkableCheck(xmove, ymove)
@@ -42,6 +42,10 @@ class Player extends GameObject {
     {
         if (this.dead) return;
 
+
+        this.lookDirection.x = amount > 0 ? 1 : -1;
+        this.lookDirection.y = 0;
+
         if (!this.WalkableCheck(amount, 0))
         {
             return;
@@ -61,6 +65,9 @@ class Player extends GameObject {
     {
         if (this.dead) return;
 
+        this.lookDirection.y = amount > 0 ? -1 : 1;
+        this.lookDirection.x = 0;
+
         if (!this.WalkableCheck(0, -amount))
         {
             return;
@@ -79,6 +86,9 @@ class Player extends GameObject {
     Move(amount_Vec = Vector2)
     {
         if (this.dead) return;
+
+        this.lookDirection.x = amount_Vec.x > 0 ? 1 : -1;
+        this.lookDirection.y = amount_Vec.y > 0 ? -1 : 1;
 
         if (!this.WalkableCheck(amount_Vec.x, -amount_Vec.y))
         {
@@ -116,6 +126,16 @@ class Player extends GameObject {
         }
     }
 }
+
+
+// Attack
+window.addEventListener("SpaceInput", () =>
+{
+    UseWeapon();
+    AddWeapon(new Sword(3, 2));
+});
+
+
 
 var HasMoved = false;
 var mapx = 2;
@@ -198,6 +218,9 @@ window.addEventListener("DOMContentLoaded", () =>
             if (movedX)
                 moveXTimer = moveTime;
         }
+
+    
+
     });
 
     // mit addeventlistener kann man nach events lauschen. 

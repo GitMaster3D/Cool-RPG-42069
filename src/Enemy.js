@@ -81,10 +81,10 @@ class Enemy extends GameObject
     }
 }
 
-var updateEnemys = false;
+
 window.addEventListener("DOMContentLoaded", () =>
 {
-    var enemy = new Enemy(new Vector2(6, 7),  new Vector2(38, 31), 5000);
+    var enemy = new Enemy(new Vector2(6, 7),  new Vector2(38, 31), 10);
     enemy.ChangeDrawingOrder(50);
     
     enemy.mapPosition = new Vector2(2, 2);
@@ -92,10 +92,6 @@ window.addEventListener("DOMContentLoaded", () =>
 
 });
 
-window.addEventListener("OnMapChange", () =>
-{
-    updateEnemys = true;
-})
 
 window.addEventListener("OnUpdate", () =>
 {
