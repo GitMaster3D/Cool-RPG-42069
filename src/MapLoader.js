@@ -2,7 +2,7 @@
 var currentMapTiles = [];
 
 
-async function extractVector2Arrays(layerAmount = 2) {
+async function extractVector2Arrays(layerAmount = 3) {
 
     window.dispatchEvent(new Event("MapLoad"));
 
