@@ -101,3 +101,9 @@ function DrawItem(spritesheetPos, spritePos, alpha = 1, scale = new Vector2(1, 1
 
     ctx.restore();
 }
+
+function HideControls()
+{
+    var item = document.getElementById("ControlShow");
+    item.style.display = "none";
+}

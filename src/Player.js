@@ -109,6 +109,8 @@ class Player extends GameObject {
 
     LoseLife(amount)
     {
+        if (this.dead) return;
+
         this.health -= amount;
 
         
