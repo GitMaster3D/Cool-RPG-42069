@@ -71,6 +71,7 @@ function gLoad() {
                     break;
                 }
                 Object.assign(gameObjects[i], go[i]);
+                break;
 
             case "Enemy":
                 if (gameObjects[i] == undefined) {
@@ -79,6 +80,7 @@ function gLoad() {
                     break;
                 }
                 Object.assign(gameObjects[i], go[i]);
+                break;
 
             case "Player":
                 Object.assign(gameObjects[i], go[i]);
