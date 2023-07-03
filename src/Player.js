@@ -119,7 +119,9 @@ class Player extends GameObject {
             PlayParticles("PlayerDeathParticles.json", this.pos);
             
             this.dead = true;
-            this.Destroy();
+            this.enabled = false;
+
+            window.dispatchEvent(new Event("pDead"));
         }
         else
         {
