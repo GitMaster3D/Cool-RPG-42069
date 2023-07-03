@@ -24,12 +24,20 @@ function gSave() {
 
     saveVal("weapons", weapons);
     saveVal("item", items_);
+
+    saveVal("Killcount", killedEnemys);
+    saveVal("EnemyCount", enemyCount);
+    saveVal("DoorOpen", doorOpen);
 }
 
 function gLoad() {
 
     var weaponData = loadVal("weapons");
     var items_ = loadVal("item");
+
+    killedEnemys = loadVal("Killcount");
+    enemyCount = loadVal("EnemyCount");
+    doorOpen = loadVal("DoorOpen");
 
     for (var i = 0; i < weaponData; i++)
     {
