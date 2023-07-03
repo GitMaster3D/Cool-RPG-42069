@@ -31,15 +31,6 @@ class DroppedWeapon extends GameObject
 }
 
 
-window.addEventListener("DOMContentLoaded", () =>
-{
-    var weapon = new DroppedWeapon(new Vector2(18, 2), new Vector2(30, 28), new Sword(4, 3, 5, 1.8));
-    weapon.mapPosition = new Vector2(3, 1);
-    weapon.ChangeDrawingOrder(5000);
-});
-
-
-
 window.addEventListener("RInput", () =>
 {
     var pos = player.pos.Copy();

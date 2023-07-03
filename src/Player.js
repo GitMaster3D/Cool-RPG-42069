@@ -59,7 +59,7 @@ class Player extends GameObject {
         if (!this.suppressPosition)
             this.UpdatePosition();
 
-        console.log(this.pos);
+        console.log(mapx);
     }
 
     MoveY(amount)
@@ -82,7 +82,7 @@ class Player extends GameObject {
         if (!this.suppressPosition)
             this.UpdatePosition();
 
-        console.log(this.pos);
+        console.log(mapy);
 
     }
 
@@ -119,6 +119,8 @@ class Player extends GameObject {
             PlayParticles("PlayerDeathParticles.json", this.pos);
             
             this.dead = true;
+
+            alert("You are dead, you lost the game!!");
             this.Destroy();
         }
         else
