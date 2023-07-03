@@ -1,29 +1,34 @@
 
 
 var weapons = [];
-var items = [];
+var items_ = [];
 
 var currentWeapon = 0;
 var currentItem = 0;
 
-window.addEventListener("DOMContentLoaded", () =>
+var currentWeaponCooldown = 0;
+var currentItemCooldown = 0;
+
+window.addEventListener("OnUpdate", () =>
 {
-    console.log("189237409283578928354");
+    currentWeaponCooldown -= deltaTime;
+    currentItemCooldown -= deltaTime;
 })
 
 function UseItem()
 {
-    items[currentItem].Use();
+    items_[currentItem % items_.length].Use();
 }
 
 function UseWeapon()
 {
-    weapons[currentWeapon].Use();
+    weapons[currentWeapon % weapons.length].Use();
 }
 
 function AddItem(item)
 {
-    items.push(item);
+    items_.push(item);
+
 }
 
 function AddWeapon(weapon)
@@ -33,7 +38,7 @@ function AddWeapon(weapon)
 
 function NextItem()
 {
-    return items[(currentItem++) % items.length];
+    return items_[(currentItem++) % items_.length];
 }
 
 function NextWeapon()
@@ -43,56 +48,126 @@ function NextWeapon()
 
 class item
 {
+    constructor(cooldown = 0)
+    {
+        this.cooldown = cooldown;
+    }
+
     Use()
     {
+        if (currentItemCooldown > 0) return;
+
+        currentItemCooldown = this.cooldown;
+
         console.log("Nothing to see here");
     }
 }
 
 class weapon
 {
+    constructor(cooldown = 0)
+    {
+        this.cooldown = cooldown;
+    }
+
     Use()
     {
+        if (currentWeaponCooldown > 0) return;
+
+        currentWeaponCooldown = this.cooldown;
+
         console.log("Nothing to see here");
+    }
+}
+
+class Potion extends item
+{
+    constructor(healAmount, cooldown = 20)
+    {
+        super(cooldown);
+
+        this.healAmount = healAmount;
+    }
+
+    Use()
+    {
+        if (currentItemCooldown > 0) return;
+
+        currentItemCooldown = this.cooldown;
+
+        player.health = Clamp(player.health + this.healAmount, 0, player.maxHealth);
     }
 }
 
 class Sword extends weapon
 {
-    constructor(aoeX, aoeY)
+    constructor(aoeX, aoeY, damage  = 3, cooldown = 0.5)
     {
-        super();
+        super(cooldown);
 
         this.aoeX = aoeX;
         this.aoeY = aoeY;
+        this.damage = damage;
     }
 
     Use()
     {
-        var attackPos = player.pos.Copy();
-        attackPos.Add(package.lookDirection);
+        if (currentWeaponCooldown > 0) return;
 
-        for (var i = 0; i < this.aoeX; i++)
+        currentWeaponCooldown = this.cooldown;
+
+        var attackPos = player.pos.Copy();
+
+        if (player.lookDirection.y != 0)
         {
-            for (var j = 0; j < this.aoeY; j++)
+            attackPos.y += player.lookDirection.y > 0 ? 
+            player.lookDirection.y :
+            (player.lookDirection.y) - this.aoeX + 1;
+        }
+
+        if (player.lookDirection.x != 0)
+        {
+            attackPos.x += player.lookDirection.x > 0 ?
+            player.lookDirection.x :
+            player.lookDirection.x - this.aoeX + 1;
+        }
+
+
+        if (player.lookDirection.y != 0)
+        {
+            // Y Attack
+            for (var j = 0; j < this.aoeX; j++)
             {
-                var go = new GameObject(new Vector2(pos.x + i, pos.y + j));
-                go.ChangeDrawingOrder(1000);
-                go.enabled = true;
+                for (var i = -Math.floor(this.aoeY / 2); i < Math.ceil(this.aoeY / 2); i++)
+                {
+                    this.DealDamage(new Vector2((attackPos.x + i), (attackPos.y + j)));
+                }
+            }
+        }
+        else
+        {
+            // X attack
+            for (var j = 0; j < this.aoeX; j++)
+            {
+                for (var i = -Math.floor(this.aoeY / 2); i < Math.ceil(this.aoeY / 2); i++)
+                {
+                    this.DealDamage(new Vector2((attackPos.x + j), (attackPos.y + i)));
+                }
+            }
+        }
+    }
+
+    DealDamage(pos = Vector2)
+    {
+        (async () => await PlayParticles("HitIndicator.json", pos))();
+
+        for (var i = 0; i < enemyBuffer.length; i++)
+        {
+            if (enemyBuffer[i].pos.x == pos.x && enemyBuffer[i].pos.y == pos.y && enemyBuffer[i].enabled)
+            {
+                enemyBuffer[i].LoseLife(this.damage);
+                PlayParticles("EnemyHitParticles.json", pos);
             }
         }
     }
 }
-
-/*
-class inventory_Manager//13|0-13|4
-{
-constructor(Slot1,Slot2,Slot3,Slot4,Slot5){
-    this.Slot1 =Slot1;
-    this.Slot2=Slot2;
-    this.Slot3=Slot3;
-    this.Slot4=Slot4;
-    this.Slot5=Slot5;
-}
-}
-*/

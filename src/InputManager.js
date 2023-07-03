@@ -13,6 +13,7 @@ const spaceInputEvent = new Event("SpaceInput");
 const tinputEvent = new Event("TInput");
 const jinpputEvent = new Event("JInput");
 const ninpputEvent = new Event("NInput");
+const eInputEvent = new Event("EInput");
 
 const upReleaseEvent = new Event("UpRelease");
 const downReleaseEvent = new Event("DownRelease");
@@ -22,6 +23,7 @@ const spaceReleaseEvent = new Event("SpaceRelease");
 const tReleaseEvent = new Event("TRelease");
 const jReleaseEvent = new Event("JRelease");
 const nReleaseEvent = new Event("NRelease");
+const eReleaseEvent = new Event("ERelease");
 
 function KeyPress(key = "")
 {
@@ -57,6 +59,10 @@ function KeyPress(key = "")
 
         case "KeyN":
             window.dispatchEvent(nInputEvent);
+        break;
+
+        case "KeyE":
+            window.dispatchEvent(eInputEvent);
         break;
     }   
 }
@@ -96,6 +102,10 @@ function KeyRelease(key)
 
         case "KeyN":
             window.dispatchEvent(nReleaseEvent);
+        break;
+
+        case "KeyE":
+            window.dispatchEvent(eReleaseEvent);
         break;
     }   
 }

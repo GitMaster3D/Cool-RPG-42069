@@ -154,9 +154,9 @@ class GameObject {
 
     Destroy() {
         this.alive = false;
+
         delete gameObjects[this.id];
         needsUpdate = true;
-
         
         if (!this.suppressPosition && typeof currentTiles[this.pos.x][this.pos.y] !== undefined)
         {

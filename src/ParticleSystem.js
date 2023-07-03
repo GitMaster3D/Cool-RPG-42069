@@ -171,8 +171,12 @@ async function PlayParticles(name, pos = new Vector2(0, 0))
         data.fadeoutStart,
         data.spriteSheetPos_End,
         data.scaleRange
-        )
+        );
+    
+        
 }
+
+
 
 
 function ParticleTest()

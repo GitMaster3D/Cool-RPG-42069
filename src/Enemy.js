@@ -54,6 +54,7 @@ class Enemy extends GameObject
             }
             
             // Move
+            this.InvalidatePosition(this.pos);
             if (this.path.length > this.pathIndex)
             {
                 this.pos = this.path[this.pathIndex++];
@@ -68,6 +69,7 @@ class Enemy extends GameObject
                     this.pos = possibleMove;
                 }
             }
+            this.UpdatePosition();
             
             // Hit Player
             if (PositionCheck(player, this.pos))
@@ -84,13 +86,22 @@ class Enemy extends GameObject
 
 window.addEventListener("DOMContentLoaded", () =>
 {
-    var enemy = new Enemy(new Vector2(6, 7),  new Vector2(38, 31), 10);
+    SpawnEnemy(new Vector2(9, 6), new Vector2(2, 2), new Vector2(38, 31), 6);
+
+    SpawnEnemy(new Vector2(9, 6), new Vector2(1, 2), new Vector2(38, 31), 6);
+    SpawnEnemy(new Vector2(12, 5), new Vector2(1, 2), new Vector2(38, 31), 6);
+    SpawnEnemy(new Vector2(7, 9), new Vector2(1, 2), new Vector2(38, 31), 6);
+});
+
+function SpawnEnemy(pos, mapPos, sprite, health)
+{
+    var enemy = new Enemy(pos,  sprite, health);
     enemy.ChangeDrawingOrder(50);
     
-    enemy.mapPosition = new Vector2(2, 2);
+    enemy.mapPosition = mapPos;
     enemy.enabled = false;
-
-});
+    enemy.walkable = false;
+}
 
 
 window.addEventListener("OnUpdate", () =>

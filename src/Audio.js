@@ -11,8 +11,10 @@ async function InitAudio()
 
 function PlaySong(name = "Path")
 {
-    var sound = new Audio("/Audio/Music/" + name);
+    /*
+    var sound = new Audio("/assets/audio/Music" + name);
     sound.play();
+    */
 }
 
 
@@ -20,7 +22,9 @@ function PlaySong(name = "Path")
 // Plays sound witht the given name inside the "Audio" Folder
 function PlaySound(name = "Path")
 {
-    var sound = new Audio("/Audio/Sound/" + name);
+    /*
+    var sound = new Audio("/assets/audio/Sound/" + name);
     sound.play();
+    */
 }
 

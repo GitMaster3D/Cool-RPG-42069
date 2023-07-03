@@ -79,12 +79,14 @@ window.addEventListener("MapLoad", () =>
         if (gameObjects[key].mapPosition.x == mapx && gameObjects[key].mapPosition.y == mapy || gameObjects[key].activeEverywhere)
         {
             gameObjects[key].enabled = true;
+            gameObjects[key].InvalidatePosition(gameObjects[key].pos);
+            gameObjects[key].UpdatePosition();
         }
         else
         {
             gameObjects[key].enabled = false;
+            gameObjects[key].InvalidatePosition(gameObjects[key].pos);
+            gameObjects[key].UpdatePosition();
         }
     }
-
-
 });

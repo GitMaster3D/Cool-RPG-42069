@@ -29,7 +29,7 @@ class Player extends GameObject {
 
         for (var i = 0; i < arr.length; i++)
         {
-            if (!arr[i].walkable)
+            if (!arr[i].walkable && arr[i].alive && arr[i].enabled)
             {
                 return false;
             }
@@ -132,7 +132,11 @@ class Player extends GameObject {
 window.addEventListener("SpaceInput", () =>
 {
     UseWeapon();
-    AddWeapon(new Sword(3, 2));
+});
+
+window.addEventListener("EInput", () =>
+{
+    UseItem();
 });
 
 
@@ -147,6 +151,9 @@ window.addEventListener("DOMContentLoaded", () =>
     moveDirection = new Vector2(0, 0);
     moveXTimer = moveTime;
     moveYTimer = moveTime;
+
+    AddItem(new Potion(12, 20));
+    AddWeapon(new Sword(2, 3, 3, 0.5));
 
     // Jedes Gameobject benötigt einen Vector2 (Punkt auf einem Koordinatensystem) mit 
     // Einer x und einer Y koordinate als Position, und einen 2. der angiebt, welcher
@@ -295,7 +302,7 @@ window.addEventListener("DOMContentLoaded", () =>
             HasMoved=true;
         }
     
-        if(player.pos.y<=0&&HasMoved){
+        if(player.pos.y <= 0 && HasMoved){
             mapy--;
             extractVector2Arrays()
             player.pos.y =19;
