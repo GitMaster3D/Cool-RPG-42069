@@ -13,7 +13,12 @@ window.addEventListener("OnUpdate", () =>
 {
     currentWeaponCooldown -= deltaTime;
     currentItemCooldown -= deltaTime;
-})
+});
+
+window.addEventListener("CommaInput", () =>
+{
+    NextWeapon();
+});
 
 function UseItem()
 {
@@ -116,7 +121,7 @@ class Sword extends weapon
 
         currentWeaponCooldown = this.cooldown;
 
-        var attackPos = player.pos.Copy();
+        var attackPos = new Vector2(player.pos.x, player.pos.y);
 
         if (player.lookDirection.y != 0)
         {

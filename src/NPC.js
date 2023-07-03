@@ -355,7 +355,7 @@ function UpdateNPC()                    //läd die NPC´s, die auf dem karten ab
 
         if (NPCBUFloaded == true && (Math.round(player.pos.x) == Math.round(buffX) && Math.round(player.pos.y) == (Math.round(buffY)+1)))       //checkt ob man vor dem buff typ steht und ob der geladen ist
         {
-            alert("Hey bro, du siehst stark aus! Im westen vom Strand ist etwas böses, irgendeine Dunkle Magie");
+            alert("Hey bro, du siehst stark aus! Im Nordosten ist etwas böses, irgendeine Dunkle Magie");
         }
 
         if (NPCJAGloaded == true)

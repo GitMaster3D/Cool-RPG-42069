@@ -17,13 +17,29 @@ function loadVal(name = "") {
 }
 
 function gSave() {
+    if (player.dead) return;
+
     saveVal("go", gameObjects);
     saveVal("mPos", new Vector2(mapx, mapy));
+
+    saveVal("weapons", weapons);
+    saveVal("item", items_);
 }
 
 function gLoad() {
+
+    var weaponData = loadVal("weapons");
+    var items_ = loadVal("item");
+
+    for (var i = 0; i < weaponData; i++)
+    {
+        var w = new Sword();
+        w.assign(weaponData[i]);
+    }
+
     var go = loadVal("go");
     var mPos = loadVal("mPos");
+    
 
     mapx = mPos.x;
     mapy = mPos.y;
@@ -43,6 +59,14 @@ function gLoad() {
             case "CoolGuy":
                 if (gameObjects[i] == undefined) {
                     var b = new CoolGuy(new Vector2(3, 3), new Vector2(3, 3));
+                    Object.assign(b, go[i]);
+                    break;
+                }
+                Object.assign(gameObjects[i], go[i]);
+
+            case "Enemy":
+                if (gameObjects[i] == undefined) {
+                    var b = new Enemy(new Vector2(3, 3), new Vector2(3, 3));
                     Object.assign(b, go[i]);
                     break;
                 }

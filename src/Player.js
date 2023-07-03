@@ -59,6 +59,7 @@ class Player extends GameObject {
         if (!this.suppressPosition)
             this.UpdatePosition();
 
+        console.log(this.pos);
     }
 
     MoveY(amount)
@@ -80,6 +81,8 @@ class Player extends GameObject {
 
         if (!this.suppressPosition)
             this.UpdatePosition();
+
+        console.log(this.pos);
 
     }
 

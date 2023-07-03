@@ -25,6 +25,7 @@ const jReleaseEvent = new Event("JRelease");
 const nReleaseEvent = new Event("NRelease");
 const eReleaseEvent = new Event("ERelease");
 
+
 function KeyPress(key = "")
 {
     switch (key)
@@ -64,7 +65,15 @@ function KeyPress(key = "")
         case "KeyE":
             window.dispatchEvent(eInputEvent);
         break;
-    }   
+
+        case "KeyR":
+            window.dispatchEvent(new Event("RInput"));
+        break;
+
+        case "Comma":
+            window.dispatchEvent(new Event("CommaInput"));
+        break;
+    }
 }
 
 
@@ -106,6 +115,14 @@ function KeyRelease(key)
 
         case "KeyE":
             window.dispatchEvent(eReleaseEvent);
+        break;
+
+        case "KeyR":
+            window.dispatchEvent(new Event("RRelease"));
+        break;
+
+        case "Comma":
+            window.dispatchEvent(new Event("CommaRelease"));
         break;
     }   
 }
